@@ -48,6 +48,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/monsters.json`: compact merged monster records
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
+- `reports/source-conflict-priorities.json`: conflicts ranked by field and category, with capped examples for targeted human review
 - `reports/validation.json`: structural checks and coverage counts
 - `reports/coverage.json`: field-presence percentages across source and normalized item, equipment, weapon, and monster datasets
 - `reports/normalized-data-audit.json`: duplicate/invalid ID checks, missing metadata counts, weapon-speed and stance gaps, and per-field monster combat coverage
