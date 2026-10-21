@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import build_dataset
+import normalize_combat_data
 
 
 class PipelineTests(unittest.TestCase):
@@ -52,6 +53,27 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(conflicts[0]["field"], "attack_speed")
             self.assertEqual(missing, [])
             self.assertEqual(ignored, {"icon": 1, "last_updated": 1})
+
+    def test_equipment_normalizer_preserves_bonus_fields(self):
+        row = {"id": 4151, "name": "Abyssal whip", "sources": ["osrsbox"],
+               "wiki_url": "https://oldschool.runescape.wiki/w/Abyssal_whip",
+               "equipment": {"attack_slash": 82, "melee_strength": 82, "slot": "weapon",
+                             "requirements": {"attack": 70}}}
+        result = normalize_combat_data.normalize_equipment(row)
+        self.assertEqual(result["bonuses"]["attack_slash"], 82)
+        self.assertEqual(result["slot"], "weapon")
+        self.assertEqual(result["requirements"]["attack"], 70)
+
+    def test_weapon_normalizer_keeps_stances_and_speed(self):
+        row = {"id": 4151, "name": "Abyssal whip", "sources": ["osrsbox"],
+               "weapon": {"attack_speed": 4, "weapon_type": "whip",
+                          "stances": [{"combat_style": "lash", "attack_type": "slash",
+                                       "attack_style": "controlled", "experience": "shared",
+                                       "boosts": "+1 attack, strength and defence"}]}}
+        result = normalize_combat_data.normalize_weapon(row)
+        self.assertEqual(result["attack_speed"], 4)
+        self.assertEqual(result["stances"][0]["attack_type"], "slash")
+        self.assertIsNone(normalize_combat_data.normalize_weapon({"id": 1, "weapon": None}))
 
 
 if __name__ == "__main__":
