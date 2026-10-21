@@ -9,6 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import build_dataset
 import normalize_combat_data
+import normalize_monster_combat
 
 
 class PipelineTests(unittest.TestCase):
@@ -63,6 +64,22 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(result["bonuses"]["attack_slash"], 82)
         self.assertEqual(result["slot"], "weapon")
         self.assertEqual(result["requirements"]["attack"], 70)
+
+    def test_monster_combat_values_reject_nested_or_invalid_values(self):
+        self.assertEqual(normalize_monster_combat.numeric_value("87"), 87)
+        self.assertEqual(normalize_monster_combat.numeric_value(12.5), 12.5)
+        self.assertIsNone(normalize_monster_combat.numeric_value(True))
+        self.assertIsNone(normalize_monster_combat.numeric_value({"level": 87}))
+        self.assertIsNone(normalize_monster_combat.numeric_value("unknown"))
+        self.assertIsNone(normalize_monster_combat.numeric_value(-1))
+
+    def test_monster_alias_lookup_skips_invalid_preferred_alias(self):
+        value, key = normalize_monster_combat.first_numeric_value(
+            {"attack_level": {"level": 90}, "attack": "72"},
+            ("attack_level", "attack"),
+        )
+        self.assertEqual(value, 72)
+        self.assertEqual(key, "attack")
 
     def test_weapon_normalizer_keeps_stances_and_speed(self):
         row = {"id": 4151, "name": "Abyssal whip", "sources": ["osrsbox"],
