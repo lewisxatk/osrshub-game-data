@@ -17,11 +17,7 @@ def build_report(quests,relationships,import_report,relationship_report):
             errors.append(f"Invalid quest record at index {i}"); continue
         name=" ".join(row["name"].casefold().split())
         if name in names: duplicates+=1
-        names.add(name)
-        source+=bool(row.get("source_url"))
-        prereqs+=bool(row.get("requirements"))
-        skills+=bool(row.get("skill_requirements"))
-        rewards+=bool(row.get("rewards"))
+        names.add(name); source+=bool(row.get("source_url")); prereqs+=bool(row.get("requirements")); skills+=bool(row.get("skill_requirements")); rewards+=bool(row.get("rewards"))
     total=len(quests)
     def percent(count): return round(100.0*count/total,2) if total else 0.0
     if not total: warnings.append("No quest fact records imported; title catalogue is not a quest-fact database")
