@@ -62,6 +62,7 @@ def audit_records(dataset, rows):
                "missing_name_count": missing_name, "missing_sources_count": missing_sources}
     if dataset == "equipment-stats":
         missing_slot = missing_bonuses = partial_bonuses = missing_requirements = missing_url = 0
+        invalid_bonus_values = invalid_requirement_levels = 0
         for row in rows:
             if not isinstance(row, dict):
                 continue
@@ -72,17 +73,26 @@ def audit_records(dataset, rows):
                 missing_bonuses += 1
             elif any(field not in bonuses or bonuses[field] is None for field in BONUS_FIELDS):
                 partial_bonuses += 1
-            if not isinstance(row.get("requirements"), dict) or not row["requirements"]:
+            if isinstance(bonuses, dict):
+                for field, value in bonuses.items():
+                    if isinstance(value, bool) or not isinstance(value, (int, float)):
+                        invalid_bonus_values += 1
+            requirements = row.get("requirements")
+            if not isinstance(requirements, dict) or not requirements:
                 missing_requirements += 1
+            elif any(isinstance(level, bool) or not isinstance(level, int) or level < 0
+                     for level in requirements.values()):
+                invalid_requirement_levels += 1
             if not nonempty(row.get("source_url")):
                 missing_url += 1
         details.update({"missing_slot_count": missing_slot, "missing_bonus_object_count": missing_bonuses,
                         "partial_bonus_field_count": partial_bonuses, "missing_requirements_count": missing_requirements,
-                        "missing_source_url_count": missing_url})
+                        "missing_source_url_count": missing_url, "invalid_bonus_value_count": invalid_bonus_values,
+                        "invalid_requirement_level_count": invalid_requirement_levels})
         if missing_slot or missing_bonuses or partial_bonuses or missing_url:
             warnings.append("Equipment metadata gaps found; inspect source coverage before using records in optimization.")
     elif dataset == "weapons":
-        missing_speed = invalid_speed = missing_type = missing_stances = missing_url = 0
+        missing_speed = invalid_speed = missing_type = missing_stances = malformed_stances = missing_url = 0
         for row in rows:
             if not isinstance(row, dict):
                 continue
@@ -95,14 +105,26 @@ def audit_records(dataset, rows):
                 missing_type += 1
             if not isinstance(row.get("stances"), list) or not row["stances"]:
                 missing_stances += 1
+            elif any(not isinstance(stance, dict) or not nonempty(stance.get("name")) for stance in row["stances"]):
+                malformed_stances += 1
             if not nonempty(row.get("source_url")):
                 missing_url += 1
         details.update({"missing_attack_speed_count": missing_speed, "invalid_attack_speed_count": invalid_speed,
-                        "missing_weapon_type_count": missing_type, "missing_stances_count": missing_stances,
+                        "missing_weapon_type_count": missing_type, "missing_stances_count": missing_stances, "malformed_stances_count": malformed_stances,
                         "missing_source_url_count": missing_url})
-        if missing_speed or invalid_speed or missing_type or missing_stances or missing_url:
+        if missing_speed or invalid_speed or missing_type or missing_stances or malformed_stances or missing_url:
             warnings.append("Weapon metadata gaps found; do not infer missing speed, type, or stance values.")
     elif dataset == "monsters-combat":
+        invalid_values = {}
+        for field in MONSTER_FIELDS:
+            invalid_values[field] = sum(
+                1 for row in rows if isinstance(row, dict) and row.get(field) is not None
+                and (isinstance(row.get(field), bool) or not isinstance(row.get(field), (int, float))
+                     or row.get(field) < 0)
+            )
+        details["invalid_numeric_value_count_by_field"] = invalid_values
+        if any(invalid_values.values()):
+            warnings.append("Monster combat fields contain non-numeric or negative values; review source normalization.")
         for field in MONSTER_FIELDS:
             present = sum(1 for row in rows if isinstance(row, dict) and nonempty(row.get(field)))
             details.setdefault("field_coverage", {})[field] = {
