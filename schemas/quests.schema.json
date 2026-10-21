@@ -21,8 +21,7 @@
     "difficulty": {"type": ["string", "null"]},
     "quest_type": {"type": ["string", "null"]},
     "source_url": {"type": ["string", "null"], "pattern": "^https://"},
-    "source_fields": {"type": "array", "items": {"type": "string"}},
-    "additionalProperties": false
+    "source_fields": {"type": "array", "items": {"type": "string"}}
   },
   "additionalProperties": false
 }
