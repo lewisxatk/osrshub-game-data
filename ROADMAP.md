@@ -36,7 +36,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [ ] Document source precedence and field aliases so upstream schema changes are visible.
 - [x] Add an initial field-level source-provenance and disagreement report for item and monster source fields.
 - [x] Extend monster combat provenance to report selected source names and the exact raw alias used for each normalized field, with capped record examples.
-- [ ] Extend per-field provenance to equipment/weapon normalized values and verified source references for each field.
+- [x] Add equipment/weapon normalized field provenance with source counts, raw field paths, and capped examples.
+- [ ] Add verified source references for each combat-critical normalized field and review mapping discrepancies surfaced by the provenance report.
 
 **Exit criteria:** reproducible compact outputs, clear coverage percentages, tests for mappings, and known examples reviewed against sources. This is not yet a promise of full combat-calculator accuracy.
 
@@ -81,7 +82,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 1. Review generated field-provenance and combat-reference reports.
 2. Verify each regression fixture against its cited reference and source mapping.
-3. Extend normalized field provenance to equipment and weapon outputs, then add verified references where trustworthy sources are available.
+3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
 4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
 5. Use measured gaps to choose the next source adapter or data category.
 
