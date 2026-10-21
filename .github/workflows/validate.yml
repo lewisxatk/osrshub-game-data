@@ -27,14 +27,16 @@ jobs:
         run: python scripts/build_dataset.py
       - name: Validate generated datasets
         run: python scripts/validate_dataset.py
-      - name: Report field coverage
-        run: python scripts/report_coverage.py
       - name: Audit equipment and weapon gaps
         run: python scripts/audit_equipment.py
       - name: Normalize combat data
         run: python scripts/normalize_combat_data.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py
+      - name: Report field coverage
+        run: python scripts/report_coverage.py
+      - name: Audit normalized combat datasets
+        run: python scripts/audit_normalized_data.py
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Publish generated datasets and reports
