@@ -39,6 +39,10 @@ jobs:
         run: python scripts/audit_equipment.py
       - name: Normalize combat data
         run: python scripts/normalize_combat_data.py
+      - name: Normalize item skill requirements
+        run: python scripts/build_item_requirements.py
+      - name: Report combat category coverage
+        run: python scripts/report_combat_categories.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py
       - name: Build item relationship graph

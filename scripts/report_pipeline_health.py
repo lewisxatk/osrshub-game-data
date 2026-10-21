@@ -19,6 +19,8 @@ INPUTS = {
     "source_integrity": "source-integrity.json",
     "field_provenance": "field-provenance.json",
     "item_identity": "item-identity.json",
+    "item_requirements": "item-requirements-coverage.json",
+    "combat_categories": "combat-category-coverage.json",
     "combat_reference_checks": "combat-reference-checks.json",
 }
 

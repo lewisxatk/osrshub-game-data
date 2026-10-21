@@ -27,7 +27,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [x] Add schema validation to CI for the normalized outputs.
 
 ### Stage 2 — Improve core combat-data quality
-- [x] Add an item identity audit for duplicate IDs, missing names, exact-name collisions, and punctuation/case-normalized name collisions without auto-merging variants.\n- [ ] Audit item IDs, names, equipment slots, requirements, and bonus-field conventions.
+- [x] Add an item identity audit for duplicate IDs, missing names, exact-name collisions, and punctuation/case-normalized name collisions without auto-merging variants.\n- [x] Audit item IDs and names; summarize normalized equipment-slot and weapon-type coverage, including missing categories and duplicate IDs.
+- [ ] Audit bonus-field conventions and compare high-value gear against a trusted, versioned source.
 - [ ] Compare known high-value gear examples against a trusted, versioned source.
 - [ ] Improve weapon stance and attack-speed coverage without inferring missing values.
 - [ ] Improve monster combat-stat coverage and identify source disagreements.
@@ -44,7 +45,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 ### Stage 3 — Add OSRS item relationships
 - [ ] Identify item IDs and aliases consistently across sources and reconcile alias collisions.
 - [x] Add explicit item-ID links to normalized equipment-stat and weapon records, with orphan counts and schema validation.
-- [ ] Add item requirements and unlock relationships when supported by sources.
+- [x] Normalize source-backed item skill requirements into an item-ID keyed dataset with schema validation and malformed-value warnings.
+- [ ] Add quest/unlock relationships once quest facts are supplied by a maintained source.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
 - [ ] Track provenance and conflicts for every imported category.
@@ -86,7 +88,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 2. Verify each regression fixture against its cited reference and source mapping.
 3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
 4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
-5. Use measured gaps to choose the next source adapter or data category; item identity diagnostics, item relationships, and schema-backed quest relationships are now in the pipeline.
+5. Use measured gaps to choose the next source adapter or data category; item identity diagnostics, item relationships, normalized skill requirements, combat-category coverage, and schema-backed quest relationships are now in the pipeline.
 
 ## Current output families
 

@@ -31,6 +31,8 @@ python scripts/report_item_identity.py
 python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
+python scripts/build_item_requirements.py
+python scripts/report_combat_categories.py
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
 python scripts/import_quests.py
@@ -53,6 +55,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/equipment-stats.json`: compact equipment slots, bonuses, requirements, source names, and Wiki links
 - `dist/weapons.json`: compact weapon attack speeds, weapon types, stances, source names, and Wiki links
 - `dist/monsters-combat.json`: normalized monster combat fields where available, with unknown values left null
+- `dist/item-requirements.json`: item-ID keyed skill requirements normalized from source equipment metadata, preserving source names and URLs
 - `dist/item-relationships.json`: explicit links from item IDs to available equipment-stat and weapon records, without guessing missing links
 - `dist/quests.json`: normalized quest records from an explicitly supplied `sources/raw/quests.json` snapshot; empty until a source snapshot is added
 - `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately
@@ -73,7 +76,10 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
 - `reports/monster-combat-coverage.json`: per-field coverage percentages, missing-field examples, selected source names, and bounded examples showing the exact raw source alias used for each normalized monster combat field
 - `reports/normalized-combat-provenance.json`: equipment/weapon field lineage from normalized records back to source records, with source counts, raw field paths, and capped comparison examples
+- `reports/item-requirements-coverage.json`: counts of items with requirements, per-skill coverage, and malformed source values retained as warnings
+- `reports/combat-category-coverage.json`: observed equipment-slot and weapon-type distributions, missing categories, invalid rows, and duplicate IDs
 - `reports/item-relationship-coverage.json`: item relationship counts and orphaned normalized equipment/weapon records
+- `schemas/item-requirements.schema.json`: validated normalized item skill requirement records
 - `schemas/item-relationships.schema.json`: validated schema for explicit item-to-equipment and item-to-weapon links
 - `schemas/quests.schema.json`: validated structure for imported quest requirements, skill levels, rewards, and source metadata
 - `schemas/quest-relationships.schema.json`: validated prerequisite and reverse-dependent graph records

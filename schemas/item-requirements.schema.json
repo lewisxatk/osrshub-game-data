@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub item skill requirements",
+  "type": "object",
+  "required": ["item_id", "item_name", "requirements", "sources", "source_url"],
+  "properties": {
+    "item_id": {"type": "integer", "minimum": 0},
+    "item_name": {"type": "string"},
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skill", "level"],
+        "properties": {
+          "skill": {"type": "string", "minLength": 1},
+          "level": {"type": "integer", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "source_url": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

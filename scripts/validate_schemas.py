@@ -18,6 +18,7 @@ TARGETS = (
     ("equipment-stats.json", "equipment-stats.schema.json"),
     ("weapons.json", "weapon.schema.json"),
     ("item-relationships.json", "item-relationships.schema.json"),
+    ("item-requirements.json", "item-requirements.schema.json"),
     ("quests.json", "quests.schema.json"),
     ("quest-relationships.json", "quest-relationships.schema.json"),
 )
