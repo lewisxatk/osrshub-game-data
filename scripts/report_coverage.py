@@ -10,8 +10,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DATASETS = {
     "items": ("dist/items.json", ("members", "tradeable", "stackable", "equipable", "equipment", "weapon", "ge", "examine")),
     "equipment": ("dist/equipment.json", ("equipment", "weapon", "equipable", "equipable_by_player", "attack_speed")),
-    "equipment_stats": ("dist/equipment-stats.json", ("slot", "bonuses", "requirements", "source_url")),
-    "weapons": ("dist/weapons.json", ("attack_speed", "weapon_type", "stances", "source_url")),
     "monsters": ("dist/monsters.json", ("combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "magic_level", "ranged_level", "max_hit", "attack_speed", "drops", "slayer_level")),
     "monsters_combat": ("dist/monsters-combat.json", ("combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "magic_level", "ranged_level", "max_hit", "attack_speed", "slayer_level", "size")),
 }
