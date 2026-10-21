@@ -18,6 +18,7 @@ INPUTS = {
     "source_conflict_priorities": "source-conflict-priorities.json",
     "source_integrity": "source-integrity.json",
     "field_provenance": "field-provenance.json",
+    "item_identity": "item-identity.json",
     "combat_reference_checks": "combat-reference-checks.json",
 }
 

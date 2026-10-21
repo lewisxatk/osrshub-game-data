@@ -29,6 +29,8 @@ jobs:
         run: python scripts/build_dataset.py
       - name: Report field-level provenance
         run: python scripts/report_field_provenance.py
+      - name: Audit item IDs and name collisions
+        run: python scripts/report_item_identity.py
       - name: Prioritize source conflicts
         run: python scripts/report_conflict_priorities.py
       - name: Validate generated datasets

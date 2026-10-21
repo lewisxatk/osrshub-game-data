@@ -27,6 +27,7 @@ python scripts/download_sources.py
 python scripts/audit_source_integrity.py
 python scripts/build_dataset.py
 python scripts/report_field_provenance.py
+python scripts/report_item_identity.py
 python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
@@ -61,8 +62,9 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/source-conflict-priorities.json`: conflicts ranked by field and category, with capped examples for targeted human review
 - `reports/source-integrity.json`: downloaded snapshot SHA-256, byte-count, JSON-parse, and top-level-type checks against the retrieval manifest
 - `reports/field-provenance.json`: per-field source presence and bounded examples of upstream disagreements for item and monster fields
+- `reports/item-identity.json`: duplicate-ID checks, missing-name counts, exact and normalized name collisions, and source representation counts; collisions are review-only and never auto-merged
 - `reports/combat-reference-checks.json`: pass/fail results for the small, explicitly sourced combat regression fixture set; fixture URLs must use HTTPS and review dates must be real `YYYY-MM-DD` dates, while duplicate IDs in normalized datasets fail the check
-- `reports/pipeline-health.json`: consolidated statuses for validation, coverage, normalized-data audit, schema checks, combat readiness, and source-conflict review; incomplete inputs are marked explicitly
+- `reports/pipeline-health.json`: consolidated statuses for validation, coverage, normalized-data audit, schema checks, combat readiness, source-conflict review, and item identity; incomplete inputs are marked explicitly
 - `reports/validation.json`: structural checks and coverage counts
 - `reports/coverage.json`: field-presence percentages across source and normalized item, equipment, weapon, and monster datasets
 - `reports/normalized-data-audit.json`: duplicate/invalid ID checks, missing metadata counts, weapon-speed and stance gaps, and per-field monster combat coverage
