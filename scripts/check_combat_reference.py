@@ -46,6 +46,15 @@ def validate_fixture(fixture):
     return errors
 
 
+def get_field(record, path):
+    value = record
+    for part in path.split("."):
+        if not isinstance(value, dict):
+            return None
+        value = value.get(part)
+    return value
+
+
 def run_cases(fixture, dist_dir: Path):
     errors = validate_fixture(fixture)
     if errors:
@@ -83,8 +92,9 @@ def run_cases(fixture, dist_dir: Path):
             continue
         mismatch = {}
         for field, expected_value in case["expected"].items():
-            if record.get(field) != expected_value:
-                mismatch[field] = {"expected": expected_value, "actual": record.get(field)}
+            actual_value = get_field(record, field)
+            if actual_value != expected_value:
+                mismatch[field] = {"expected": expected_value, "actual": actual_value}
         if mismatch:
             failures.append({"dataset": filename, "id": case["id"], "mismatches": mismatch})
         else:
