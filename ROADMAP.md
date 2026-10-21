@@ -42,8 +42,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 **Exit criteria:** reproducible compact outputs, clear coverage percentages, tests for mappings, and known examples reviewed against sources. This is not yet a promise of full combat-calculator accuracy.
 
 ### Stage 3 — Add OSRS item relationships
-- [ ] Identify item IDs and aliases consistently across sources.
-- [ ] Add item-to-equipment-slot and item-to-weapon relationships.
+- [ ] Identify item IDs and aliases consistently across sources and reconcile alias collisions.
+- [x] Add explicit item-ID links to normalized equipment-stat and weapon records, with orphan counts and schema validation.
 - [ ] Add item requirements and unlock relationships when supported by sources.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
@@ -84,7 +84,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 2. Verify each regression fixture against its cited reference and source mapping.
 3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
 4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
-5. Use measured gaps to choose the next source adapter or data category.
+5. Use measured gaps to choose the next source adapter or data category; item-to-equipment/weapon relationships now have a generated dataset and schema.
 
 ## Current output families
 
