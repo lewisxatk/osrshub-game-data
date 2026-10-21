@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Validate generated datasets against the repository's JSON Schemas."""
+"""Validate generated datasets and selected reports against repository JSON Schemas."""
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
@@ -12,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 SCHEMAS = ROOT / "schemas"
 REPORTS = ROOT / "reports"
-TARGETS = (
+DATA_TARGETS = (
     ("items.json", "item.schema.json"),
     ("monsters-combat.json", "monster-combat.schema.json"),
     ("equipment-stats.json", "equipment-stats.schema.json"),
@@ -22,12 +21,19 @@ TARGETS = (
     ("quests.json", "quests.schema.json"),
     ("quest-relationships.json", "quest-relationships.schema.json"),
 )
+REPORT_TARGETS = (("item-eligibility.json", "item-eligibility.schema.json"),)
+
+
+def load_schema(path):
+    schema = json.loads(path.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema)
 
 
 def main():
     errors = []
     checked = {}
-    for data_name, schema_name in TARGETS:
+    for data_name, schema_name in DATA_TARGETS:
         data_path = DIST / data_name
         schema_path = SCHEMAS / schema_name
         if not data_path.exists():
@@ -38,12 +44,10 @@ def main():
             continue
         try:
             data = json.loads(data_path.read_text(encoding="utf-8"))
-            schema = json.loads(schema_path.read_text(encoding="utf-8"))
-            Draft202012Validator.check_schema(schema)
+            validator = load_schema(schema_path)
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             errors.append({"file": str(schema_path.relative_to(ROOT)), "error": f"invalid JSON/schema: {exc}"})
             continue
-        validator = Draft202012Validator(schema)
         if not isinstance(data, list):
             errors.append({"file": str(data_path.relative_to(ROOT)), "error": "expected a JSON array"})
             continue
@@ -63,6 +67,31 @@ def main():
                 if len(errors) >= 100:
                     errors.append({"error": "Further errors omitted after 100 reported issues"})
                     break
+
+    for data_name, schema_name in REPORT_TARGETS:
+        data_path = REPORTS / data_name
+        schema_path = SCHEMAS / schema_name
+        if not data_path.exists():
+            errors.append({"file": str(data_path.relative_to(ROOT)), "error": "missing report"})
+            continue
+        if not schema_path.exists():
+            errors.append({"file": str(schema_path.relative_to(ROOT)), "error": "missing schema"})
+            continue
+        try:
+            data = json.loads(data_path.read_text(encoding="utf-8"))
+            validator = load_schema(schema_path)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            errors.append({"file": str(schema_path.relative_to(ROOT)), "error": f"invalid JSON/schema: {exc}"})
+            continue
+        record_errors = sorted(validator.iter_errors(data), key=lambda err: list(map(str, err.path)))
+        checked[f"reports/{data_name}"] = {"records": 1, "invalid_records": 1 if record_errors else 0}
+        for err in record_errors[:20]:
+            errors.append({
+                "file": str(data_path.relative_to(ROOT)),
+                "path": ".".join(str(part) for part in err.path),
+                "error": err.message,
+            })
+
     result = {
         "status": "failed" if errors else "passed",
         "datasets": checked,
