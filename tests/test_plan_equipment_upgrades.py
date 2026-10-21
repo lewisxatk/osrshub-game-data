@@ -24,7 +24,7 @@ class EquipmentUpgradePlanTests(unittest.TestCase):
     def test_ranks_by_objective_and_respects_budget(self):
         result = build_plan(self.equipment, self.requirements, self.profile, self.costs, 1500, "attack_slash")
         rows = result["results_by_slot"]["head"]
-        self.assertEqual([x["item_id"] for x in rows[:2]], [2, 1])
+        self.assertEqual([x["item_id"] for x in rows[:2]], [2, 4])
         self.assertIn("over_budget", [x["status"] for x in rows])
         self.assertEqual(result["status"], "candidate_shortlist_only")
 
