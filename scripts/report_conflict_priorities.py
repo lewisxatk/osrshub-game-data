@@ -10,10 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "reports"
 INPUT = REPORTS / "source-conflicts.json"
 
-def main():
-    if not INPUT.exists():
-        raise FileNotFoundError("reports/source-conflicts.json is missing; run scripts/build_dataset.py first")
-    raw = json.loads(INPUT.read_text(encoding="utf-8"))
+def priority_for_field(field):
+    return "high" if field.casefold() in {
+        "equipment", "weapon", "attack_speed", "stances", "bonuses", "requirements",
+        "combat_level", "hitpoints", "max_hit", "drops", "quest",
+    } else "review"
+
+def load_conflicts(path):
+    raw = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(raw, list):
         conflicts = raw
     elif isinstance(raw, dict):
@@ -22,7 +26,9 @@ def main():
         raise ValueError("source-conflicts.json must be an array or object containing conflicts")
     if not isinstance(conflicts, list):
         raise ValueError("source conflict collection must be an array")
+    return conflicts
 
+def summarize_conflicts(conflicts):
     by_field = Counter()
     by_category = Counter()
     field_categories = defaultdict(Counter)
@@ -54,11 +60,17 @@ def main():
             "conflict_count": count,
             "categories": dict(field_categories[field].most_common()),
             "examples": examples[field],
-            "priority": "high" if field.casefold() in {
-                "equipment", "weapon", "attack_speed", "stances", "bonuses", "requirements",
-                "combat_level", "hitpoints", "max_hit", "drops", "quest",
-            } else "review",
+            "priority": priority_for_field(field),
         })
+    return {
+        **summary,
+    }
+
+def main():
+    if not INPUT.exists():
+        raise FileNotFoundError("reports/source-conflicts.json is missing; run scripts/build_dataset.py first")
+    conflicts = load_conflicts(INPUT)
+    summary = summarize_conflicts(conflicts)
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "failed" if invalid_records else "passed",
