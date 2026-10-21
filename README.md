@@ -51,7 +51,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/coverage.json`: field-presence percentages across items, equipment, and monsters
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, weapon metadata, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
-- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields
+- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields\n- `reports/schema-validation.json`: JSON Schema validation results for compact items and normalized monster combat records
 
 Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
 
@@ -80,4 +80,4 @@ Upstream field shapes can change; inspect reports and validate outputs after eve
 
 1. Use `coverage.json` and `equipment-audit.json` to prioritize missing equipment bonuses, weapon attack speeds, and stances.
 2. Add source adapters and schemas for quests, spells, prayers, recipes, NPCs, and drop tables.
-3. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
+3. Validate normalized item and monster combat datasets against versioned JSON Schemas in CI.\n4. Add schema coverage for equipment stats and weapon records.\n5. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
