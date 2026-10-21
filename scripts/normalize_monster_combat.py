@@ -105,6 +105,8 @@ def main():
     output = []
     coverage = {key: 0 for key in ALIASES}
     field_source_counts = {key: {} for key in ALIASES}
+    field_alias_counts = {key: {} for key in ALIASES}
+    field_source_examples = {key: [] for key in ALIASES}
     missing_examples = {key: [] for key in ALIASES}
     for rid, base in sorted(sources.items()):
         normalized = {"id": rid, "name": base["name"], "sources": sorted(set(base["sources"]))}
@@ -118,6 +120,9 @@ def main():
                 value, source_key = first_numeric_value(raw, aliases)
                 if value is not None:
                     field_source_counts[field][source_name] = field_source_counts[field].get(source_name, 0) + 1
+                    field_alias_counts[field][source_key] = field_alias_counts[field].get(source_key, 0) + 1
+                    if len(field_source_examples[field]) < 20:
+                        field_source_examples[field].append({"id": rid, "name": base["name"], "source": source_name, "source_field": source_key, "value": value})
                     break
             normalized[field] = value
             if value is not None:
@@ -141,11 +146,14 @@ def main():
                 "missing": total - coverage[key],
                 "coverage_percent": round(coverage[key] * 100 / total, 2) if total else 0.0,
                 "source_counts": field_source_counts[key],
+                "source_field_counts": field_alias_counts[key],
             }
             for key in ALIASES
         },
         "missing_examples_capped_at": 15,
         "missing_examples": missing_examples,
+        "source_examples_capped_at": 20,
+        "source_examples": field_source_examples,
         "errors": errors,
         "note": "Only non-negative numeric scalar values are accepted for combat fields. Invalid community values fall back to valid original-source aliases; no missing combat values are guessed.",
     }
