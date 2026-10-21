@@ -25,6 +25,8 @@ jobs:
         run: python scripts/download_sources.py
       - name: Build normalized datasets
         run: python scripts/build_dataset.py
+      - name: Prioritize source conflicts
+        run: python scripts/report_conflict_priorities.py
       - name: Validate generated datasets
         run: python scripts/validate_dataset.py
       - name: Audit equipment and weapon gaps
