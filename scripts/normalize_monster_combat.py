@@ -33,10 +33,37 @@ def numeric_id(row):
             pass
     return None
 
-def first_value(row, aliases):
+def numeric_value(value):
+    """Return a safe non-negative numeric combat value, or None for malformed data."""
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, (int, float)):
+        number = value
+    elif isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            number = float(text) if "." in text else int(text)
+        except ValueError:
+            return None
+    else:
+        # Nested source structures (e.g. attack objects) are not scalar levels.
+        return None
+    if number < 0:
+        return None
+    if isinstance(number, float) and not number.is_integer():
+        return number
+    return int(number)
+
+
+def first_numeric_value(row, aliases):
+    """Try aliases in order, skipping invalid values instead of blocking fallback."""
     for key in aliases:
-        value = row.get(key)
-        if value is not None and value != "":
+        if key not in row:
+            continue
+        value = numeric_value(row.get(key))
+        if value is not None:
             return value, key
     return None, None
 
@@ -88,12 +115,9 @@ def main():
             # Respect existing configured source order: community first, then original.
             for source_name in ("community_monsters", "original_monsters"):
                 raw = raw_by_source.get(source_name, {})
-                value, source_key = first_value(raw, aliases)
+                value, source_key = first_numeric_value(raw, aliases)
                 if value is not None:
-                    if isinstance(value, bool) or not isinstance(value, (int, float, str, list, dict)):
-                        value = None
-                    else:
-                        field_source_counts[field][source_name] = field_source_counts[field].get(source_name, 0) + 1
+                    field_source_counts[field][source_name] = field_source_counts[field].get(source_name, 0) + 1
                     break
             normalized[field] = value
             if value is not None:
@@ -102,6 +126,8 @@ def main():
                 missing_examples[field].append({"id": rid, "name": base["name"]})
         output.append(normalized)
 
+    DIST.mkdir(parents=True, exist_ok=True)
+    REPORTS.mkdir(parents=True, exist_ok=True)
     (DIST / "monsters-combat.json").write_text(json.dumps(output, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     total = len(output)
     report = {
@@ -121,7 +147,7 @@ def main():
         "missing_examples_capped_at": 15,
         "missing_examples": missing_examples,
         "errors": errors,
-        "note": "Aliases map only existing source fields; no missing combat values are guessed. Source disagreement resolution follows community-first precedence.",
+        "note": "Only non-negative numeric scalar values are accepted for combat fields. Invalid community values fall back to valid original-source aliases; no missing combat values are guessed.",
     }
     (REPORTS / "monster-combat-coverage.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
