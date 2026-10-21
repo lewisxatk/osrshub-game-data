@@ -5,18 +5,29 @@ import json
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parents[1]
 DATASETS = {
     "items": ("dist/items.json", ("members", "tradeable", "stackable", "equipable", "equipment", "weapon", "ge", "examine")),
     "equipment": ("dist/equipment.json", ("equipment", "weapon", "equipable", "equipable_by_player", "attack_speed")),
+    "equipment_stats": ("dist/equipment-stats.json", ("slot", "bonuses", "requirements", "source_url")),
+    "weapons": ("dist/weapons.json", ("attack_speed", "weapon_type", "stances", "source_url")),
     "monsters": ("dist/monsters.json", ("combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "magic_level", "ranged_level", "max_hit", "attack_speed", "drops", "slayer_level")),
+    "monsters_combat": ("dist/monsters-combat.json", ("combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "magic_level", "ranged_level", "max_hit", "attack_speed", "slayer_level", "size")),
 }
+
+def nonempty(value):
+    return value is not None and value != "" and value != [] and value != {}
+
 def main():
     reports = ROOT / "reports"
     reports.mkdir(parents=True, exist_ok=True)
-    report = {"generated_at": datetime.now(timezone.utc).isoformat(),
-              "meaning": "Field presence is descriptive coverage, not a correctness or completeness guarantee.",
-              "datasets": {}, "errors": []}
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "meaning": "Field presence is descriptive coverage, not a correctness or completeness guarantee.",
+        "datasets": {},
+        "errors": [],
+    }
     for dataset, (relative_path, fields) in DATASETS.items():
         path = ROOT / relative_path
         if not path.exists():
@@ -31,23 +42,33 @@ def main():
             report["errors"].append(f"{relative_path} must be an array")
             continue
         field_counts = Counter()
+        invalid_rows = 0
         for row in rows:
             if not isinstance(row, dict):
+                invalid_rows += 1
                 continue
             for field in fields:
-                value = row.get(field)
-                if value is not None and value != "" and value != [] and value != {}:
+                if nonempty(row.get(field)):
                     field_counts[field] += 1
         total = len(rows)
         report["datasets"][dataset] = {
+            "path": relative_path,
             "record_count": total,
-            "fields": {field: {"records_with_value": field_counts[field],
-                               "coverage_percent": round(field_counts[field] * 100 / total, 2) if total else 0.0}
-                       for field in fields}
+            "non_object_record_count": invalid_rows,
+            "fields": {
+                field: {
+                    "records_with_value": field_counts[field],
+                    "coverage_percent": round(field_counts[field] * 100 / total, 2) if total else 0.0,
+                }
+                for field in fields
+            },
         }
+        if invalid_rows:
+            report["errors"].append(f"{relative_path} contains {invalid_rows} non-object record(s)")
     report["status"] = "failed" if report["errors"] else "passed"
     (reports / "coverage.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 1 if report["errors"] else 0
+
 if __name__ == "__main__":
     raise SystemExit(main())
