@@ -16,6 +16,7 @@ INPUTS = {
     "schema_validation": "schema-validation.json",
     "combat_readiness": "combat-readiness.json",
     "source_conflict_priorities": "source-conflict-priorities.json",
+    "source_integrity": "source-integrity.json",
 }
 
 
