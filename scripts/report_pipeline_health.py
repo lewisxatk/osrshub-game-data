@@ -17,6 +17,8 @@ INPUTS = {
     "combat_readiness": "combat-readiness.json",
     "source_conflict_priorities": "source-conflict-priorities.json",
     "source_integrity": "source-integrity.json",
+    "field_provenance": "field-provenance.json",
+    "combat_reference_checks": "combat-reference-checks.json",
 }
 
 
