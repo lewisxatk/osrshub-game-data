@@ -53,7 +53,7 @@ jobs:
         run: python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength --output reports/equipment-shortlist.json
       - name: Optimize multi-slot equipment candidate under budget
         run: python scripts/optimize_equipment_loadout.py --shortlist reports/equipment-shortlist.json --budget 100000000 --output reports/equipment-loadout-candidate.json
-      - name: Report combat category coverage
+      - name: Audit equipment recommendation consistency\n        run: python scripts/audit_equipment_recommendations.py --shortlist reports/equipment-shortlist.json --loadout reports/equipment-loadout-candidate.json --output reports/equipment-recommendation-audit.json\n      - name: Report combat category coverage
         run: python scripts/report_combat_categories.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py

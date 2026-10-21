@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Equipment recommendation audit report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "shortlist_slots_checked",
+    "shortlist_unique_item_ids",
+    "selected_items_checked",
+    "error_count",
+    "warning_count",
+    "errors",
+    "warnings",
+    "checks",
+    "limitations"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "failed",
+        "review_required",
+        "passed"
+      ]
+    },
+    "shortlist_slots_checked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shortlist_unique_item_ids": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selected_items_checked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "error_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warning_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
