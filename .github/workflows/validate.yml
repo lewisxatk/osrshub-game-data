@@ -33,7 +33,7 @@ jobs:
         run: python scripts/normalize_combat_data.py
       - name: Publish generated datasets and reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: osrshub-game-data-${{ github.sha }}
           path: |
