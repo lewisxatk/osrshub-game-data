@@ -1,0 +1,9 @@
+{
+  "effective_attack": 100,
+  "attack_bonus": 80,
+  "effective_defence": 75,
+  "defence_bonus": 100,
+  "effective_strength": 100,
+  "strength_bonus": 80,
+  "attack_speed_ticks": 4
+}
