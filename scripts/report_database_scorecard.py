@@ -75,13 +75,15 @@ def build_scorecard(loader=load_array):
         datasets["item_combat_profiles"] = summary
     except ValueError as exc:
         errors.append(str(exc))
-    opportunities = sum(v["field_presence_opportunities"] for v in datasets.values())
-    present_count = sum(v["field_presence_count"] for v in datasets.values())
+    # Give each configured dataset equal weight, including empty datasets. This makes
+    # a missing quest catalogue visible instead of letting it vanish from the denominator.
+    dataset_coverages = [v["field_coverage_percent"] for v in datasets.values()]
+    coverage_index = round(sum(dataset_coverages) / len(dataset_coverages), 2) if dataset_coverages else 0.0
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "failed" if errors else "passed",
-        "coverage_index_percent": round(100 * present_count / opportunities, 2) if opportunities else 0.0,
-        "coverage_index_definition": "Present values divided by explicitly configured field-presence opportunities across successfully loaded datasets. Each dataset has its own selected fields; this is a tracking index, not overall OSRS database completeness or factual accuracy.",
+        "coverage_index_percent": coverage_index,
+        "coverage_index_definition": "Arithmetic mean of each successfully loaded configured dataset field-coverage percentage. Empty datasets contribute 0%; this is a tracking index, not overall OSRS database completeness or factual accuracy.",
         "dataset_count": len(datasets),
         "total_records_across_datasets": sum(v["record_count"] for v in datasets.values()),
         "datasets": datasets,

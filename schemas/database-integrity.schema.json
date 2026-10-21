@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"OSRS Hub cross-dataset integrity audit",
+  "type":"object",
+  "required":["status","counts","error_count","warning_count","errors","warnings","guardrails"],
+  "properties":{
+    "generated_at":{"type":"string"},
+    "status":{"enum":["passed","review_required","failed"]},
+    "counts":{"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+    "error_count":{"type":"integer","minimum":0},
+    "warning_count":{"type":"integer","minimum":0},
+    "errors":{"type":"array","items":{"type":"object"}},
+    "warnings":{"type":"array","items":{"type":"object"}},
+    "guardrails":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":false
+}

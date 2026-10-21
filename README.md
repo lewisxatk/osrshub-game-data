@@ -171,3 +171,12 @@ Use `python scripts/compare_loadout_reports.py --current reports/current.json --
 ## Database coverage scorecard
 
 Run `python scripts/report_database_scorecard.py` after generating the datasets. It writes `reports/database-scorecard.json`, with per-dataset record counts, field-presence percentages, selected combat-profile readiness indicators, and a reproducible coverage index. The index is calculated from an explicitly configured list of field-presence opportunities; it is a progress-tracking metric, **not** a claim that the same percentage of all OSRS knowledge is complete or factually verified. An empty quest dataset scores zero presence rather than being treated as complete. The report is included in schema validation and the CI artifact.
+
+
+## Database integrity audit
+
+Run `python scripts/audit_database_integrity.py` after generating all datasets. It checks duplicate IDs, orphaned item/equipment/weapon/requirement joins, item-profile presence flags, and quest prerequisite references. It writes `reports/database-integrity.json`. Missing profiles and an empty quest catalogue are reported as coverage warnings; unknown prerequisites are never treated as absent.
+
+## Coverage index interpretation
+
+The database scorecard's `coverage_index_percent` is the arithmetic mean of the configured dataset coverage percentages. Each dataset has equal weight, including an empty dataset at 0%, so an empty quest catalogue is visible in the headline. This is a transparent progress index for the currently configured fields, not a universal percentage of all OSRS data or factual accuracy.

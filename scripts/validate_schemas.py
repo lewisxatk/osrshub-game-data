@@ -35,6 +35,7 @@ REPORT_TARGETS = (
     ("loadout-comparison.json", "loadout-comparison.schema.json"),
     ("normalized-player-profile.json", "normalized-player-profile.schema.json"),
     ("database-scorecard.json", "database-scorecard.schema.json"),
+    ("database-integrity.json", "database-integrity.schema.json"),
 )
 
 def load_schema(path):
