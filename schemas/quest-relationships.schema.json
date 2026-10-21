@@ -6,14 +6,32 @@
   "properties": {
     "quest_key": {"type": "string", "minLength": 1},
     "name": {"type": "string", "minLength": 1},
-    "prerequisites": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
-    "dependents": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "prerequisites": {"type": "array", "items": {"$ref": "#/$defs/prerequisiteEdge"}},
+    "dependents": {"type": "array", "items": {"$ref": "#/$defs/dependentEdge"}},
     "unresolved_requirements": {"type": "array", "items": {"type": "string"}},
     "skill_requirements": {"type": "array", "items": {"type": "object", "required": ["skill", "level"], "properties": {"skill": {"type": "string", "minLength": 1}, "level": {"type": "integer", "minimum": 0}}, "additionalProperties": false}},
     "source_url": {"type": ["string", "null"], "pattern": "^https://"}
   },
   "$defs": {
-    "edge": {"type": "object", "required": ["quest_key", "name"], "properties": {"quest_key": {"type": "string", "minLength": 1}, "name": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+    "prerequisiteEdge": {
+      "type": "object",
+      "required": ["quest_key", "name", "completion_state"],
+      "properties": {
+        "quest_key": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "completion_state": {"enum": ["started", "completed"]}
+      },
+      "additionalProperties": false
+    },
+    "dependentEdge": {
+      "type": "object",
+      "required": ["quest_key", "name"],
+      "properties": {
+        "quest_key": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

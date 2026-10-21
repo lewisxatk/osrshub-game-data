@@ -62,7 +62,7 @@ On Windows, run these commands in Command Prompt or PowerShell.\n\nTo evaluate a
 - `reports/quest-catalog-coverage.json`: catalogue count, pagination count, hash, and explicit limits on what the catalogue proves
 
 - `dist/quests.json`: normalized quest records from an explicitly supplied `sources/raw/quests.json` snapshot; empty until a source snapshot is added
-- `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately\n- `reports/quest-readiness.json`: measured quest-source coverage and a conservative readiness status; missing data never implies quest completion
+- `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately; `Started:` requirements preserve whether a prerequisite only needs to be started or fully completed\n- `reports/quest-readiness.json`: measured quest-source coverage and a conservative readiness status; missing data never implies quest completion
 - `dist/monsters.json`: compact merged monster records
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences

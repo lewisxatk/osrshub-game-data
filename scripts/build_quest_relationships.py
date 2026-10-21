@@ -16,6 +16,17 @@ def canonical(value):
     return " ".join(str(value).casefold().split())
 
 
+def parse_requirement(value):
+    """Return normalized quest name and required completion stage."""
+    if not isinstance(value, str) or not value.strip():
+        return None, None
+    value = " ".join(value.split())
+    if value.casefold().startswith("started:"):
+        name = value.split(":", 1)[1].strip()
+        return (canonical(name), "started") if name else (None, None)
+    return canonical(value), "completed"
+
+
 def build_graph(quests):
     by_key = {}
     by_name = defaultdict(list)
@@ -36,17 +47,26 @@ def build_graph(quests):
     graph = {}
     unresolved = []
     for key, quest in by_key.items():
-        prereq_keys = set()
+        raw_requirements = quest.get("requirements", [])
+        if not isinstance(raw_requirements, list):
+            unresolved.append({"quest_key": key, "requirement": repr(raw_requirements), "reason": "malformed_requirement_list"})
+            raw_requirements = []
+        prereq_keys = {}
         unresolved_names = []
-        for requirement in quest.get("requirements", []):
-            matches = by_name.get(canonical(requirement), [])
+        for requirement in raw_requirements:
+            lookup_name, completion_state = parse_requirement(requirement)
+            if lookup_name is None:
+                unresolved_names.append(str(requirement))
+                unresolved.append({"quest_key": key, "requirement": requirement, "reason": "invalid_requirement"})
+                continue
+            matches = by_name.get(lookup_name, [])
             if len(matches) == 1:
                 prerequisite_key = matches[0]
                 if prerequisite_key == key:
                     unresolved_names.append(requirement)
                     unresolved.append({"quest_key": key, "requirement": requirement, "reason": "self_reference"})
                 else:
-                    prereq_keys.add(prerequisite_key)
+                    prereq_keys[prerequisite_key] = completion_state
                     dependents[prerequisite_key].add(key)
             elif len(matches) > 1:
                 unresolved_names.append(requirement)
@@ -57,7 +77,10 @@ def build_graph(quests):
         graph[key] = {
             "quest_key": key,
             "name": quest["name"],
-            "prerequisites": [{"quest_key": prereq, "name": by_key[prereq]["name"]} for prereq in sorted(prereq_keys)],
+            "prerequisites": [
+                {"quest_key": prereq, "name": by_key[prereq]["name"], "completion_state": prereq_state}
+                for prereq, prereq_state in sorted(prereq_keys.items())
+            ],
             "dependents": [],
             "unresolved_requirements": sorted(set(unresolved_names), key=str.casefold),
             "skill_requirements": quest.get("skill_requirements", []),
