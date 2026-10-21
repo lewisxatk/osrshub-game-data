@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub normalized equipment statistics record",
+  "type": "object",
+  "required": ["id", "name", "bonuses", "requirements", "sources"],
+  "properties": {
+    "id": {"type": ["integer", "null"], "minimum": 0},
+    "name": {"type": "string"},
+    "slot": {"type": ["string", "null"]},
+    "bonuses": {
+      "type": "object",
+      "properties": {
+        "attack_stab": {"type": ["number", "string", "null"]},
+        "attack_slash": {"type": ["number", "string", "null"]},
+        "attack_crush": {"type": ["number", "string", "null"]},
+        "attack_magic": {"type": ["number", "string", "null"]},
+        "attack_ranged": {"type": ["number", "string", "null"]},
+        "defence_stab": {"type": ["number", "string", "null"]},
+        "defence_slash": {"type": ["number", "string", "null"]},
+        "defence_crush": {"type": ["number", "string", "null"]},
+        "defence_magic": {"type": ["number", "string", "null"]},
+        "defence_ranged": {"type": ["number", "string", "null"]},
+        "melee_strength": {"type": ["number", "string", "null"]},
+        "ranged_strength": {"type": ["number", "string", "null"]},
+        "magic_damage": {"type": ["number", "string", "null"]},
+        "prayer": {"type": ["number", "string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "requirements": {"type": "object"},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "source_url": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
