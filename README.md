@@ -71,6 +71,14 @@ Provide a JSON object mapping item IDs to GP costs with `--costs`. The checked-i
 
 **This is a candidate shortlist, not a complete gear optimiser.** The follow-on loadout search chooses one candidate per slot under a total budget by maximising the sum of the selected stat. It is still not a DPS optimiser: candidates may have unknown quest/unlock restrictions, and a higher summed stat does not necessarily mean higher DPS.\n\n## Baseline weapon comparison\n\nThe weapon comparison combines the normalized weapon-speed and equipment-bonus records with the scoped formula primitives. Supply effective attack/strength/defence inputs and a GP cost per item. It ranks only weapons whose known skill requirements are met, flags unknown restrictions, and reports the calculation inputs. It is **not** a boss-specific calculator and does not account for special attacks, prayers, potions, target-specific mechanics or unverified unlocks.
 
+## Item requirement completeness audit
+
+```bash
+python scripts/audit_item_requirement_quality.py
+```
+
+This reports how many equipment records have a normalized skill-requirement record, malformed or duplicate records, orphan IDs, and source provenance coverage. It deliberately labels incomplete coverage: missing records do not prove an item has no requirements, and a skill requirement record is not a complete unlock/quest eligibility result.
+
 ## Combat input audit
 
 ```bash
