@@ -1,0 +1,9 @@
+{
+  "effective_attack": 100,
+  "effective_strength": 100,
+  "effective_defence": 80,
+  "defence_bonus": 80,
+  "source_url": "https://oldschool.runescape.wiki/w/Combat_level",
+  "checked_on": "REPLACE_WITH_VERIFICATION_DATE",
+  "note": "Illustrative input shape only. Verify effective levels and target defence for the intended encounter before interpreting DPS."
+}

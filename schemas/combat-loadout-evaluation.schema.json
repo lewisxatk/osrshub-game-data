@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scoped combat loadout evaluation",
+  "type": "object",
+  "required": [
+    "status",
+    "attack_style",
+    "budget_gp",
+    "total_cost_gp",
+    "remaining_budget_gp",
+    "selected_items",
+    "aggregated_bonuses",
+    "weapon",
+    "combat_result",
+    "warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "baseline_loadout_estimate_with_limitations"
+    },
+    "attack_style": {
+      "enum": [
+        "stab",
+        "slash",
+        "crush"
+      ]
+    },
+    "budget_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_cost_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "remaining_budget_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selected_item_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "selected_items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "aggregated_bonuses": {
+      "type": "object",
+      "required": [
+        "attack_style_bonus",
+        "melee_strength"
+      ],
+      "properties": {
+        "attack_style_bonus": {
+          "type": "integer"
+        },
+        "melee_strength": {
+          "type": "integer"
+        }
+      }
+    },
+    "weapon": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "item_name",
+        "attack_speed_ticks"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "integer"
+        },
+        "item_name": {
+          "type": "string"
+        },
+        "attack_speed_ticks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "combat_result": {
+      "type": "object",
+      "required": [
+        "formula_version",
+        "status",
+        "dps",
+        "hit_chance",
+        "max_hit",
+        "limitations"
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

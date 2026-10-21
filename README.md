@@ -32,6 +32,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_combat_profiles.py
+python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
 python scripts/audit_item_combat_profiles.py
 python scripts/build_item_requirements.py
 python scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
@@ -136,3 +137,14 @@ The pipeline writes `dist/item-combat-profiles.json` and `reports/item-combat-pr
 
 
 The joined profiles can be audited with `python scripts/audit_item_combat_profiles.py`. The audit flags malformed IDs, invalid attack speeds, duplicate skill requirements, missing source URLs and incomplete stat coverage. Warnings mean records need review; the audit never fills missing bonuses with zero and never treats absent requirements as proof of no requirements. Query the joined dataset with `--dataset item-combat-profiles`.
+
+
+## Evaluate a caller-selected melee loadout
+
+Once generated profiles exist, a supplied item-ID list, GP cost map, effective combat inputs and target defence inputs can be evaluated:
+
+```bash
+python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
+```
+
+This evaluator aggregates known melee attack and strength bonuses, enforces the supplied total budget and one-item-per-slot rule, finds the selected weapon's attack speed, and calculates scoped baseline hit chance/max hit/DPS with explicit limitations. Example costs and combat inputs are illustrative and must be replaced with verified values. It evaluates a selected loadout; it does not yet search every combination, calculate ranged or magic DPS, or model boss-specific mechanics.
