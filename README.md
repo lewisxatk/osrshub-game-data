@@ -32,6 +32,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_combat_profiles.py
+python scripts/audit_item_combat_profiles.py
 python scripts/build_item_requirements.py
 python scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
 python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength
@@ -57,6 +58,7 @@ python -m unittest discover -s tests -v
 ```bash
 python scripts/query_game_data.py --dataset weapons --search whip
 python scripts/query_game_data.py --dataset equipment-stats --id 4151
+python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
 python scripts/query_game_data.py --dataset quest-relationships --search dragon
 ```
 
@@ -131,3 +133,6 @@ python scripts/query_game_data.py --dataset equipment-stats --id 4151
 ```
 
 The pipeline writes `dist/item-combat-profiles.json` and `reports/item-combat-profile-summary.json`. Each profile joins source-backed item identity, equipment bonuses, weapon speed/type/stances, normalized skill requirements and provenance URLs where available. Missing fields remain `null`; absent requirement records are explicitly distinguished from an empty list. This is a joined factual data profile, not a DPS result: the profile does not infer missing unlocks or calculate boss damage.
+
+
+The joined profiles can be audited with `python scripts/audit_item_combat_profiles.py`. The audit flags malformed IDs, invalid attack speeds, duplicate skill requirements, missing source URLs and incomplete stat coverage. Warnings mean records need review; the audit never fills missing bonuses with zero and never treats absent requirements as proof of no requirements. Query the joined dataset with `--dataset item-combat-profiles`.

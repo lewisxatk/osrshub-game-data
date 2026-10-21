@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Joined item combat profile audit report",
+  "type": "object",
+  "required": [
+    "status",
+    "profile_count",
+    "error_count",
+    "warning_count",
+    "errors",
+    "warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required",
+        "failed"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "profile_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_equipment": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_weapon": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_requirements_record": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_positive_attack_speed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_all_numeric_bonuses": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_source_urls": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "partial_profiles": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "joined_fields_present": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "error_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warning_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

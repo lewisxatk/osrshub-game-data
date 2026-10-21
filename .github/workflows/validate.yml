@@ -79,6 +79,10 @@ jobs:
         run: python scripts/compare_weapon_baselines.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000 --style slash --output reports/weapon-baseline-comparison.json
       - name: Build joined item combat profiles
         run: python scripts/build_item_combat_profiles.py
+      - name: Audit joined item combat profile quality
+        run: python scripts/audit_item_combat_profiles.py
+      - name: Smoke-test joined combat profile query
+        run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness

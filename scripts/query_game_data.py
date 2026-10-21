@@ -5,7 +5,7 @@ import argparse,json
 from pathlib import Path
 from typing import Any
 ROOT=Path(__file__).resolve().parents[1]; DIST=ROOT/"dist"
-DATASETS={"items":"items.json","equipment-stats":"equipment-stats.json","weapons":"weapons.json","monsters":"monsters.json","monsters-combat":"monsters-combat.json","quests":"quests.json","quest-relationships":"quest-relationships.json","item-requirements":"item-requirements.json","item-relationships":"item-relationships.json"}
+DATASETS={"items":"items.json","equipment-stats":"equipment-stats.json","weapons":"weapons.json","monsters":"monsters.json","monsters-combat":"monsters-combat.json","quests":"quests.json","quest-relationships":"quest-relationships.json","item-requirements":"item-requirements.json","item-relationships":"item-relationships.json","item-combat-profiles":"item-combat-profiles.json"}
 def get_field(value:Any,path:str)->Any:
     current=value
     for part in path.split("."):

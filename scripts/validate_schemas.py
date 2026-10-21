@@ -28,6 +28,7 @@ REPORT_TARGETS = (
     ("combat-input-audit.json", "combat-input-audit.schema.json"),
     ("item-requirement-quality.json", "item-requirement-quality.schema.json"),
     ("equipment-recommendation-audit.json", "equipment-recommendation-audit.schema.json"),
+    ("item-combat-profile-audit.json", "item-combat-profile-audit.schema.json"),
 )
 
 def load_schema(path):
