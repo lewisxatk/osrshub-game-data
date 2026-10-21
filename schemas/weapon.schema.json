@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub normalized weapon record",
+  "type": "object",
+  "required": ["id", "name", "attack_speed", "stances", "sources"],
+  "properties": {
+    "id": {"type": ["integer", "null"], "minimum": 0},
+    "name": {"type": "string"},
+    "attack_speed": {"type": ["integer", "null"], "minimum": 0},
+    "weapon_type": {"type": ["string", "null"]},
+    "stances": {"type": "array", "items": {"type": "object"}},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "source_url": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
