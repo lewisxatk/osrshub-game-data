@@ -35,7 +35,11 @@ def normalize_requirements(items):
         if not isinstance(raw, dict) or not raw:
             continue
         normalized = []
-        for skill, level in sorted(raw.items(), key=lambda pair: str(pair[0]).casefold()):
+        normalized_pairs = sorted(
+            raw.items(),
+            key=lambda pair: " ".join(pair[0].split()).casefold() if isinstance(pair[0], str) else str(pair[0]).casefold(),
+        )
+        for skill, level in normalized_pairs:
             if not isinstance(skill, str) or not skill.strip():
                 warnings.append({"item_id": item_id, "reason": "invalid_skill_name"})
                 continue
