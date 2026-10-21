@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub explicit item relationships",
+  "type": "object",
+  "required": ["item_id", "item_name", "relationships", "sources"],
+  "properties": {
+    "item_id": {"type": "integer", "minimum": 0},
+    "item_name": {"type": "string"},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "dataset", "record_id"],
+        "properties": {
+          "type": {"enum": ["has_equipment_stats", "has_weapon_data"]},
+          "dataset": {"enum": ["equipment-stats.json", "weapons.json"]},
+          "record_id": {"type": "integer", "minimum": 0},
+          "slot": {"type": ["string", "null"]},
+          "weapon_type": {"type": ["string", "null"]},
+          "attack_speed": {"type": ["integer", "null"], "minimum": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
