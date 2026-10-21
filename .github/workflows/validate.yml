@@ -43,6 +43,9 @@ jobs:
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness
         run: python scripts/report_combat_readiness.py
+      - name: Summarize pipeline health
+        if: always()
+        run: python scripts/report_pipeline_health.py
       - name: Publish generated datasets and reports
         if: always()
         uses: actions/upload-artifact@v5
