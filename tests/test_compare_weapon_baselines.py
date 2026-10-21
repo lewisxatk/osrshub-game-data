@@ -30,6 +30,9 @@ class WeaponBaselineTests(unittest.TestCase):
         self.assertEqual(result["results"][0]["item_id"], 10)
         self.assertGreater(result["results"][0]["dps"], 0)
         self.assertIn("not modelled", " ".join(result["results"][0]["reasons"]))
+        self.assertEqual(result["results"][0]["baseline_rank"], 1)
+        self.assertGreater(result["results"][0]["dps_per_million_gp"], 0)
+        self.assertEqual(result["comparable_candidate_count"], 1)
 
     def test_known_skill_failure_is_not_ranked_as_comparable(self):
         result = compare_weapons(self.weapons, self.equipment, self.requirements, self.profile, self.costs, self.inputs, 10000, "slash")
@@ -48,6 +51,20 @@ class WeaponBaselineTests(unittest.TestCase):
         slow = next(row for row in result["results"] if row["item_id"] == 12)
         self.assertEqual(slow["status"], "unknown")
         self.assertTrue(slow["reasons"])
+
+    def test_fractional_equipment_bonus_is_not_silently_truncated(self):
+        equipment = [dict(row) for row in self.equipment]
+        equipment[0] = {**equipment[0], "bonuses": {"attack_slash": 80.5, "melee_strength": 70}}
+        result = compare_weapons(self.weapons, equipment, self.requirements, self.profile, self.costs, self.inputs, 10000, "slash")
+        row = next(item for item in result["results"] if item["item_id"] == 10)
+        self.assertEqual(row["status"], "unknown")
+        self.assertIn("Missing valid attack speed", " ".join(row["reasons"]))
+
+    def test_zero_cost_does_not_divide_by_zero(self):
+        costs = dict(self.costs, **{"10": 0})
+        result = compare_weapons(self.weapons, self.equipment, self.requirements, self.profile, costs, self.inputs, 10000, "slash")
+        row = next(item for item in result["results"] if item["item_id"] == 10)
+        self.assertIsNone(row["dps_per_million_gp"])
 
     def test_rejects_invalid_inputs(self):
         with self.assertRaises(ValueError):

@@ -18,7 +18,8 @@ REPORTS = ROOT / "reports"
 ATTACK_FIELDS = {"stab": "attack_stab", "slash": "attack_slash", "crush": "attack_crush"}
 
 def _number(value):
-    return value if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) else None
+    # Equipment bonuses are integer game stats; never silently truncate fractional input.
+    return value if isinstance(value, int) and not isinstance(value, bool) else None
 
 def compare_weapons(weapons, equipment, requirements, profile, costs, inputs, budget, attack_style):
     for name, value in (("weapons", weapons), ("equipment", equipment), ("requirements", requirements)):
@@ -127,6 +128,12 @@ def compare_weapons(weapons, equipment, requirements, profile, costs, inputs, bu
             "source_url": weapon.get("source_url") or gear.get("source_url"),
             "reasons": reasons,
         })
+    comparable = [row for row in results if row.get("status") == "baseline_comparable_with_unknown_restrictions"]
+    comparable.sort(key=lambda row: (-row["dps"], row["cost"], str(row.get("item_name", "")).casefold(), row["item_id"]))
+    for rank, row in enumerate(comparable, start=1):
+        row["baseline_rank"] = rank
+        row["dps_per_million_gp"] = round(row["dps"] * 1_000_000 / row["cost"], 8) if row["cost"] > 0 else None
+        row["cost_efficiency_note"] = "DPS per million GP is a rough comparison using caller-supplied cost; it excludes resale, GE tax, liquidity and special mechanics."
     results.sort(key=lambda row: (
         row.get("status") != "baseline_comparable_with_unknown_restrictions",
         -(row.get("dps") if isinstance(row.get("dps"), (int,float)) else -1),
@@ -138,6 +145,8 @@ def compare_weapons(weapons, equipment, requirements, profile, costs, inputs, bu
         "status": "baseline_comparison_only",
         "budget_gp": budget, "attack_style": attack_style,
         "combat_inputs": inputs, "candidate_count": len(results),
+        "comparable_candidate_count": len(comparable),
+        "ranking_method": "simplified baseline DPS descending; ties resolved by lower supplied cost then item name and ID",
         "results": results,
         "guardrails": [
             "DPS is a simplified baseline using caller-supplied effective levels and source-recorded attack speed/bonuses.",

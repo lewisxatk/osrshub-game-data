@@ -2,14 +2,109 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OSRS Hub baseline weapon comparison report",
   "type": "object",
-  "required": ["status", "budget_gp", "attack_style", "candidate_count", "results", "guardrails"],
+  "required": [
+    "status",
+    "budget_gp",
+    "attack_style",
+    "candidate_count",
+    "results",
+    "guardrails",
+    "comparable_candidate_count",
+    "ranking_method"
+  ],
   "properties": {
-    "status": {"const": "baseline_comparison_only"},
-    "budget_gp": {"type": "integer", "minimum": 0},
-    "attack_style": {"enum": ["stab", "slash", "crush"]},
-    "candidate_count": {"type": "integer", "minimum": 0},
-    "results": {"type": "array", "items": {"type": "object", "required": ["item_id", "item_name", "status", "reasons"], "properties": {"item_id": {"type": "integer"}, "item_name": {"type": "string"}, "status": {"enum": ["unknown", "excluded", "over_budget", "ineligible_by_known_skill_requirement", "baseline_comparable_with_unknown_restrictions"]}, "dps": {"type": "number"}, "cost": {"type": ["integer", "null"], "minimum": 0}, "reasons": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": true}},
-    "guardrails": {"type": "array", "items": {"type": "string"}}
+    "status": {
+      "const": "baseline_comparison_only"
+    },
+    "budget_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attack_style": {
+      "enum": [
+        "stab",
+        "slash",
+        "crush"
+      ]
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "item_name",
+          "status",
+          "reasons"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "integer"
+          },
+          "item_name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unknown",
+              "excluded",
+              "over_budget",
+              "ineligible_by_known_skill_requirement",
+              "baseline_comparable_with_unknown_restrictions"
+            ]
+          },
+          "dps": {
+            "type": "number"
+          },
+          "cost": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "baseline_rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "dps_per_million_gp": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "cost_efficiency_note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "comparable_candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ranking_method": {
+      "type": "string",
+      "minLength": 1
+    }
   },
   "additionalProperties": true
 }
