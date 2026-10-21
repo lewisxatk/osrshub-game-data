@@ -31,16 +31,22 @@ def field_summary(rows, fields):
         }
     return summary
 
+def validate_array(data):
+    if not isinstance(data, list):
+        raise ValueError("dataset must be a JSON array")
+    if any(not isinstance(row, dict) for row in data):
+        raise ValueError("dataset contains non-object records")
+    return data
+
 def load_array(path):
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise ValueError(f"Cannot read {path.relative_to(ROOT)}: {exc}") from exc
-    if not isinstance(data, list):
-        raise ValueError(f"{path.relative_to(ROOT)} must contain a JSON array")
-    if any(not isinstance(row, dict) for row in data):
-        raise ValueError(f"{path.relative_to(ROOT)} contains non-object records")
-    return data
+    try:
+        return validate_array(data)
+    except ValueError as exc:
+        raise ValueError(f"{path.relative_to(ROOT)}: {exc}") from exc
 
 def main():
     errors = []
