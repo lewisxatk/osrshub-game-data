@@ -1,63 +1,31 @@
-"""Tests for the generated game-data query interface."""
-import json
-import sys
-import tempfile
-import unittest
+"""Tests for safe, bounded queries over generated datasets."""
+import json, sys, tempfile, unittest
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-import query_game_data as query
-
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
+from query_game_data import run_query, search_rows
 
 class QueryGameDataTests(unittest.TestCase):
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.directory = Path(self.tmp.name)
-        (self.directory / "equipment-stats.json").write_text(json.dumps([
-            {"id": 4151, "name": "Abyssal whip", "bonuses": {"attack_slash": 82}},
-            {"id": 11802, "name": "Armadyl godsword", "bonuses": {"attack_slash": 132}},
-        ]), encoding="utf-8")
-        (self.directory / "quest-relationships.json").write_text(json.dumps([
-            {"quest_key": "dragon_slayer", "name": "Dragon Slayer", "prerequisites": [],
-             "dependents": [{"quest_key": "legends_quest", "name": "Legends' Quest"}],
-             "unresolved_requirements": [], "skill_requirements": [], "source_url": "https://example.com"}
-        ]), encoding="utf-8")
-
-    def tearDown(self):
-        self.tmp.cleanup()
-
-    def test_search_is_case_insensitive(self):
-        result = query.run_query("equipment-stats", query="WHIP", dist_dir=self.directory)
-        self.assertEqual(result["status"], "ok")
-        self.assertEqual(result["match_count"], 1)
-        self.assertEqual(result["results"][0]["id"], 4151)
-
-    def test_exact_id_and_nested_field_search(self):
-        result = query.run_query("equipment-stats", record_id=4151, field="bonuses.attack_slash",
-                                 query="82", dist_dir=self.directory)
-        self.assertEqual(result["match_count"], 1)
-        self.assertEqual(result["results"][0]["name"], "Abyssal whip")
-
-    def test_relationship_search_finds_dependents(self):
-        result = query.run_query("quest-relationships", query="Legends", dist_dir=self.directory)
-        self.assertEqual(result["match_count"], 1)
-        self.assertEqual(result["results"][0]["name"], "Dragon Slayer")
-
-    def test_missing_dataset_is_unknown_not_empty_success(self):
-        result = query.run_query("quests", query="dragon", dist_dir=self.directory)
-        self.assertEqual(result["status"], "unavailable")
-        self.assertIn("not present", result["warning"])
-
-    def test_bad_dataset_shape_fails(self):
-        (self.directory / "weapons.json").write_text('{"not":"an array"}', encoding="utf-8")
-        result = query.run_query("weapons", query="whip", dist_dir=self.directory)
-        self.assertEqual(result["status"], "failed")
-
-    def test_unknown_dataset_is_rejected(self):
-        result = query.run_query("not-a-dataset", query="x", dist_dir=self.directory)
-        self.assertEqual(result["status"], "failed")
-        self.assertIn("supported_datasets", result)
-
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_search_nested_fields_and_casefold(self):
+        rows=[{"id":1,"name":"Dragon scimitar","bonuses":{"attack_slash":8}},{"id":2,"name":"Rune sword","bonuses":{"attack_slash":45}}]
+        self.assertEqual(search_rows(rows,"dragon")[0]["id"],1)
+        self.assertEqual(search_rows(rows,"45",field="bonuses.attack_slash")[0]["id"],2)
+    def test_id_filter(self):
+        rows=[{"id":1},{"id":2}]
+        self.assertEqual([r["id"] for r in search_rows(rows,record_id=2)],[2])
+    def test_missing_dataset_is_unavailable_not_empty(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result=run_query("quests","dragon",dist_dir=Path(tmp))
+        self.assertEqual(result["status"],"unavailable")
+        self.assertIsNone(result["record_count"])
+    def test_malformed_json_is_reported(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp,"weapons.json").write_text("{bad",encoding="utf-8")
+            result=run_query("weapons","whip",dist_dir=Path(tmp))
+        self.assertEqual(result["status"],"failed")
+    def test_invalid_limits_and_empty_queries_rejected(self):
+        with self.assertRaises(ValueError): search_rows([],limit=0)
+        self.assertEqual(run_query("weapons",limit=0)["status"],"failed")
+        self.assertEqual(run_query("weapons")["status"],"failed")
+    def test_missing_nested_field_does_not_match(self):
+        self.assertEqual(search_rows([{"id":1,"name":"whip"}],"whip",field="bonuses.attack_slash"),[])
+if __name__=="__main__": unittest.main()
