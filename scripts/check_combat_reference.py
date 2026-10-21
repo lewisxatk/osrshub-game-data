@@ -40,7 +40,7 @@ def validate_fixture(fixture):
             errors.append(f"cases[{index}] expected must be a non-empty object")
         if not isinstance(source, dict) or not isinstance(source.get("url"), str) or not source.get("url").startswith("https://"):
             errors.append(f"cases[{index}] source.url must be an HTTPS URL")
-        if not isinstance(source, dict) or not isinstance(source.get("checked_on"), str) or not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", source.get("checked_on", "")):
+        if not isinstance(source, dict) or not isinstance(source.get("checked_on"), str) or not re.fullmatch("[0-9]{4}-[0-9]{2}-[0-9]{2}", source.get("checked_on", "")):
             errors.append(f"cases[{index}] source.checked_on must use YYYY-MM-DD")
         else:
             try:
