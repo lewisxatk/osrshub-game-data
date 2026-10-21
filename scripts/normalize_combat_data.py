@@ -51,7 +51,7 @@ def normalize_weapon(row):
     return {
         "id": row.get("id"),
         "name": row.get("name", ""),
-        "attack_speed": speed if isinstance(speed, int) and not isinstance(speed, bool) else None,
+        "attack_speed": speed if isinstance(speed, int) and not isinstance(speed, bool) and speed > 0 else None,
         "weapon_type": weapon.get("weapon_type"),
         "stances": normalized_stances,
         "sources": row.get("sources", []),
