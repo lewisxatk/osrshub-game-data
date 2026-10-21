@@ -1,65 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "OSRS Hub normalized item record",
+  "title": "OSRS Hub compact merged item record",
   "type": "object",
-  "required": [
-    "id",
-    "name",
-    "sources"
-  ],
+  "required": ["id", "name", "sources"],
   "properties": {
-    "id": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "members": {
-      "type": [
-        "boolean",
-        "null"
-      ]
-    },
-    "tradeable": {
-      "type": [
-        "boolean",
-        "null"
-      ]
-    },
-    "stackable": {
-      "type": [
-        "boolean",
-        "null"
-      ]
-    },
-    "equipable": {
-      "type": [
-        "boolean",
-        "null"
-      ]
-    },
-    "equipment": {
-      "type": [
-        "object",
-        "null"
-      ]
-    },
-    "weapon": {
-      "type": [
-        "object",
-        "null"
-      ]
-    },
-    "sources": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "source_records": {
-      "type": "object"
-    }
-  }
+    "id": {"type": "integer", "minimum": 0},
+    "name": {"type": "string"},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "members": {"type": ["boolean", "null"]},
+    "tradeable": {"type": ["boolean", "null"]},
+    "stackable": {"type": ["boolean", "null"]},
+    "equipable": {"type": ["boolean", "null"]},
+    "equipment": {"type": ["object", "null"]},
+    "weapon": {"type": ["object", "null"]}
+  },
+  "additionalProperties": true
 }
