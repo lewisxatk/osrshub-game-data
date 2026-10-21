@@ -64,6 +64,15 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(result["bonuses"]["attack_slash"], 82)
         self.assertEqual(result["slot"], "weapon")
         self.assertEqual(result["requirements"]["attack"], 70)
+        self.assertIsNone(normalize_combat_data.normalize_equipment({"id": 1, "equipment": []}))
+
+    def test_weapon_normalizer_rejects_non_integer_speed(self):
+        result = normalize_combat_data.normalize_weapon({
+            "id": 999, "name": "Test weapon", "sources": ["fixture"],
+            "weapon": {"attack_speed": "fast", "weapon_type": "test", "stances": []},
+        })
+        self.assertIsNone(result["attack_speed"])
+        self.assertEqual(result["stances"], [])
 
     def test_monster_combat_values_reject_nested_or_invalid_values(self):
         self.assertEqual(normalize_monster_combat.numeric_value("87"), 87)
