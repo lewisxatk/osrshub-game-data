@@ -21,6 +21,8 @@ jobs:
         run: python scripts/build_dataset.py
       - name: Validate generated datasets
         run: python scripts/validate_dataset.py
+      - name: Report field coverage
+        run: python scripts/report_coverage.py
       - name: Publish generated datasets and reports
         if: always()
         uses: actions/upload-artifact@v4
