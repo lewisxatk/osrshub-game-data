@@ -5,12 +5,12 @@ A standalone, reproducible data pipeline for structured Old School RuneScape (OS
 ## Goals
 
 - Import source snapshots with URL, retrieval time, and SHA-256 provenance.
-- Normalize item and monster records into predictable JSON files.
-- Preserve source records and report conflicting fields instead of silently discarding disagreements.
-- Validate IDs, required fields, key equipment examples, and generated JSON.
+- Merge item and monster records by numeric ID while retaining compact source attribution.
+- Report meaningful field disagreements separately from noisy timestamps and presentation-image fields.
+- Validate generated JSON, IDs, duplicate IDs, source attribution, expected item examples, and basic combat-field coverage.
 - Grow incrementally into equipment, weapon mechanics, NPCs, quests, spells, prayers, recipes, and verified combat rules.
 
-**Important:** imported community data is evidence, not a guarantee of correctness or completeness. Keep source provenance and validate game mechanics before using them for combat decisions. Live Grand Exchange prices are out of scope; OSRS Hub's existing market feed remains separate.
+Imported community data is evidence, not a guarantee of correctness or completeness. A passing structural validation does not prove game mechanics are accurate. Live Grand Exchange prices are out of scope; the existing OSRS Hub market feed remains separate.
 
 ## Requirements
 
@@ -27,40 +27,35 @@ From the repository root:
 python scripts/download_sources.py
 python scripts/build_dataset.py
 python scripts/validate_dataset.py
+python -m unittest discover -s tests -v
 ```
 
-On Windows, these commands work in Command Prompt or PowerShell.
+On Windows, run these commands in Command Prompt or PowerShell.
 
-Outputs:
+## Outputs
+
 - `sources/raw/`: downloaded upstream snapshots and `manifest.json`
-- `dist/items.json`: merged item records keyed by item ID
-- `dist/equipment.json`: equipment candidates with equipment metadata
-- `dist/monsters.json`: merged monster records
-- `dist/manifest.json`: generated counts and input hashes
-- `reports/source-conflicts.json`: source field disagreements
-- `reports/validation.json`: validation results
+- `dist/items.json`: compact merged item records
+- `dist/equipment.json`: equipment candidates with available equipment metadata
+- `dist/monsters.json`: compact merged monster records
+- `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
+- `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
+- `reports/validation.json`: structural checks and coverage counts
 
-Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild.
+Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
+
+## Conflict handling and provenance
+
+The first source listed for each category in `scripts/build_dataset.py` has precedence for conflicting field values. Each merged record lists its source names. Exact raw snapshots are kept in `sources/raw/`; the download manifest records source URLs, retrieval metadata, and SHA-256 hashes. Large raw source records are no longer duplicated inside each merged record, and long conflict values are truncated in the report.
+
+Timestamp and presentation-image differences are counted but omitted from the meaningful conflict list. Review meaningful conflicts before using disputed fields for game-mechanic calculations.
 
 ## Data sources
 
-The initial pipeline uses JSON snapshots published by:
 - OSRSBox database: https://github.com/osrsbox/osrsbox-db
 - RSPSApp community extension: https://github.com/RSPSApp/osrsreboxed-db
 
-Source URLs and SHA-256 hashes are recorded by the downloader. Upstream field shapes can change; inspect reports and validate outputs after every refresh.
-
-## Repository layout
-
-```
-.github/workflows/validate.yml
-schemas/
-scripts/
-sources/raw/
-dist/
-reports/
-tests/
-```
+Upstream field shapes can change; inspect reports and validate outputs after every refresh.
 
 ## Safety boundaries
 
@@ -68,11 +63,10 @@ tests/
 - It does not connect to Cloudflare, Workers, or D1.
 - It does not modify Discord integration.
 - It does not contain live GE price data.
-- A passing structural validation does not prove a game mechanic is accurate.
+- It does not claim that source coverage or combat formulas are complete.
 
 ## Next expansion
 
-1. Review source coverage and conflicts after the first download.
-2. Add explicit schemas for item, equipment, weapon, and monster fields.
-3. Add source adapters for quests, spells, prayers, recipes, NPCs, and drop tables.
-4. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
+1. Improve coverage checks for equipment and monster combat fields using measured baseline counts.
+2. Add source adapters and schemas for quests, spells, prayers, recipes, NPCs, and drop tables.
+3. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
