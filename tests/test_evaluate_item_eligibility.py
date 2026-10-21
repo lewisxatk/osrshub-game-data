@@ -56,6 +56,13 @@ class ItemEligibilityTests(unittest.TestCase):
         self.assertEqual(row["overall_status"], "unknown")
         self.assertTrue(result["profile_warnings"])
 
+    def test_skill_levels_above_99_and_duplicate_normalized_keys_warn(self):
+        result = eligibility.evaluate_items(self.items, self.requirements, {"skills": {"Attack": 101, " defence ": 50, "Defence": 60}})
+        self.assertTrue(any("1 to 99" in warning for warning in result["profile_warnings"]))
+        self.assertTrue(any("Duplicate skill key" in warning for warning in result["profile_warnings"]))
+        row = next(x for x in result["results"] if x["item_id"] == 10)
+        self.assertEqual(row["overall_status"], "unknown")
+
     def test_requirement_provenance_is_returned_for_auditing(self):
         result = eligibility.evaluate_items(self.items, self.requirements, self.profile)
         row = next(x for x in result["results"] if x["item_id"] == 10)

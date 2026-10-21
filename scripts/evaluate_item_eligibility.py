@@ -31,8 +31,11 @@ def normalize_skill_map(value):
         if not key:
             warnings.append("Ignored a blank skill name")
             continue
-        if isinstance(level, bool) or not isinstance(level, int) or level < 1:
-            warnings.append(f"Invalid level for skill {skill!r}")
+        if isinstance(level, bool) or not isinstance(level, int) or not 1 <= level <= 99:
+            warnings.append(f"Invalid level for skill {skill!r}; expected an integer from 1 to 99")
+            continue
+        if key in levels:
+            warnings.append(f"Duplicate skill key after case/space normalization: {skill!r}")
             continue
         levels[key] = level
     return levels, warnings
