@@ -17,7 +17,34 @@ DATASETS = {
 }
 
 def nonempty(value):
+    """Treat null, blank strings and empty containers as absent; preserve numeric zero."""
     return value is not None and value != "" and value != [] and value != {}
+
+def summarize_rows(rows, fields):
+    """Return deterministic field coverage counts for a list of record-like values."""
+    if not isinstance(rows, list):
+        raise ValueError("dataset must be a JSON array")
+    counts = Counter()
+    non_object_rows = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            non_object_rows += 1
+            continue
+        for field in fields:
+            if nonempty(row.get(field)):
+                counts[field] += 1
+    total = len(rows)
+    return {
+        "record_count": total,
+        "non_object_record_count": non_object_rows,
+        "fields": {
+            field: {
+                "records_with_value": counts[field],
+                "coverage_percent": round(counts[field] * 100 / total, 2) if total else 0.0,
+            }
+            for field in fields
+        },
+    }
 
 def main():
     reports = ROOT / "reports"
@@ -35,36 +62,14 @@ def main():
             continue
         try:
             rows = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            report["errors"].append(f"Cannot read {relative_path}: {exc}")
+            summary = summarize_rows(rows, fields)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            report["errors"].append(f"Cannot validate {relative_path}: {exc}")
             continue
-        if not isinstance(rows, list):
-            report["errors"].append(f"{relative_path} must be an array")
-            continue
-        field_counts = Counter()
-        invalid_rows = 0
-        for row in rows:
-            if not isinstance(row, dict):
-                invalid_rows += 1
-                continue
-            for field in fields:
-                if nonempty(row.get(field)):
-                    field_counts[field] += 1
-        total = len(rows)
-        report["datasets"][dataset] = {
-            "path": relative_path,
-            "record_count": total,
-            "non_object_record_count": invalid_rows,
-            "fields": {
-                field: {
-                    "records_with_value": field_counts[field],
-                    "coverage_percent": round(field_counts[field] * 100 / total, 2) if total else 0.0,
-                }
-                for field in fields
-            },
-        }
-        if invalid_rows:
-            report["errors"].append(f"{relative_path} contains {invalid_rows} non-object record(s)")
+        summary["path"] = relative_path
+        report["datasets"][dataset] = summary
+        if summary["non_object_record_count"]:
+            report["errors"].append(f"{relative_path} contains {summary['non_object_record_count']} non-object record(s)")
     report["status"] = "failed" if report["errors"] else "passed"
     (reports / "coverage.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
