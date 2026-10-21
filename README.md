@@ -31,6 +31,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/normalize_monster_combat.py
+python scripts/check_combat_reference.py
 python scripts/report_coverage.py
 python scripts/audit_normalized_data.py
 python scripts/validate_schemas.py
@@ -53,7 +54,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/source-conflict-priorities.json`: conflicts ranked by field and category, with capped examples for targeted human review
 - `reports/source-integrity.json`: downloaded snapshot SHA-256, byte-count, JSON-parse, and top-level-type checks against the retrieval manifest
 - `reports/field-provenance.json`: per-field source presence and bounded examples of upstream disagreements for item and monster fields
-- `reports/combat-reference-checks.json`: pass/fail results for the small, explicitly sourced combat regression fixture set
+- `reports/combat-reference-checks.json`: pass/fail results for the small, explicitly sourced combat regression fixture set; fixture URLs must use HTTPS and review dates must be real `YYYY-MM-DD` dates, while duplicate IDs in normalized datasets fail the check
 - `reports/pipeline-health.json`: consolidated statuses for validation, coverage, normalized-data audit, schema checks, combat readiness, and source-conflict review; incomplete inputs are marked explicitly
 - `reports/validation.json`: structural checks and coverage counts
 - `reports/coverage.json`: field-presence percentages across source and normalized item, equipment, weapon, and monster datasets
@@ -61,7 +62,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/combat-readiness.json`: core-field coverage and readiness indicators for equipment, weapons, and monster combat datasets; presence is not a claim of factual accuracy
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, slots, requirements, source URLs, weapon types, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
-- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields
+- `reports/monster-combat-coverage.json`: per-field coverage percentages, missing-field examples, selected source names, and bounded examples showing the exact raw source alias used for each normalized monster combat field
 - `reports/schema-validation.json`: JSON Schema validation results for compact items, monster combat, equipment stats, and weapon records
 
 To compare two prior/current generated JSON arrays by record ID, run `python scripts/report_dataset_changes.py old-items.json new-items.json --output reports/item-changes.json`. The report lists added/removed IDs and changed fields; it does not judge whether a changed value is more accurate.\n\nCombat reference cases live in `tests/fixtures/combat-reference.json`. Keep this set small and reviewable; every case must include a source URL and review date. Update expected values only after checking the cited reference and the upstream mapping.\n\nGenerated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
