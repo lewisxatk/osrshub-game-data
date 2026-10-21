@@ -1,0 +1,25 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"OSRS Hub item requirement quality report",
+  "type":"object",
+  "required":["status","item_count","requirement_record_count","items_with_requirement_record","items_without_requirement_record","item_requirement_record_coverage_percent","malformed_entries","errors","warnings","guardrails"],
+  "properties":{
+    "status":{"enum":["failed","incomplete","review_required"]},
+    "item_count":{"type":"integer","minimum":0},
+    "item_ids_unique":{"type":"boolean"},
+    "requirement_record_count":{"type":"integer","minimum":0},
+    "items_with_requirement_record":{"type":"integer","minimum":0},
+    "items_without_requirement_record":{"type":"integer","minimum":0},
+    "item_requirement_record_coverage_percent":{"type":"number","minimum":0,"maximum":100},
+    "requirement_entry_count":{"type":"integer","minimum":0},
+    "records_with_https_source_url":{"type":"integer","minimum":0},
+    "records_with_source_name":{"type":"integer","minimum":0},
+    "duplicate_requirement_item_ids":{"type":"array","items":{"type":"integer","minimum":0}},
+    "orphan_requirement_item_ids":{"type":"array","items":{"type":"integer","minimum":0}},
+    "malformed_entries":{"type":"array","items":{"type":"object"}},
+    "errors":{"type":"array","items":{"type":"string"}},
+    "warnings":{"type":"array","items":{"type":"string"}},
+    "guardrails":{"type":"array","items":{"type":"string","minLength":1}}
+  },
+  "additionalProperties":true
+}
