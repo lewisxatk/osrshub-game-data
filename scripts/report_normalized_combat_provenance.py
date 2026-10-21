@@ -70,7 +70,7 @@ def build_source_index(raw_files):
     errors = []
     for source_name, path in raw_files:
         if not path.exists():
-            errors.append(f"Missing raw source: {path.relative_to(ROOT)}")
+            errors.append(f"Missing raw source: {path}")
             continue
         for row in load_rows(path):
             rid = numeric_id(row)
