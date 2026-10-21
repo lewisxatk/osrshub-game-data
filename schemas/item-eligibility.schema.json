@@ -25,13 +25,15 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["item_id", "item_name", "skill_status", "overall_status", "matched_requirement_record_count", "reasons", "manual_exclusion"],
+        "required": ["item_id", "item_name", "skill_status", "overall_status", "matched_requirement_record_count", "requirement_sources", "requirement_source_urls", "reasons", "manual_exclusion"],
         "properties": {
           "item_id": {"type": "integer", "minimum": 0},
           "item_name": {"type": "string"},
           "skill_status": {"enum": ["unknown", "ineligible", "meets_known_skill_requirements"]},
           "overall_status": {"enum": ["excluded", "ineligible_by_known_skill_requirement", "unknown"]},
           "matched_requirement_record_count": {"type": "integer", "minimum": 0},
+          "requirement_sources": {"type": "array", "items": {"type": "string"}},
+          "requirement_source_urls": {"type": "array", "items": {"type": "string", "format": "uri", "pattern": "^https://"}},
           "reasons": {"type": "array", "items": {"type": "string"}},
           "manual_exclusion": {"type": "boolean"}
         },

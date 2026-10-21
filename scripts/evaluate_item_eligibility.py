@@ -48,11 +48,35 @@ def evaluate_items(items, requirements, profile):
 
     skill_levels, profile_warnings = normalize_skill_map(profile.get("skills"))
     excluded_ids = set()
-    for value in profile.get("excluded_item_ids", []):
+    raw_excluded_ids = profile.get("excluded_item_ids", [])
+    if not isinstance(raw_excluded_ids, list):
+        profile_warnings.append("excluded_item_ids must be an array; ignored")
+        raw_excluded_ids = []
+    for value in raw_excluded_ids:
         if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
             excluded_ids.add(value)
-    excluded_names = {canonical(value) for value in profile.get("excluded_item_names", []) if isinstance(value, str) and canonical(value)}
-    completed_quests = {canonical(value) for value in profile.get("completed_quests", []) if isinstance(value, str) and canonical(value)}
+        else:
+            profile_warnings.append(f"Ignored invalid excluded item ID: {value!r}")
+    raw_excluded_names = profile.get("excluded_item_names", [])
+    if not isinstance(raw_excluded_names, list):
+        profile_warnings.append("excluded_item_names must be an array; ignored")
+        raw_excluded_names = []
+    excluded_names = set()
+    for value in raw_excluded_names:
+        if isinstance(value, str) and canonical(value):
+            excluded_names.add(canonical(value))
+        else:
+            profile_warnings.append(f"Ignored invalid excluded item name: {value!r}")
+    raw_completed_quests = profile.get("completed_quests", [])
+    if not isinstance(raw_completed_quests, list):
+        profile_warnings.append("completed_quests must be an array; ignored")
+        raw_completed_quests = []
+    completed_quests = set()
+    for value in raw_completed_quests:
+        if isinstance(value, str) and canonical(value):
+            completed_quests.add(canonical(value))
+        else:
+            profile_warnings.append(f"Ignored invalid completed quest entry: {value!r}")
     requirement_by_id = {}
     for row in requirements:
         if not isinstance(row, dict):
@@ -125,6 +149,16 @@ def evaluate_items(items, requirements, profile):
             "skill_status": skill_status,
             "overall_status": overall,
             "matched_requirement_record_count": len(matched),
+            "requirement_sources": sorted({
+                source
+                for row in matched
+                for source in (row.get("sources", []) if isinstance(row.get("sources"), list) else [])
+                if isinstance(source, str) and source.strip()
+            }, key=str.casefold),
+            "requirement_source_urls": sorted({
+                row["source_url"] for row in matched
+                if isinstance(row.get("source_url"), str) and row["source_url"].startswith("https://")
+            }),
             "reasons": reasons,
             "manual_exclusion": item_id in excluded_ids or canonical(name) in excluded_names,
         })
