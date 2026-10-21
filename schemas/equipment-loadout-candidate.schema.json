@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub equipment loadout candidate",
+  "type": "object",
+  "required": ["status","budget_gp","total_cost_gp","objective_total","selected_items","guardrails"],
+  "properties": {
+    "status": {"enum":["stat_loadout_candidate","search_truncated"]},
+    "budget_gp": {"type":"integer","minimum":0},
+    "total_cost_gp": {"type":"integer","minimum":0},
+    "objective_total": {"type":"number"},
+    "selected_slot_count": {"type":"integer","minimum":0},
+    "selected_items": {"type":"array","items":{"type":"object","required":["item_id","item_name","slot","cost","objective_value","eligibility_status"],"properties":{"item_id":{"type":"integer"},"item_name":{"type":"string"},"slot":{"type":"string"},"cost":{"type":"integer","minimum":0},"objective_value":{"type":"number"},"eligibility_status":{"const":"candidate_with_unknown_restrictions"}},"additionalProperties":true}},
+    "guardrails":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}
