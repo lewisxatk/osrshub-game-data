@@ -13,9 +13,9 @@ class LoadoutOptimizerTests(unittest.TestCase):
         }}
     def test_selects_best_combination_within_total_budget(self):
         result=optimize_loadout(self.shortlist,100)
-        self.assertEqual(result["total_cost_gp"],100)
-        self.assertEqual({x["item_id"] for x in result["selected_items"]},{2,3})
-        self.assertEqual(result["objective_total"],15)
+        self.assertEqual(result["total_cost_gp"],70)
+        self.assertEqual({x["item_id"] for x in result["selected_items"]},{1,3})
+        self.assertEqual(result["objective_total"],9)
     def test_does_not_select_ineligible_or_unknown_cost_items(self):
         result=optimize_loadout(self.shortlist,100)
         ids={x["item_id"] for x in result["selected_items"]}

@@ -17,8 +17,13 @@ def build_report(quests,relationships,import_report,relationship_report):
             errors.append(f"Invalid quest record at index {i}"); continue
         name=" ".join(row["name"].casefold().split())
         if name in names: duplicates+=1
-        names.add(name); source+=bool(row.get("source_url")); prereqs+=bool(row.get("requirements")); skills+=bool(row.get("skill_requirements")); rewards+=bool(row.get("rewards"))
+        names.add(name)
+        source+=bool(row.get("source_url"))
+        prereqs+=bool(row.get("requirements"))
+        skills+=bool(row.get("skill_requirements"))
+        rewards+=bool(row.get("rewards"))
     total=len(quests)
+    def percent(count): return round(100.0*count/total,2) if total else 0.0
     if not total: warnings.append("No quest fact records imported; title catalogue is not a quest-fact database")
     if total and source<total: warnings.append(f"{total-source} quests lack a source URL")
     if total and prereqs<total: warnings.append(f"{total-prereqs} quests have no recorded quest prerequisites; verify whether truly none or unknown")
@@ -28,8 +33,18 @@ def build_report(quests,relationships,import_report,relationship_report):
     if isinstance(unresolved,int) and unresolved: warnings.append(f"{unresolved} quest prerequisite references remain unresolved")
     if duplicates: warnings.append(f"{duplicates} duplicate normalized quest names")
     if import_report.get("status")=="missing_source": warnings.append("Quest source adapter has no supplied fact snapshot")
-    status="failed" if errors or relationship_report.get("status")=="failed" else "incomplete" if warnings else "review_required"
-    return {"generated_at":datetime.now(timezone.utc).isoformat(),"status":status,"quest_count":total,"quests_with_source_url":source,"quests_with_requirements":prereqs,"quests_with_skill_requirements":skills,"quests_with_rewards":rewards,"duplicate_name_count":duplicates,"relationship_count":len(relationships),"unresolved_requirement_count":unresolved,"warnings":warnings,"errors":errors,"import_status":import_report.get("status"),"relationship_status":relationship_report.get("status"),"interpretation":"A structurally complete record is not automatically verified. Missing values are unknown until source review establishes otherwise."}
+    if relationship_report.get("status")=="failed": errors.append("Quest relationship graph reported a failure")
+    status="failed" if errors else "incomplete" if warnings else "review_required"
+    return {
+      "generated_at":datetime.now(timezone.utc).isoformat(),"status":status,"quest_count":total,
+      "quests_with_source_url":source,"quests_with_requirements":prereqs,"quests_with_skill_requirements":skills,"quests_with_rewards":rewards,
+      "source_url_coverage_percent":percent(source),"prerequisite_coverage_percent":percent(prereqs),
+      "skill_requirement_coverage_percent":percent(skills),"reward_coverage_percent":percent(rewards),
+      "duplicate_name_count":duplicates,"relationship_count":len(relationships),"unresolved_requirement_count":unresolved,
+      "account_restriction_safe_to_assume_unlisted_quests_complete":False,
+      "warnings":warnings,"errors":errors,"import_status":import_report.get("status"),"relationship_status":relationship_report.get("status"),
+      "interpretation":"Coverage measures field presence only. Empty fields are unknown until source review establishes that no requirement or reward applies."
+    }
 def main():
     def load(path,default):
         try:return json.loads(path.read_text(encoding="utf-8"))
