@@ -19,6 +19,10 @@ jobs:
         run: python -m compileall -q scripts tests
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
+      - name: Smoke-test query interface
+        run: python scripts/query_game_data.py --dataset weapons --search whip
+      - name: Smoke-test scoped combat arithmetic
+        run: python scripts/combat_math.py --input examples/combat-baseline-input.json
       - name: Download source snapshots
         run: python scripts/download_sources.py
       - name: Download OSRS Wiki quest title catalogue

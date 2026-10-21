@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Build an explicit quest prerequisite graph and report unresolved references."""
 from __future__ import annotations
-
 import json
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -11,10 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 REPORTS = ROOT / "reports"
 
-
 def canonical(value):
     return " ".join(str(value).casefold().split())
-
 
 def parse_requirement(value):
     """Return normalized quest name and required completion stage."""
@@ -26,6 +23,47 @@ def parse_requirement(value):
         return (canonical(name), "started") if name else (None, None)
     return canonical(value), "completed"
 
+def find_cycles(graph):
+    """Iterative DFS cycle finder to avoid recursion limits on long dependency chains."""
+    state = {}
+    cycles = set()
+    for start in sorted(graph):
+        if state.get(start, 0):
+            continue
+        path = []
+        position = {}
+        stack = [(start, iter(x["quest_key"] for x in graph[start]["prerequisites"]))]
+        state[start] = 1
+        position[start] = 0
+        path.append(start)
+        while stack:
+            node, edges = stack[-1]
+            try:
+                child = next(edges)
+            except StopIteration:
+                stack.pop()
+                state[node] = 2
+                position.pop(node, None)
+                if path and path[-1] == node:
+                    path.pop()
+                continue
+            if child not in graph:
+                continue
+            child_state = state.get(child, 0)
+            if child_state == 0:
+                state[child] = 1
+                position[child] = len(path)
+                path.append(child)
+                stack.append((child, iter(x["quest_key"] for x in graph[child]["prerequisites"])))
+            elif child_state == 1:
+                cycle = tuple(path[position[child]:] + [child])
+                # Rotate a cycle to a stable representation without losing its direction.
+                body = cycle[:-1]
+                if body:
+                    rotations = [body[i:] + body[:i] for i in range(len(body))]
+                    normalized = min(rotations)
+                    cycles.add(tuple(normalized + (normalized[0],)))
+    return sorted(cycles)
 
 def build_graph(quests):
     by_key = {}
@@ -48,11 +86,13 @@ def build_graph(quests):
     unresolved = []
     for key, quest in by_key.items():
         raw_requirements = quest.get("requirements", [])
-        if not isinstance(raw_requirements, list):
-            unresolved.append({"quest_key": key, "requirement": repr(raw_requirements), "reason": "malformed_requirement_list"})
-            raw_requirements = []
         prereq_keys = {}
         unresolved_names = []
+        if not isinstance(raw_requirements, list):
+            unresolved_item = repr(raw_requirements)
+            unresolved_names.append(unresolved_item)
+            unresolved.append({"quest_key": key, "requirement": unresolved_item, "reason": "malformed_requirement_list"})
+            raw_requirements = []
         for requirement in raw_requirements:
             lookup_name, completion_state = parse_requirement(requirement)
             if lookup_name is None:
@@ -75,11 +115,10 @@ def build_graph(quests):
                 unresolved_names.append(requirement)
                 unresolved.append({"quest_key": key, "requirement": requirement, "reason": "not_found"})
         graph[key] = {
-            "quest_key": key,
-            "name": quest["name"],
+            "quest_key": key, "name": quest["name"],
             "prerequisites": [
-                {"quest_key": prereq, "name": by_key[prereq]["name"], "completion_state": prereq_state}
-                for prereq, prereq_state in sorted(prereq_keys.items())
+                {"quest_key": prereq, "name": by_key[prereq]["name"], "completion_state": stage}
+                for prereq, stage in sorted(prereq_keys.items())
             ],
             "dependents": [],
             "unresolved_requirements": sorted(set(unresolved_names), key=str.casefold),
@@ -91,24 +130,7 @@ def build_graph(quests):
             {"quest_key": child, "name": by_key[child]["name"]}
             for child in sorted(dependents.get(key, set()))
         ]
-
-    state = {}
-    stack = []
-    cycles = set()
-    def visit(key):
-        state[key] = 1
-        stack.append(key)
-        for prerequisite in (x["quest_key"] for x in graph[key]["prerequisites"]):
-            if state.get(prerequisite, 0) == 0:
-                visit(prerequisite)
-            elif state.get(prerequisite) == 1:
-                cycles.add(tuple(stack[stack.index(prerequisite):] + [prerequisite]))
-        stack.pop()
-        state[key] = 2
-    for key in sorted(graph):
-        if state.get(key, 0) == 0:
-            visit(key)
-
+    cycles = find_cycles(graph)
     duplicate_names = [
         {"name": by_key[keys[0]]["name"], "quest_keys": sorted(keys)}
         for keys in by_name.values() if len(keys) > 1
@@ -125,11 +147,10 @@ def build_graph(quests):
         "unresolved_examples_truncated": len(unresolved) > 200,
         "duplicate_name_groups": duplicate_names,
         "cycle_count": len(cycles),
-        "cycles": [list(cycle) for cycle in sorted(cycles)[:50]],
+        "cycles": [list(cycle) for cycle in cycles[:50]],
         "note": "Relationships are matched by normalized quest name only. Unresolved and ambiguous references are retained as warnings; the graph is not proof of factual completeness.",
     }
     return records, report
-
 
 def main():
     source = DIST / "quests.json"
@@ -139,14 +160,12 @@ def main():
             raise ValueError("dist/quests.json must be a JSON array")
         records, report = build_graph(quests)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
-        report = {
-            "generated_at": datetime.now(timezone.utc).isoformat(), "status": "failed",
+        report = {"generated_at": datetime.now(timezone.utc).isoformat(), "status": "failed",
             "quest_count": 0, "quests_with_prerequisites": 0, "resolved_prerequisite_edges": 0,
             "unresolved_requirement_count": 0, "unresolved_requirements": [],
             "unresolved_examples_truncated": False, "duplicate_name_groups": [],
             "cycle_count": 0, "cycles": [], "errors": [str(exc)],
-            "note": "Quest relationship graph could not be built.",
-        }
+            "note": "Quest relationship graph could not be built."}
         records = []
     DIST.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
@@ -154,7 +173,6 @@ def main():
     (REPORTS / "quest-relationship-coverage.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 1 if report["status"] == "failed" else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
