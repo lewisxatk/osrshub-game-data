@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub quest relationship record",
+  "type": "object",
+  "required": ["quest_key", "name", "prerequisites", "dependents", "unresolved_requirements", "skill_requirements", "source_url"],
+  "properties": {
+    "quest_key": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "prerequisites": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "dependents": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "unresolved_requirements": {"type": "array", "items": {"type": "string"}},
+    "skill_requirements": {"type": "array", "items": {"type": "object", "required": ["skill", "level"], "properties": {"skill": {"type": "string", "minLength": 1}, "level": {"type": "integer", "minimum": 0}}, "additionalProperties": false}},
+    "source_url": {"type": ["string", "null"], "pattern": "^https://"}
+  },
+  "$defs": {
+    "edge": {"type": "object", "required": ["quest_key", "name"], "properties": {"quest_key": {"type": "string", "minLength": 1}, "name": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}
