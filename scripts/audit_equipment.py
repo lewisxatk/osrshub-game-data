@@ -47,8 +47,13 @@ def main():
     examples = {
         "equipment_missing_bonus_object": [],
         "equipment_bonus_object_missing_fields": [],
+        "equipment_missing_slot": [],
+        "equipment_missing_requirements": [],
+        "equipment_missing_source_url": [],
         "weapon_missing_metadata": [],
         "weapon_missing_attack_speed": [],
+        "weapon_missing_type": [],
+        "weapon_missing_source_url": [],
     }
     equipment_bonus_fields = Counter()
     weapon_types = Counter()
@@ -64,6 +69,18 @@ def main():
             if len(examples["equipment_missing_bonus_object"]) < MAX_EXAMPLES:
                 examples["equipment_missing_bonus_object"].append(sample(row, "No non-empty equipment bonus object"))
             continue
+        if not nonempty(bonus.get("slot")):
+            counts["equipment_missing_slot"] += 1
+            if len(examples["equipment_missing_slot"]) < MAX_EXAMPLES:
+                examples["equipment_missing_slot"].append(sample(row, "Equipment record has no slot"))
+        if not isinstance(bonus.get("requirements"), dict) or not bonus.get("requirements"):
+            counts["equipment_missing_requirements"] += 1
+            if len(examples["equipment_missing_requirements"]) < MAX_EXAMPLES:
+                examples["equipment_missing_requirements"].append(sample(row, "Equipment record has no requirement object"))
+        if not nonempty(row.get("wiki_url")):
+            counts["equipment_missing_source_url"] += 1
+            if len(examples["equipment_missing_source_url"]) < MAX_EXAMPLES:
+                examples["equipment_missing_source_url"].append(sample(row, "No Wiki/source URL on item record"))
         missing_fields = [field for field in BONUS_FIELDS if field not in bonus or bonus[field] is None]
         for field in BONUS_FIELDS:
             if field in bonus and bonus[field] is not None:
@@ -94,6 +111,14 @@ def main():
             counts["weapon_missing_attack_speed"] += 1
             if len(examples["weapon_missing_attack_speed"]) < MAX_EXAMPLES:
                 examples["weapon_missing_attack_speed"].append(sample(row, "Weapon object has no attack_speed"))
+        if not nonempty(weapon.get("weapon_type")):
+            counts["weapon_missing_type"] += 1
+            if len(examples["weapon_missing_type"]) < MAX_EXAMPLES:
+                examples["weapon_missing_type"].append(sample(row, "Weapon object has no weapon_type"))
+        if not nonempty(row.get("wiki_url")):
+            counts["weapon_missing_source_url"] += 1
+            if len(examples["weapon_missing_source_url"]) < MAX_EXAMPLES:
+                examples["weapon_missing_source_url"].append(sample(row, "No Wiki/source URL on item record"))
         if nonempty(weapon.get("weapon_type")):
             weapon_types[str(weapon["weapon_type"])] += 1
         stances = weapon.get("stances")
@@ -122,7 +147,8 @@ def main():
         "errors": errors,
         "next_actions": [
             "Review missing equipment bonus objects against an authoritative source before filling values.",
-            "Prioritize weapon records missing attack speed or stances for source mapping.",
+            "Prioritize weapon records missing attack speed, type, or stances for source mapping.",
+            "Review missing equipment slots, requirements, and source URLs before using records in an account coach.",
             "Keep unknown values explicitly unknown; do not infer combat stats from item names.",
         ],
     }
