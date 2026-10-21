@@ -15,6 +15,8 @@ REPORTS = ROOT / "reports"
 TARGETS = (
     ("items.json", "item.schema.json"),
     ("monsters-combat.json", "monster-combat.schema.json"),
+    ("equipment-stats.json", "equipment-stats.schema.json"),
+    ("weapons.json", "weapon.schema.json"),
 )
 
 
