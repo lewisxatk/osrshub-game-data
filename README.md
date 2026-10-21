@@ -43,6 +43,7 @@ python scripts/build_quest_relationships.py
 python scripts/report_quest_readiness.py
 python scripts/report_normalized_combat_provenance.py
 python scripts/check_combat_reference.py
+python scripts/audit_combat_inputs.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000
 python scripts/report_coverage.py
 python scripts/audit_normalized_data.py
 python scripts/validate_schemas.py
@@ -69,6 +70,14 @@ python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json
 Provide a JSON object mapping item IDs to GP costs with `--costs`. The checked-in cost file is illustrative only, not live or authoritative pricing. Supported objectives include attack bonuses, melee/ranged strength, magic damage, defensive bonuses and prayer. The tool ranks items within individual equipment slots, filters known skill failures, honours manual exclusions and shows unknown requirements.
 
 **This is a candidate shortlist, not a complete gear optimiser.** The follow-on loadout search chooses one candidate per slot under a total budget by maximising the sum of the selected stat. It is still not a DPS optimiser: candidates may have unknown quest/unlock restrictions, and a higher summed stat does not necessarily mean higher DPS.\n\n## Baseline weapon comparison\n\nThe weapon comparison combines the normalized weapon-speed and equipment-bonus records with the scoped formula primitives. Supply effective attack/strength/defence inputs and a GP cost per item. It ranks only weapons whose known skill requirements are met, flags unknown restrictions, and reports the calculation inputs. It is **not** a boss-specific calculator and does not account for special attacks, prayers, potions, target-specific mechanics or unverified unlocks.
+
+## Combat input audit
+
+```bash
+python scripts/audit_combat_inputs.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000
+```
+
+This checks profile skill ranges, exclusions, cost-map shape, required effective combat inputs and provenance warnings before a baseline comparison. It validates structure and plausible ranges only; it cannot establish that the upstream game facts or effective-level calculations are correct. Warnings about missing source URLs or dates are retained in the JSON report rather than silently treated as verified.
 
 ## Scoped combat arithmetic
 

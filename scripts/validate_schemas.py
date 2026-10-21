@@ -24,6 +24,7 @@ REPORT_TARGETS = (
     ("equipment-shortlist.json", "equipment-shortlist.schema.json"),
     ("weapon-baseline-comparison.json", "weapon-baseline-comparison.schema.json"),
     ("equipment-loadout-candidate.json", "equipment-loadout-candidate.schema.json"),
+    ("combat-input-audit.json", "combat-input-audit.schema.json"),
 )
 
 def load_schema(path):
