@@ -25,6 +25,13 @@ class PipelineHealthTests(unittest.TestCase):
         self.assertEqual(result["status"], "incomplete")
         self.assertEqual(result["missing_reports"], ["coverage"])
 
+    def test_quest_catalog_status_is_included_in_rollup(self):
+        result = health.summarize_reports({
+            "quest_catalog": ({"status": "passed", "record_count": 150}, None),
+        })
+        self.assertEqual(result["status"], "passed")
+        self.assertEqual(result["checks"]["quest_catalog"]["status"], "passed")
+
     def test_failed_report_takes_precedence_over_missing(self):
         result = health.summarize_reports({
             "validation": ({"status": "failed"}, None),

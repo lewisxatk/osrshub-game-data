@@ -22,6 +22,7 @@ INPUTS = {
     "item_requirements": "item-requirements-coverage.json",
     "combat_categories": "combat-category-coverage.json",
     "combat_reference_checks": "combat-reference-checks.json",
+    "quest_catalog": "quest-catalog-coverage.json",
 }
 
 
