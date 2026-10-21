@@ -93,7 +93,9 @@ jobs:
         run: python scripts/audit_item_combat_profiles.py
       - name: Smoke-test joined combat profile query
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
-      - name: Audit cross-dataset IDs and relationships\n        run: python scripts/audit_database_integrity.py\n      - name: Build database coverage scorecard
+      - name: Audit cross-dataset IDs and relationships
+        run: python scripts/audit_database_integrity.py
+      - name: Build database coverage scorecard
         run: python scripts/report_database_scorecard.py
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
