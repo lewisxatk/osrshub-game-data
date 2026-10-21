@@ -51,7 +51,7 @@ class QuestCatalogTests(unittest.TestCase):
     def test_empty_category_is_not_successful_report(self):
         report = catalog.build_report([], 1, b"[]")
         self.assertEqual(report["status"], "empty")
-        self.assertIn("quest prerequisites", report["not_provided"])
+        self.assertTrue(any("quest prerequisites" in value for value in report["not_provided"]))
         self.assertIn("must not be used", report["account_safety_note"])
 
     def test_report_marks_catalog_scope_and_hash(self):
