@@ -79,9 +79,16 @@ def audit_datasets(datasets):
     missing_profiles = sorted(item_ids - profile_ids)
     if missing_profiles:
         warnings.append({"dataset":"item-combat-profiles.json","issue":"items_without_profile","count":len(missing_profiles),"sample_ids":missing_profiles[:20]})
-    missing_relationships = sorted(item_ids - relationship_item_ids)
+    # Relationship rows are intentionally emitted only for items with equipment/weapon
+    # records. Restrict the gap check to items marked player-equipable in the source data.
+    equipable_ids = {
+        row["id"] for row in datasets["items.json"]
+        if isinstance(row.get("id"), int) and not isinstance(row.get("id"), bool)
+        and (row.get("equipable_by_player") is True or row.get("equipable_weapon") is True)
+    }
+    missing_relationships = sorted(equipable_ids - relationship_item_ids)
     if missing_relationships:
-        warnings.append({"dataset":"item-relationships.json","issue":"items_without_relationship_record","count":len(missing_relationships),"sample_ids":missing_relationships[:20]})
+        warnings.append({"dataset":"item-relationships.json","issue":"equipable_items_without_relationship_record","count":len(missing_relationships),"sample_ids":missing_relationships[:20]})
     for index, row in enumerate(datasets["item-combat-profiles.json"]):
         iid = row.get("id")
         for flag, target, field in (

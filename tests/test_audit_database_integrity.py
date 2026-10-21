@@ -6,7 +6,7 @@ from audit_database_integrity import audit_datasets
 
 def fixture():
     return {
-      "items.json":[{"id":1,"name":"Test"},{"id":2,"name":"Missing profile"}],
+      "items.json":[{"id":1,"name":"Test","equipable_by_player":True},{"id":2,"name":"Ordinary item","equipable_by_player":False}],
       "equipment-stats.json":[{"id":1,"name":"Test","slot":"weapon"}],
       "weapons.json":[{"id":1,"name":"Test","attack_speed":4}],
       "item-requirements.json":[{"item_id":1,"requirements":[]}],

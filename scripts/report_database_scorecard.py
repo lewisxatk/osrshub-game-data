@@ -20,10 +20,10 @@ SPECS = {
     "items": ("items.json", ("id", "name", "members", "tradeable", "stackable")),
     "equipment": ("equipment-stats.json", ("id", "name", "slot", "bonuses", "requirements", "source_url")),
     "weapons": ("weapons.json", ("id", "name", "attack_speed", "weapon_type", "stances", "source_url")),
-    "monsters_combat": ("monsters-combat.json", ("id", "name", "combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "source_url")),
-    "item_requirements": ("item-requirements.json", ("id", "name", "requirements", "source_urls")),
+    "monsters_combat": ("monsters-combat.json", ("id", "name", "combat_level", "hitpoints", "attack_level", "strength_level", "defence_level", "sources")),
+    "item_requirements": ("item-requirements.json", ("item_id", "item_name", "requirements", "source_url", "sources")),
     "quests": ("quests.json", ("id", "name", "source_urls")),
-    "quest_relationships": ("quest-relationships.json", ("quest_id", "prerequisite_quest_ids", "source_urls")),
+    "quest_relationships": ("quest-relationships.json", ("quest_id", "prerequisite_quest_ids", "sources")),
 }
 PROFILE_FIELDS = ("equipment_record_present", "weapon_record_present", "skill_requirement_record_present", "attack_speed", "source_urls")
 
@@ -73,6 +73,27 @@ def build_scorecard(loader=load_array):
             bool(row.get("weapon_record_present")) and present(row.get("attack_speed")) for row in profiles
         ) / len(profiles), 2) if profiles else 0.0
         datasets["item_combat_profiles"] = summary
+    except ValueError as exc:
+        errors.append(str(exc))
+    # Requirement records are a subset by design; expose applicability against the
+    # known equipment universe rather than confusing that subset's internal coverage
+    # with the share of equipment that has a normalized requirement record.
+    try:
+        equipment = loader("equipment-stats.json")
+        requirement_rows = loader("item-requirements.json")
+        requirement_ids = {row.get("item_id") for row in requirement_rows}
+        matched = sum(1 for row in equipment if row.get("id") in requirement_ids)
+        total_equipment = len(equipment)
+        datasets["requirement_applicability"] = {
+            "path": "dist/equipment-stats.json + dist/item-requirements.json",
+            "record_count": total_equipment, "field_count": 1,
+            "field_presence_opportunities": total_equipment, "field_presence_count": matched,
+            "field_coverage_percent": round(100 * matched / total_equipment, 2) if total_equipment else 0.0,
+            "fields": {"equipment_item_has_requirement_record": {
+                "present_records": matched, "missing_records": total_equipment - matched,
+                "coverage_percent": round(100 * matched / total_equipment, 2) if total_equipment else 0.0
+            }}
+        }
     except ValueError as exc:
         errors.append(str(exc))
     # Give each configured dataset equal weight, including empty datasets. This makes

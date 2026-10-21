@@ -36,6 +36,7 @@ class DatabaseScorecardTests(unittest.TestCase):
         self.assertIn("not overall OSRS database completeness", report["coverage_index_definition"])
         self.assertEqual(report["status"], "passed")
         self.assertEqual(report["datasets"]["item_combat_profiles"]["equipment_link_and_source_percent"], 100.0)
+        self.assertIn("requirement_applicability", report["datasets"])
 
 if __name__ == "__main__":
     unittest.main()
