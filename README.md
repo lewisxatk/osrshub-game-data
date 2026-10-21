@@ -27,6 +27,8 @@ From the repository root:
 python scripts/download_sources.py
 python scripts/build_dataset.py
 python scripts/validate_dataset.py
+python scripts/report_coverage.py
+python scripts/audit_equipment.py
 python -m unittest discover -s tests -v
 ```
 
@@ -41,6 +43,8 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
 - `reports/validation.json`: structural checks and coverage counts
+- `reports/coverage.json`: field-presence percentages across items, equipment, and monsters
+- `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, weapon metadata, attack speeds, and stances
 
 Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
 
@@ -67,6 +71,6 @@ Upstream field shapes can change; inspect reports and validate outputs after eve
 
 ## Next expansion
 
-1. Improve coverage checks for equipment and monster combat fields using measured baseline counts.
+1. Use `coverage.json` and `equipment-audit.json` to prioritize missing equipment bonuses, weapon attack speeds, and stances.
 2. Add source adapters and schemas for quests, spells, prayers, recipes, NPCs, and drop tables.
 3. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
