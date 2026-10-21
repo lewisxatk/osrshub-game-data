@@ -54,7 +54,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 ### Stage 4 — Build the OSRS encyclopaedia
 - [x] Add a schema-backed quest import scaffold with requirement/reward fields, skill-level normalization, source hash reporting, and tests; source snapshot and factual coverage still need to be supplied/verified.
 - [x] Build schema-validated quest prerequisite/reverse-dependent links, with unresolved/ambiguous requirement reporting and cycle detection; actual coverage depends on a real quest source snapshot.
-- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained upstream source adapter.\n- [x] Add a conservative quest-readiness report measuring source, prerequisite, skill, and reward coverage; keep empty/incomplete datasets explicitly unsafe for assuming account unlocks.
+- [x] Quests: maintained OSRS Wiki category catalogue with page IDs, URLs, pagination, hash reporting, and tests (catalogue only).\n- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained fact-extraction adapter.\n- [x] Add a conservative quest-readiness report measuring source, prerequisite, skill, and reward coverage; keep empty/incomplete datasets explicitly unsafe for assuming account unlocks.
 - [ ] NPCs and monsters: names, IDs, locations, stats, and variants.
 - [ ] Drop tables: item IDs, quantities, rates, and source references, preserving unknown rates.
 - [ ] Skills and activities: requirements, methods, rewards, and dependencies.
@@ -84,7 +84,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Review generated field-provenance and combat-reference reports.
+1. Review generated field-provenance and combat-reference reports.\n2. Extract quest prerequisites, skill levels, and rewards from individual Wiki pages with explicit per-field provenance; the current title catalogue is deliberately not treated as quest facts.
 2. Verify each regression fixture against its cited reference and source mapping.
 3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
 4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.

@@ -35,7 +35,7 @@ python scripts/build_item_requirements.py
 python scripts/report_combat_categories.py
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
-python scripts/import_quests.py
+python scripts/download_quest_catalog.py\npython scripts/import_quests.py
 python scripts/build_quest_relationships.py
 python scripts/report_normalized_combat_provenance.py
 python scripts/check_combat_reference.py
@@ -57,6 +57,10 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/monsters-combat.json`: normalized monster combat fields where available, with unknown values left null
 - `dist/item-requirements.json`: item-ID keyed skill requirements normalized from source equipment metadata, preserving source names and URLs
 - `dist/item-relationships.json`: explicit links from item IDs to available equipment-stat and weapon records, without guessing missing links
+
+- `sources/raw/quest-catalog.json`: OSRS Wiki quest-category title catalogue with page IDs, canonical page URLs, and a retrieval hash; title catalogue only, not prerequisites or account unlock facts
+- `reports/quest-catalog-coverage.json`: catalogue count, pagination count, hash, and explicit limits on what the catalogue proves
+
 - `dist/quests.json`: normalized quest records from an explicitly supplied `sources/raw/quests.json` snapshot; empty until a source snapshot is added
 - `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately\n- `reports/quest-readiness.json`: measured quest-source coverage and a conservative readiness status; missing data never implies quest completion
 - `dist/monsters.json`: compact merged monster records
@@ -113,7 +117,7 @@ Upstream field shapes can change; inspect reports and validate outputs after eve
 ## Next expansion
 
 1. Use `coverage.json` and `equipment-audit.json` to prioritize missing equipment bonuses, weapon attack speeds, and stances.
-2. Add and verify a source adapter for quests, then extend the same tested pattern to spells, prayers, recipes, NPCs, and drop tables.
+2. The OSRS Wiki quest-title catalogue now refreshes automatically; next extract and verify prerequisites, skill levels, and rewards separately before account-restriction use. Extend the same tested pattern to spells, prayers, recipes, NPCs, and drop tables.
 3. Keep item, monster combat, equipment stats, and weapon datasets validated against versioned JSON Schemas in CI.
 4. Add regression fixtures for known OSRS examples, checked against trusted references.
 5. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.

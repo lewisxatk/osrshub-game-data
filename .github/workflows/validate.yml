@@ -74,6 +74,6 @@ jobs:
           path: |
             dist/*.json
             reports/*.json
-            sources/raw/manifest.json
+            sources/raw/manifest.json\n            sources/raw/quest-catalog.json
           if-no-files-found: warn
           retention-days: 30
