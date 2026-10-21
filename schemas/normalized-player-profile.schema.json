@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normalized OSRS player profile",
+  "type": "object",
+  "required": [
+    "label",
+    "skills",
+    "completed_quests",
+    "excluded_item_ids",
+    "excluded_item_names",
+    "source_url",
+    "checked_on",
+    "profile_completeness",
+    "import_status",
+    "errors",
+    "warnings"
+  ],
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 99
+      }
+    },
+    "completed_quests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excluded_item_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "excluded_item_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "checked_on": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "normalized_at": {
+      "type": "string"
+    },
+    "profile_completeness": {
+      "type": "object",
+      "required": [
+        "known_skill_count",
+        "total_skill_count",
+        "missing_skills",
+        "complete"
+      ],
+      "properties": {
+        "known_skill_count": {
+          "type": "integer"
+        },
+        "total_skill_count": {
+          "type": "integer"
+        },
+        "missing_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "import_status": {
+      "enum": [
+        "validated",
+        "partial",
+        "invalid"
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

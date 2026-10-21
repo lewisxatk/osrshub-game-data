@@ -32,6 +32,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_combat_profiles.py
+python scripts/normalize_player_profile.py --input examples/player-profile.json
 python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
 python scripts/audit_combat_loadout_evaluation.py
 python scripts/audit_item_combat_profiles.py
@@ -152,3 +153,7 @@ This evaluator aggregates known melee attack and strength bonuses, enforces the 
 
 
 The generated evaluation is also checked by `scripts/audit_combat_loadout_evaluation.py`, which verifies item cost totals, remaining-budget arithmetic, aggregate bonus totals, slot uniqueness and the presence of a non-negative baseline DPS result. These consistency checks catch report wiring errors but do not certify source facts or boss-specific accuracy.
+
+## Account profile normalization
+
+Run `python scripts/normalize_player_profile.py --input examples/player-profile.json` to normalize known skill names, validate 1–99 levels, de-duplicate quest/exclusion lists and report missing skills. Partial profiles stay partial; missing skills and quests are never inferred. Account provenance and checked dates are retained when supplied.

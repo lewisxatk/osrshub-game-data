@@ -81,6 +81,8 @@ jobs:
         run: python scripts/build_item_combat_profiles.py
       - name: Smoke-test caller-selected combat loadout evaluator
         run: python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
+      - name: Normalize example account profile
+        run: python scripts/normalize_player_profile.py --input examples/player-profile.json
       - name: Audit baseline loadout evaluation consistency
         run: python scripts/audit_combat_loadout_evaluation.py
       - name: Audit joined item combat profile quality
