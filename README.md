@@ -33,6 +33,7 @@ python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_requirements.py
 python scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
+python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength
 python scripts/report_combat_categories.py
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
@@ -57,7 +58,17 @@ python scripts/query_game_data.py --dataset equipment-stats --id 4151
 python scripts/query_game_data.py --dataset quest-relationships --search dragon
 ```
 
-The query interface searches only records present in generated datasets. Missing records or fields are unknown, not proof that an item is usable or a quest is unnecessary.
+The query interface searches only records present in generated datasets. Missing records and fields are unknown, not proof that an item is usable or a quest is unnecessary.
+
+## Budget-aware equipment shortlist
+
+```bash
+python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength
+```
+
+Provide a JSON object mapping item IDs to GP costs with `--costs`. The checked-in cost file is illustrative only, not live or authoritative pricing. Supported objectives include attack bonuses, melee/ranged strength, magic damage, defensive bonuses and prayer. The tool ranks items within individual equipment slots, filters known skill failures, honours manual exclusions and shows unknown requirements.
+
+**This is a candidate shortlist, not a complete gear optimiser.** It does not assemble full loadouts, calculate boss-specific DPS, use live GE prices or confirm quest/unlock eligibility. A higher single stat does not necessarily mean higher DPS.
 
 ## Scoped combat arithmetic
 
