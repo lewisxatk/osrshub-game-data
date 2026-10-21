@@ -5,9 +5,10 @@ venv/
 .env
 .DS_Store
 Thumbs.db
-# Large downloaded snapshots and generated datasets are reproducible.
+# Upstream snapshots can be large; keep them reproducible and out of normal commits.
 sources/raw/*.json
 !sources/raw/.gitkeep
+# Generated datasets are published as GitHub Actions artifacts after validation.
 dist/*.json
 !dist/.gitkeep
 reports/*.json
