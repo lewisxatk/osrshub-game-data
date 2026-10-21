@@ -21,6 +21,8 @@ def get_field(value: Any, path: str) -> Any:
         current=current[part]
     return current
 def search_rows(rows, query=None, record_id=None, field=None, limit=20):
+    if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 200:
+        raise ValueError("limit must be between 1 and 200")
     needle=query.casefold().strip() if query else None
     matches=[]
     for row in rows:
