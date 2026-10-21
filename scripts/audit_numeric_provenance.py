@@ -93,7 +93,7 @@ def audit_numeric_ranges(datasets):
    if isinstance(row.get("source_url"),str) and row.get("source_url"): urls.append(row["source_url"])
    for key in ("source_urls","sources"):
     value=row.get(key)
-    if isinstance(value,list): urls.extend(x for x in value if isinstance(x,str) and (x.startswith("http://") or x.startswith("https://")))
+    if isinstance(value,list): urls.extend(x for x in value if isinstance(x,str) and "://" in x)
    for url in urls:
     if not valid_http_url(url): issue(name,i,row,"invalid_source_url","source_url",url)
  # Reclassify provenance absence as warnings regardless of the record type.
