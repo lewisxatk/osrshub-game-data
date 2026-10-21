@@ -1,4 +1,5 @@
 """Regression tests for the joined item-combat-profile checker."""
+import math
 import sys
 import unittest
 from pathlib import Path
@@ -33,6 +34,14 @@ class ItemCombatProfileAuditTests(unittest.TestCase):
     def test_non_finite_numeric_string_fails(self):
         row = profile()
         row["bonuses"]["melee_strength"] = "NaN"
+        report = audit_profiles([row])
+        self.assertEqual(report["status"], "failed")
+        self.assertTrue(any(issue.get("issue") == "non_finite_or_non_numeric_bonus"
+                            for issue in report["errors"]))
+
+    def test_non_finite_float_bonus_fails(self):
+        row = profile()
+        row["bonuses"]["melee_strength"] = math.nan
         report = audit_profiles([row])
         self.assertEqual(report["status"], "failed")
         self.assertTrue(any(issue.get("issue") == "non_finite_or_non_numeric_bonus"
