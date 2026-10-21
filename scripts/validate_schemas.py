@@ -25,7 +25,8 @@ REPORT_TARGETS = (
     ("weapon-baseline-comparison.json", "weapon-baseline-comparison.schema.json"),
     ("equipment-loadout-candidate.json", "equipment-loadout-candidate.schema.json"),
     ("combat-input-audit.json", "combat-input-audit.schema.json"),
-    ("item-requirement-quality.json", "item-requirement-quality.schema.json"),\n    ("equipment-recommendation-audit.json", "equipment-recommendation-audit.schema.json"),
+    ("item-requirement-quality.json", "item-requirement-quality.schema.json"),
+    ("equipment-recommendation-audit.json", "equipment-recommendation-audit.schema.json"),
 )
 
 def load_schema(path):
