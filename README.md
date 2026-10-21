@@ -26,10 +26,11 @@ From the repository root:
 python scripts/download_sources.py
 python scripts/build_dataset.py
 python scripts/validate_dataset.py
-python scripts/report_coverage.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/normalize_monster_combat.py
+python scripts/report_coverage.py
+python scripts/audit_normalized_data.py
 python scripts/validate_schemas.py
 python -m unittest discover -s tests -v
 ```
@@ -48,7 +49,8 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
 - `reports/validation.json`: structural checks and coverage counts
-- `reports/coverage.json`: field-presence percentages across items, equipment, and monsters
+- `reports/coverage.json`: field-presence percentages across source and normalized item, equipment, weapon, and monster datasets
+- `reports/normalized-data-audit.json`: duplicate/invalid ID checks, missing metadata counts, weapon-speed and stance gaps, and per-field monster combat coverage
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, slots, requirements, source URLs, weapon types, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
 - `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields
@@ -67,7 +69,7 @@ Timestamp and presentation-image differences are counted but omitted from the me
 - OSRSBox database: https://github.com/osrsbox/osrsbox-db
 - RSPSApp community extension: https://github.com/RSPSApp/osrsreboxed-db
 
-Upstream field shapes can change; inspect reports and validate outputs after every refresh.
+Upstream field shapes can change; inspect reports and validate outputs after every refresh. The normalized-data audit distinguishes structural errors from metadata gaps: structural defects fail the step, while missing values remain warnings so unknown game mechanics are never guessed. Coverage and audit reports describe data shape and presence, not independent factual verification.
 
 ## Safety boundaries
 
