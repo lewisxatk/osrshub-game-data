@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures" / "combat-reference.json"
@@ -37,8 +38,15 @@ def validate_fixture(fixture):
             errors.append(f"cases[{index}] has invalid non-negative integer id")
         if not isinstance(expected, dict) or not expected:
             errors.append(f"cases[{index}] expected must be a non-empty object")
-        if not isinstance(source, dict) or not source.get("url") or not source.get("checked_on"):
-            errors.append(f"cases[{index}] needs source.url and source.checked_on")
+        if not isinstance(source, dict) or not isinstance(source.get("url"), str) or not source.get("url").startswith("https://"):
+            errors.append(f"cases[{index}] source.url must be an HTTPS URL")
+        if not isinstance(source, dict) or not isinstance(source.get("checked_on"), str) or not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", source.get("checked_on", "")):
+            errors.append(f"cases[{index}] source.checked_on must use YYYY-MM-DD")
+        else:
+            try:
+                datetime.strptime(source["checked_on"], "%Y-%m-%d")
+            except ValueError:
+                errors.append(f"cases[{index}] source.checked_on is not a real calendar date")
         key = (dataset, record_id)
         if key in seen:
             errors.append(f"cases[{index}] duplicates dataset/id {key}")
@@ -72,13 +80,18 @@ def run_cases(fixture, dist_dir: Path):
                 if not isinstance(rows, list):
                     raise ValueError("dataset must be a JSON array")
                 indexed = {}
+                duplicate_ids = []
                 for row in rows:
                     if not isinstance(row, dict):
                         continue
                     rid = row.get("id")
                     if isinstance(rid, bool):
                         continue
+                    if rid in indexed:
+                        duplicate_ids.append(rid)
                     indexed[rid] = row
+                if duplicate_ids:
+                    failures.append({"dataset": filename, "error": "duplicate record IDs", "ids": sorted(set(duplicate_ids), key=str)[:100]})
                 datasets[filename] = indexed
             except (OSError, json.JSONDecodeError, ValueError) as exc:
                 failures.append({"dataset": filename, "error": str(exc)})
