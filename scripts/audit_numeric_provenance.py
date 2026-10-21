@@ -69,7 +69,7 @@ def audit_numeric_ranges(datasets):
    elif abs(value)>1000: issue("equipment-stats.json",i,row,"extreme_bonus_review",field,bonuses[field],"Outside a deliberately broad review threshold; verify source rather than auto-correcting.")
   sources=row.get("sources",[])
   if not isinstance(sources,list): issue("equipment-stats.json",i,row,"invalid_sources_list","sources",sources)
-  elif not sources: issue("equipment-stats.json",i,row,"missing_source_provenance","sources",message="No source labels retained.",warning=True)
+  elif not sources: issue("equipment-stats.json",i,row,"missing_source_provenance","sources",message="No source labels retained.")
  weapons=datasets["weapons.json"]
  for i,row in enumerate(weapons):
   speed=row.get("attack_speed")
