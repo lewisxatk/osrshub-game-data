@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+Thumbs.db
+# Large downloaded snapshots and generated datasets are reproducible.
+sources/raw/*.json
+!sources/raw/.gitkeep
+dist/*.json
+!dist/.gitkeep
+reports/*.json
+!reports/.gitkeep
