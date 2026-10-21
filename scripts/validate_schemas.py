@@ -29,6 +29,7 @@ REPORT_TARGETS = (
     ("item-requirement-quality.json", "item-requirement-quality.schema.json"),
     ("equipment-recommendation-audit.json", "equipment-recommendation-audit.schema.json"),
     ("item-combat-profile-audit.json", "item-combat-profile-audit.schema.json"),
+    ("combat-loadout-evaluation-audit.json", "combat-loadout-evaluation-audit.schema.json"),
     ("combat-loadout-evaluation.json", "combat-loadout-evaluation.schema.json"),
 )
 

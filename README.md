@@ -33,6 +33,7 @@ python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_combat_profiles.py
 python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
+python scripts/audit_combat_loadout_evaluation.py
 python scripts/audit_item_combat_profiles.py
 python scripts/build_item_requirements.py
 python scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
@@ -148,3 +149,6 @@ python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-sel
 ```
 
 This evaluator aggregates known melee attack and strength bonuses, enforces the supplied total budget and one-item-per-slot rule, finds the selected weapon's attack speed, and calculates scoped baseline hit chance/max hit/DPS with explicit limitations. Example costs and combat inputs are illustrative and must be replaced with verified values. It evaluates a selected loadout; it does not yet search every combination, calculate ranged or magic DPS, or model boss-specific mechanics.
+
+
+The generated evaluation is also checked by `scripts/audit_combat_loadout_evaluation.py`, which verifies item cost totals, remaining-budget arithmetic, aggregate bonus totals, slot uniqueness and the presence of a non-negative baseline DPS result. These consistency checks catch report wiring errors but do not certify source facts or boss-specific accuracy.

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat loadout evaluation consistency audit",
+  "type": "object",
+  "required": [
+    "status",
+    "error_count",
+    "warning_count",
+    "errors",
+    "warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required",
+        "failed"
+      ]
+    },
+    "error_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warning_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "calculated_item_cost_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
