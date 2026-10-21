@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"OSRS Hub combat input audit report",
+  "type":"object",
+  "required":["status","budget_gp","profile_skill_count","cost_entry_count","errors","warnings","guardrails"],
+  "properties":{
+    "status":{"enum":["passed","passed_with_warnings","failed"]},
+    "budget_gp":{"type":["integer","null"],"minimum":0},
+    "profile_skill_count":{"type":"integer","minimum":0},
+    "cost_entry_count":{"type":"integer","minimum":0},
+    "combat_input_fields_present":{"type":"array","items":{"type":"string"}},
+    "errors":{"type":"array","items":{"type":"string"}},
+    "warnings":{"type":"array","items":{"type":"string"}},
+    "guardrails":{"type":"array","items":{"type":"string","minLength":1}}
+  },
+  "additionalProperties":true
+}
