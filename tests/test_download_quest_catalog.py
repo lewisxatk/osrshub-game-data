@@ -36,7 +36,7 @@ class QuestCatalogTests(unittest.TestCase):
             return FakeResponse(responses.pop(0))
         rows, calls = catalog.fetch_category_members(opener=opener, sleep=lambda _: None)
         self.assertEqual(calls, 2)
-        self.assertEqual([row["id"] for row in rows], [2, 3, 1] if False else [2, 3, 1])
+        self.assertEqual([row["id"] for row in rows], [2, 1, 3])
         self.assertEqual(len({row["id"] for row in rows}), 3)
         self.assertTrue(all(row["source_kind"] == "category_catalog_only" for row in rows))
         self.assertTrue(all(row["url"].startswith("https://oldschool.runescape.wiki/w/") for row in rows))
