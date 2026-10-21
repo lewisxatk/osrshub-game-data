@@ -166,3 +166,8 @@ The ranged evaluator aggregates supplied ranged attack/ranged-strength bonuses, 
 ## Compare loadout estimates
 
 Use `python scripts/compare_loadout_reports.py --current reports/current.json --candidate reports/candidate.json` to calculate baseline DPS and cost changes, percentage improvement and additional GP per DPS. The report flags attack-style and weapon-speed mismatches but cannot prove inputs match; compare only reports with compatible assumptions.
+
+
+## Database coverage scorecard
+
+Run `python scripts/report_database_scorecard.py` after generating the datasets. It writes `reports/database-scorecard.json`, with per-dataset record counts, field-presence percentages, selected combat-profile readiness indicators, and a reproducible coverage index. The index is calculated from an explicitly configured list of field-presence opportunities; it is a progress-tracking metric, **not** a claim that the same percentage of all OSRS knowledge is complete or factually verified. An empty quest dataset scores zero presence rather than being treated as complete. The report is included in schema validation and the CI artifact.
