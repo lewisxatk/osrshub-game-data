@@ -41,6 +41,8 @@ jobs:
         run: python scripts/normalize_monster_combat.py
       - name: Build item relationship graph
         run: python scripts/build_item_relationships.py
+      - name: Import quest snapshot when available
+        run: python scripts/import_quests.py
       - name: Report normalized equipment and weapon provenance
         run: python scripts/report_normalized_combat_provenance.py
       - name: Report field coverage
