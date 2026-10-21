@@ -67,6 +67,8 @@ jobs:
         run: python scripts/report_coverage.py
       - name: Audit normalized combat datasets
         run: python scripts/audit_normalized_data.py
+      - name: Smoke-test baseline weapon comparison
+        run: python scripts/compare_weapon_baselines.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000 --style slash --output reports/weapon-baseline-comparison.json
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness
