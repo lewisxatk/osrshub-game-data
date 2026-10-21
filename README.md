@@ -162,3 +162,7 @@ Run `python scripts/normalize_player_profile.py --input examples/player-profile.
 ## Ranged loadout baseline
 
 The ranged evaluator aggregates supplied ranged attack/ranged-strength bonuses, enforces the GP budget and one-weapon rule, and produces a scoped baseline hit-chance/max-hit/DPS report. It does not model ammunition effects, boosts, prayers, special attacks or boss mechanics, and is not a Vorkath optimiser.
+
+## Compare loadout estimates
+
+Use `python scripts/compare_loadout_reports.py --current reports/current.json --candidate reports/candidate.json` to calculate baseline DPS and cost changes, percentage improvement and additional GP per DPS. The report flags attack-style and weapon-speed mismatches but cannot prove inputs match; compare only reports with compatible assumptions.
