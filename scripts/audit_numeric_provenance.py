@@ -78,7 +78,7 @@ def audit_numeric_ranges(datasets):
   elif speed is not None and speed>20:
    issue("weapons.json",i,row,"attack_speed_review","attack_speed",speed,"Unusually high tick count; confirm source record.")
   if not row.get("source_url") and not row.get("sources"):
-   issue("weapons.json",i,row,"missing_source_provenance","sources",message="No source URL or source labels retained.",warning=True)
+   issue("weapons.json",i,row,"missing_source_provenance","sources",message="No source URL or source labels retained.")
  monsters=datasets["monsters-combat.json"]
  for i,row in enumerate(monsters):
   for field in MONSTER_FIELDS:
