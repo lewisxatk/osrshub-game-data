@@ -22,9 +22,9 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [x] Produce item/equipment/monster field-coverage and equipment-gap reports.
 - [x] Generate dedicated equipment-stat and weapon datasets from available source fields.
 - [x] Add a normalized monster-combat dataset and per-field coverage report.
-- [ ] Confirm the latest CI run succeeds after all recent commits.
+- [x] Confirm the latest CI run succeeds after all recent commits.
 - [ ] Review reports for source-field mapping mistakes and unexpected drops in record counts.
-- [ ] Add schema validation to CI for the normalized outputs.
+- [x] Add schema validation to CI for the normalized outputs.
 
 ### Stage 2 — Improve core combat-data quality
 - [ ] Audit item IDs, names, equipment slots, requirements, and bonus-field conventions.
@@ -76,11 +76,11 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Verify the latest GitHub Actions run after the recent workflow/action updates.
-2. Inspect `reports/coverage.json`, `reports/equipment-audit.json`, `reports/combat-data-summary.json`, and `reports/monster-combat-coverage.json`.
-3. Check normalization against representative known items and monsters.
-4. Add schema validation and tests for the normalized datasets.
-5. Use measured gaps to decide which source adapter or data category to tackle next.
+1. Review generated coverage, equipment-gap, combat-readiness, source-integrity, and conflict-priority reports.
+2. Check normalization against representative known items and monsters.
+3. Add regression fixtures for representative combat equipment and monster cases.
+4. Improve field-level provenance and source alias tracking.
+5. Use measured gaps to choose the next source adapter or data category.
 
 ## Current output families
 
@@ -88,6 +88,6 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 - Compact equipment bonuses and requirements where present.
 - Weapon attack speeds, types, and stances where present.
 - Monster combat fields where present.
-- Validation, conflict, coverage, equipment-gap, and combat-data summary reports.
+- Validation, conflict-priority, coverage, equipment-gap, combat-readiness, source-integrity, pipeline-health, and dataset-diff reports.
 
 Field presence is not the same as correctness, and imported records are not considered verified solely because CI is green.
