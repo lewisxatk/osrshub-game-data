@@ -52,7 +52,6 @@ def summarize_conflicts(conflicts):
                 ("category", "id", "name", "field", "kept_source", "other_source", "kept_value", "other_value")
                 if key in entry
             })
-
     ranked = []
     for field, count in by_field.most_common():
         ranked.append({
@@ -63,22 +62,21 @@ def summarize_conflicts(conflicts):
             "priority": priority_for_field(field),
         })
     return {
-        **summary,
+        "conflict_count": sum(by_field.values()),
+        "invalid_record_count": invalid_records,
+        "counts_by_category": dict(by_category.most_common()),
+        "fields_ranked_by_conflict_count": ranked,
     }
 
 def main():
     if not INPUT.exists():
         raise FileNotFoundError("reports/source-conflicts.json is missing; run scripts/build_dataset.py first")
-    conflicts = load_conflicts(INPUT)
-    summary = summarize_conflicts(conflicts)
+    summary = summarize_conflicts(load_conflicts(INPUT))
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "status": "failed" if invalid_records else "passed",
+        "status": "failed" if summary["invalid_record_count"] else "passed",
         "input": "reports/source-conflicts.json",
-        "conflict_count": sum(by_field.values()),
-        "invalid_record_count": invalid_records,
-        "counts_by_category": dict(by_category.most_common()),
-        "fields_ranked_by_conflict_count": ranked,
+        **summary,
         "interpretation": "Conflict counts prioritize human review; they do not identify which source is correct.",
         "next_actions": [
             "Review high-priority game-mechanic fields against a trusted OSRS reference.",
@@ -91,7 +89,7 @@ def main():
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 1 if invalid_records else 0
+    return 1 if summary["invalid_record_count"] else 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
