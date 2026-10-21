@@ -1,0 +1,9 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema","title":"OSRS Hub actionable database gap queue","type":"object",
+ "required":["status","meaning","dataset_counts","gap_count","gaps","guardrails"],
+ "properties":{"generated_at":{"type":"string"},"status":{"enum":["passed","failed"]},"meaning":{"type":"string"},
+ "dataset_counts":{"type":"object","additionalProperties":{"type":"integer","minimum":0}},"gap_count":{"type":"integer","minimum":0},
+ "gaps":{"type":"array","items":{"type":"object","required":["key","priority","area","affected_records","denominator","coverage_percent","impact","recommended_action","sample_ids"],
+ "properties":{"key":{"type":"string"},"priority":{"enum":["critical","high","medium","low"]},"area":{"type":"string"},"affected_records":{"type":"integer","minimum":0},
+ "denominator":{"type":"integer","minimum":0},"coverage_percent":{"type":"number","minimum":0,"maximum":100},"impact":{"type":"string"},"recommended_action":{"type":"string"},"sample_ids":{"type":"array"}},"additionalProperties":false}},
+ "guardrails":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}

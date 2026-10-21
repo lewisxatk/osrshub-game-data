@@ -180,3 +180,8 @@ Run `python scripts/audit_database_integrity.py` after generating all datasets. 
 ## Coverage index interpretation
 
 The database scorecard's `coverage_index_percent` is the arithmetic mean of the configured dataset coverage percentages. Each dataset has equal weight, including an empty dataset at 0%, so an empty quest catalogue is visible in the headline. This is a transparent progress index for the currently configured fields, not a universal percentage of all OSRS data or factual accuracy.
+
+
+## Actionable database gap queue
+
+Run `python scripts/report_database_gaps.py` after generating the datasets. It writes `reports/database-gap-queue.json`, prioritizing gaps in item requirement records, item relationships, combat-profile provenance, weapon attack speeds, monster core stats and quest coverage. Missing data remains unknown; this report never fills facts with guesses and never interprets missing quest relationships as proof that no prerequisites exist. CI generates and schema-validates the report.

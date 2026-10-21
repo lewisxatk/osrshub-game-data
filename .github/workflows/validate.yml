@@ -93,6 +93,8 @@ jobs:
         run: python scripts/audit_item_combat_profiles.py
       - name: Smoke-test joined combat profile query
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
+      - name: Build actionable database gap queue
+        run: python scripts/report_database_gaps.py
       - name: Audit cross-dataset IDs and relationships
         run: python scripts/audit_database_integrity.py
       - name: Build database coverage scorecard
