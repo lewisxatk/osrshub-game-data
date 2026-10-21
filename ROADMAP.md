@@ -50,7 +50,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [ ] Track provenance and conflicts for every imported category.
 
 ### Stage 4 — Build the OSRS encyclopaedia
-- [ ] Quests: requirements, prerequisites, rewards, and unlocks.
+- [x] Add a schema-backed quest import scaffold with requirement/reward fields, skill-level normalization, source hash reporting, and tests; source snapshot and factual coverage still need to be supplied/verified.
+- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained upstream source adapter.
 - [ ] NPCs and monsters: names, IDs, locations, stats, and variants.
 - [ ] Drop tables: item IDs, quantities, rates, and source references, preserving unknown rates.
 - [ ] Skills and activities: requirements, methods, rewards, and dependencies.
@@ -84,7 +85,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 2. Verify each regression fixture against its cited reference and source mapping.
 3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
 4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
-5. Use measured gaps to choose the next source adapter or data category; item-to-equipment/weapon relationships now have a generated dataset and schema.
+5. Use measured gaps to choose the next source adapter or data category; item relationships and a schema-backed quest import scaffold are now in the pipeline.
 
 ## Current output families
 
