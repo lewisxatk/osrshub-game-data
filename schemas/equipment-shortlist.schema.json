@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub equipment shortlist report",
+  "type": "object",
+  "required": ["status", "budget", "objective", "objective_field", "results_by_slot", "guardrails"],
+  "properties": {
+    "status": {"const": "candidate_shortlist_only"},
+    "budget": {"type": "integer", "minimum": 0},
+    "objective": {"type": "string"},
+    "objective_field": {"type": "string"},
+    "slots_with_candidates": {"type": "integer", "minimum": 0},
+    "results_by_slot": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "object", "required": ["item_id", "item_name", "status", "reasons", "slot"], "properties": {"item_id": {"type": ["integer", "null"]}, "item_name": {"type": "string"}, "status": {"enum": ["unknown", "excluded", "over_budget", "ineligible_by_known_skill_requirement", "candidate_with_unknown_restrictions"]}, "slot": {"type": "string"}, "cost": {"type": ["integer", "null"]}, "objective_value": {"type": ["number", "null"]}, "reasons": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": true}}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
