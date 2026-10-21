@@ -58,7 +58,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/item-requirements.json`: item-ID keyed skill requirements normalized from source equipment metadata, preserving source names and URLs
 - `dist/item-relationships.json`: explicit links from item IDs to available equipment-stat and weapon records, without guessing missing links
 - `dist/quests.json`: normalized quest records from an explicitly supplied `sources/raw/quests.json` snapshot; empty until a source snapshot is added
-- `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately
+- `dist/quest-relationships.json`: prerequisite and reverse-dependent links resolved by normalized quest name, with unresolved requirements retained separately\n- `reports/quest-readiness.json`: measured quest-source coverage and a conservative readiness status; missing data never implies quest completion
 - `dist/monsters.json`: compact merged monster records
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences

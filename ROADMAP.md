@@ -54,7 +54,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 ### Stage 4 — Build the OSRS encyclopaedia
 - [x] Add a schema-backed quest import scaffold with requirement/reward fields, skill-level normalization, source hash reporting, and tests; source snapshot and factual coverage still need to be supplied/verified.
 - [x] Build schema-validated quest prerequisite/reverse-dependent links, with unresolved/ambiguous requirement reporting and cycle detection; actual coverage depends on a real quest source snapshot.
-- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained upstream source adapter.
+- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained upstream source adapter.\n- [x] Add a conservative quest-readiness report measuring source, prerequisite, skill, and reward coverage; keep empty/incomplete datasets explicitly unsafe for assuming account unlocks.
 - [ ] NPCs and monsters: names, IDs, locations, stats, and variants.
 - [ ] Drop tables: item IDs, quantities, rates, and source references, preserving unknown rates.
 - [ ] Skills and activities: requirements, methods, rewards, and dependencies.
