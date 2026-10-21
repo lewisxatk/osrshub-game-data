@@ -31,6 +31,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/normalize_monster_combat.py
+python scripts/report_normalized_combat_provenance.py
 python scripts/check_combat_reference.py
 python scripts/report_coverage.py
 python scripts/audit_normalized_data.py
@@ -63,6 +64,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, slots, requirements, source URLs, weapon types, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
 - `reports/monster-combat-coverage.json`: per-field coverage percentages, missing-field examples, selected source names, and bounded examples showing the exact raw source alias used for each normalized monster combat field
+- `reports/normalized-combat-provenance.json`: equipment/weapon field lineage from normalized records back to source records, with source counts, raw field paths, and capped comparison examples
 - `reports/schema-validation.json`: JSON Schema validation results for compact items, monster combat, equipment stats, and weapon records
 
 To compare two prior/current generated JSON arrays by record ID, run `python scripts/report_dataset_changes.py old-items.json new-items.json --output reports/item-changes.json`. The report lists added/removed IDs and changed fields; it does not judge whether a changed value is more accurate.\n\nCombat reference cases live in `tests/fixtures/combat-reference.json`. Keep this set small and reviewable; every case must include a source URL and review date. Update expected values only after checking the cited reference and the upstream mapping.\n\nGenerated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
