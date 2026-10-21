@@ -122,8 +122,10 @@ def main():
               "datasets": {}, "errors": []}
     for dataset, (filename, _) in TARGETS.items():
         path = DIST / filename
+        # This audit runs after the normalizers in CI. Missing outputs indicate
+        # a broken pipeline; malformed records are audited separately below.
         if not path.exists():
-            report["errors"].append(f"Missing dist/{filename}")
+            report["errors"].append(f"Missing dist/{filename}; run the corresponding normalizer before this audit")
             continue
         try:
             rows = json.loads(path.read_text(encoding="utf-8"))
