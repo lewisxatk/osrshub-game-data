@@ -32,6 +32,7 @@ python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
+python scripts/import_quests.py
 python scripts/report_normalized_combat_provenance.py
 python scripts/check_combat_reference.py
 python scripts/report_coverage.py
@@ -51,6 +52,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/weapons.json`: compact weapon attack speeds, weapon types, stances, source names, and Wiki links
 - `dist/monsters-combat.json`: normalized monster combat fields where available, with unknown values left null
 - `dist/item-relationships.json`: explicit links from item IDs to available equipment-stat and weapon records, without guessing missing links
+- `dist/quests.json`: normalized quest records from an explicitly supplied `sources/raw/quests.json` snapshot; empty until a source snapshot is added
 - `dist/monsters.json`: compact merged monster records
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
@@ -69,6 +71,8 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/normalized-combat-provenance.json`: equipment/weapon field lineage from normalized records back to source records, with source counts, raw field paths, and capped comparison examples
 - `reports/item-relationship-coverage.json`: item relationship counts and orphaned normalized equipment/weapon records
 - `schemas/item-relationships.schema.json`: validated schema for explicit item-to-equipment and item-to-weapon links
+- `schemas/quests.schema.json`: validated structure for imported quest requirements, skill levels, rewards, and source metadata
+- `reports/quest-coverage.json`: quest import counts, source hash, missing-data warnings, and record-quality issues
 - `reports/schema-validation.json`: JSON Schema validation results for compact items, monster combat, equipment stats, and weapon records
 
 To compare two prior/current generated JSON arrays by record ID, run `python scripts/report_dataset_changes.py old-items.json new-items.json --output reports/item-changes.json`. The report lists added/removed IDs and changed fields; it does not judge whether a changed value is more accurate.\n\nCombat reference cases live in `tests/fixtures/combat-reference.json`. Keep this set small and reviewable; every case must include a source URL and review date. Update expected values only after checking the cited reference and the upstream mapping.\n\nGenerated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
@@ -97,7 +101,7 @@ Upstream field shapes can change; inspect reports and validate outputs after eve
 ## Next expansion
 
 1. Use `coverage.json` and `equipment-audit.json` to prioritize missing equipment bonuses, weapon attack speeds, and stances.
-2. Add source adapters and schemas for quests, spells, prayers, recipes, NPCs, and drop tables.
+2. Add and verify a source adapter for quests, then extend the same tested pattern to spells, prayers, recipes, NPCs, and drop tables.
 3. Keep item, monster combat, equipment stats, and weapon datasets validated against versioned JSON Schemas in CI.
 4. Add regression fixtures for known OSRS examples, checked against trusted references.
 5. Build combat formulas as separately tested code, with citations and test fixtures for verified mechanics.
