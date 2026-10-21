@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub quest record",
+  "type": "object",
+  "required": ["key", "name", "requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type", "source_url", "source_fields"],
+  "properties": {
+    "key": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "requirements": {"type": "array", "items": {"type": "string"}},
+    "skill_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skill", "level"],
+        "properties": {"skill": {"type": "string", "minLength": 1}, "level": {"type": "integer", "minimum": 0}},
+        "additionalProperties": false
+      }
+    },
+    "rewards": {"type": "array", "items": {"type": "string"}},
+    "members": {"type": ["boolean", "null"]},
+    "difficulty": {"type": ["string", "null"]},
+    "quest_type": {"type": ["string", "null"]},
+    "source_url": {"type": ["string", "null"], "pattern": "^https://"},
+    "source_fields": {"type": "array", "items": {"type": "string"}},
+    "additionalProperties": false
+  },
+  "additionalProperties": false
+}
