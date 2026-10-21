@@ -49,7 +49,7 @@ def audit_profiles(rows):
             if isinstance(value, bool) or not isinstance(value, (int, float, str)):
                 errors.append({**label, "field": field, "issue": "invalid_bonus_type"})
                 bad_bonus = True
-            elif isinstance(value, str):
+            else:
                 try:
                     parsed = float(value)
                     if not math.isfinite(parsed):
