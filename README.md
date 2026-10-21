@@ -68,7 +68,7 @@ python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json
 
 Provide a JSON object mapping item IDs to GP costs with `--costs`. The checked-in cost file is illustrative only, not live or authoritative pricing. Supported objectives include attack bonuses, melee/ranged strength, magic damage, defensive bonuses and prayer. The tool ranks items within individual equipment slots, filters known skill failures, honours manual exclusions and shows unknown requirements.
 
-**This is a candidate shortlist, not a complete gear optimiser.** It does not assemble full loadouts, calculate boss-specific DPS, use live GE prices or confirm quest/unlock eligibility. A higher single stat does not necessarily mean higher DPS.
+**This is a candidate shortlist, not a complete gear optimiser.** It does not assemble full loadouts, calculate boss-specific DPS, use live GE prices or confirm quest/unlock eligibility. A higher single stat does not necessarily mean higher DPS.\n\n## Baseline weapon comparison\n\nThe weapon comparison combines the normalized weapon-speed and equipment-bonus records with the scoped formula primitives. Supply effective attack/strength/defence inputs and a GP cost per item. It ranks only weapons whose known skill requirements are met, flags unknown restrictions, and reports the calculation inputs. It is **not** a boss-specific calculator and does not account for special attacks, prayers, potions, target-specific mechanics or unverified unlocks.
 
 ## Scoped combat arithmetic
 

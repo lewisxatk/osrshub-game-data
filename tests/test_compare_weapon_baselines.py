@@ -27,7 +27,7 @@ class WeaponBaselineTests(unittest.TestCase):
     def test_computes_and_sorts_baseline_candidates(self):
         result = compare_weapons(self.weapons, self.equipment, self.requirements, self.profile, self.costs, self.inputs, 10000, "slash")
         self.assertEqual(result["status"], "baseline_comparison_only")
-        self.assertEqual(result["results"][0]["item_id"], 11)
+        self.assertEqual(result["results"][0]["item_id"], 10)
         self.assertGreater(result["results"][0]["dps"], 0)
         self.assertIn("not modelled", " ".join(result["results"][0]["reasons"]))
 

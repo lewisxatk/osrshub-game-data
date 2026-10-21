@@ -14,6 +14,7 @@ INPUTS = {
     "schema_validation": "schema-validation.json",
     "combat_readiness": "combat-readiness.json",
     "equipment_shortlist": "equipment-shortlist.json",
+    "weapon_baseline_comparison": "weapon-baseline-comparison.json",
     "source_conflict_priorities": "source-conflict-priorities.json",
     "source_integrity": "source-integrity.json",
     "field_provenance": "field-provenance.json",
