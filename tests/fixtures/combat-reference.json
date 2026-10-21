@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "note": "Small regression fixture for stable, widely documented item facts. Re-check values and source links during fixture maintenance; this is not a full accuracy guarantee.",
+  "cases": [
+    {
+      "dataset": "equipment-stats.json",
+      "id": 4151,
+      "expected": {
+        "name": "Abyssal whip",
+        "slot": "weapon",
+        "bonuses.attack_slash": 82,
+        "bonuses.melee_strength": 82
+      },
+      "source": {
+        "url": "https://oldschool.runescape.wiki/w/Abyssal_whip",
+        "checked_on": "2026-10-21"
+      }
+    },
+    {
+      "dataset": "weapons.json",
+      "id": 4151,
+      "expected": {
+        "name": "Abyssal whip",
+        "attack_speed": 4,
+        "weapon_type": "whip"
+      },
+      "source": {
+        "url": "https://oldschool.runescape.wiki/w/Abyssal_whip",
+        "checked_on": "2026-10-21"
+      }
+    }
+  ]
+}
