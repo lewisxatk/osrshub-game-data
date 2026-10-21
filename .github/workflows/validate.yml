@@ -31,6 +31,8 @@ jobs:
         run: python scripts/audit_equipment.py
       - name: Normalize combat data
         run: python scripts/normalize_combat_data.py
+      - name: Normalize monster combat data
+        run: python scripts/normalize_monster_combat.py
       - name: Publish generated datasets and reports
         if: always()
         uses: actions/upload-artifact@v5
