@@ -16,8 +16,7 @@ Imported community data is evidence, not a guarantee of correctness or completen
 
 - Python 3.10 or newer
 - Internet access for source downloads
-
-No third-party Python packages are required.
+- `jsonschema` for schema validation (`python -m pip install -r requirements-ci.txt`)
 
 ## Quick start
 
@@ -31,6 +30,7 @@ python scripts/report_coverage.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/normalize_monster_combat.py
+python scripts/validate_schemas.py
 python -m unittest discover -s tests -v
 ```
 
@@ -51,7 +51,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/coverage.json`: field-presence percentages across items, equipment, and monsters
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, weapon metadata, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
-- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields\n- `reports/schema-validation.json`: JSON Schema validation results for compact items and normalized monster combat records
+- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields\n- `reports/schema-validation.json`: JSON Schema validation results for compact items, monster combat, equipment stats, and weapon records
 
 Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
 
