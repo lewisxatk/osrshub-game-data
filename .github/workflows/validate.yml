@@ -85,8 +85,8 @@ jobs:
         run: python scripts/normalize_player_profile.py --input examples/player-profile.json
       - name: Smoke-test ranged loadout evaluator
         run: python scripts/evaluate_ranged_loadout.py --selected examples/ranged-loadout-selected.example.json --costs examples/ranged-loadout-costs.example.json --inputs examples/ranged-loadout-inputs.example.json --budget 1000000
-      - name: Smoke-test loadout report comparison
-        run: python -c 'from scripts.compare_loadout_reports import compare_reports; a={"combat_result":{"dps":1},"total_cost_gp":100}; b={"combat_result":{"dps":2},"total_cost_gp":200}; assert compare_reports(a,b)["delta"]["dps"] == 1'
+      - name: Generate and smoke-test loadout comparison report
+        run: python -c 'import json; from pathlib import Path; from scripts.compare_loadout_reports import compare_reports; a={"status":"fixture","combat_result":{"dps":1},"total_cost_gp":100}; b={"status":"fixture","combat_result":{"dps":2},"total_cost_gp":200}; r=compare_reports(a,b); assert r["delta"]["dps"] == 1; p=Path("reports/loadout-comparison.json"); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(r,indent=2)+"\\n")'
       - name: Audit baseline loadout evaluation consistency
         run: python scripts/audit_combat_loadout_evaluation.py
       - name: Audit joined item combat profile quality
