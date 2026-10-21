@@ -51,6 +51,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/validation.json`: structural checks and coverage counts
 - `reports/coverage.json`: field-presence percentages across source and normalized item, equipment, weapon, and monster datasets
 - `reports/normalized-data-audit.json`: duplicate/invalid ID checks, missing metadata counts, weapon-speed and stance gaps, and per-field monster combat coverage
+- `reports/combat-readiness.json`: core-field coverage and readiness indicators for equipment, weapons, and monster combat datasets; presence is not a claim of factual accuracy
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, slots, requirements, source URLs, weapon types, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
 - `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields
