@@ -31,9 +31,11 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [ ] Compare known high-value gear examples against a trusted, versioned source.
 - [ ] Improve weapon stance and attack-speed coverage without inferring missing values.
 - [ ] Improve monster combat-stat coverage and identify source disagreements.
-- [ ] Add regression fixtures for representative melee, ranged, magic, and boss cases.
+- [x] Add an initial sourced regression fixture set for representative equipment and weapon facts.
+- [ ] Expand regression fixtures to representative melee, ranged, magic, and boss cases after source review.
 - [ ] Document source precedence and field aliases so upstream schema changes are visible.
-- [ ] Report confidence/provenance per field where sources disagree or fields are missing.
+- [x] Add an initial field-level source-provenance and disagreement report for item and monster source fields.
+- [ ] Extend provenance to normalized values and verified source references for each field.
 
 **Exit criteria:** reproducible compact outputs, clear coverage percentages, tests for mappings, and known examples reviewed against sources. This is not yet a promise of full combat-calculator accuracy.
 
@@ -76,10 +78,10 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Review generated coverage, equipment-gap, combat-readiness, source-integrity, and conflict-priority reports.
-2. Check normalization against representative known items and monsters.
-3. Add regression fixtures for representative combat equipment and monster cases.
-4. Improve field-level provenance and source alias tracking.
+1. Review generated field-provenance and combat-reference reports.
+2. Verify each regression fixture against its cited reference and source mapping.
+3. Extend field provenance to normalized output fields and source alias choices.
+4. Improve combat-field mapping and coverage based on actual audit gaps.
 5. Use measured gaps to choose the next source adapter or data category.
 
 ## Current output families
