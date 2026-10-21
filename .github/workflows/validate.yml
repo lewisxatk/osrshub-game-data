@@ -39,6 +39,8 @@ jobs:
         run: python scripts/normalize_combat_data.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py
+      - name: Report normalized equipment and weapon provenance
+        run: python scripts/report_normalized_combat_provenance.py
       - name: Report field coverage
         run: python scripts/report_coverage.py
       - name: Audit normalized combat datasets
