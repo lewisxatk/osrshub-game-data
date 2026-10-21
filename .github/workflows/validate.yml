@@ -59,7 +59,7 @@ jobs:
         run: python scripts/audit_normalized_data.py
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
-      - name: Report combat data readiness
+      - name: Validate generated datasets against JSON Schemas\n        run: python scripts/validate_schemas.py\n      - name: Report combat data readiness
         run: python scripts/report_combat_readiness.py
       - name: Check combat reference fixtures
         run: python scripts/check_combat_reference.py
@@ -72,7 +72,7 @@ jobs:
         with:
           name: osrshub-game-data-${{ github.sha }}
           path: |
-            dist/*.json
+            dist/*.json\n            reports/item-eligibility.json
             reports/*.json
             sources/raw/manifest.json\n            sources/raw/quest-catalog.json
           if-no-files-found: warn

@@ -46,7 +46,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [ ] Identify item IDs and aliases consistently across sources and reconcile alias collisions.
 - [x] Add explicit item-ID links to normalized equipment-stat and weapon records, with orphan counts and schema validation.
 - [x] Normalize source-backed item skill requirements into an item-ID keyed dataset with schema validation and malformed-value warnings.
-- [ ] Add quest/unlock relationships once quest facts are supplied by a maintained source.
+- [x] Add a conservative profile-to-item eligibility evaluator that applies manual exclusions and known skill requirements while keeping quest/unlock eligibility unknown.\n- [ ] Add quest/unlock relationships once verified quest facts are supplied by a maintained source.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
 - [ ] Track provenance and conflicts for every imported category.
@@ -64,7 +64,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 
 Each category must have a source adapter, a documented schema, validation, coverage reporting, and a small regression test set before it is considered usable.
 
-### Stage 5 — Verified combat reference layer
+- [x] Add schema-backed eligibility report and regression tests for missing stats, unknown requirements, and manual exclusions.\n\n### Stage 5 — Verified combat reference layer
 - [ ] Define a documented schema for combat mechanics and target-specific behaviour.
 - [ ] Separate raw source facts from formulas and derived results.
 - [ ] Add sourced test cases for attack rolls, max hits, attack speed, prayers, potions, special attacks, and monster defence.

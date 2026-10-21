@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub conservative item eligibility report",
+  "type": "object",
+  "required": ["generated_at", "status", "item_count_evaluated", "counts", "profile_warnings", "completed_quests_used_for_unlock_decisions", "results", "safety_note"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["passed_with_warnings", "failed"]},
+    "profile_label": {"type": ["string", "null"]},
+    "item_count_evaluated": {"type": "integer", "minimum": 0},
+    "counts": {
+      "type": "object",
+      "required": ["excluded", "ineligible_by_known_skill_requirement", "unknown"],
+      "properties": {
+        "excluded": {"type": "integer", "minimum": 0},
+        "ineligible_by_known_skill_requirement": {"type": "integer", "minimum": 0},
+        "unknown": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "profile_warnings": {"type": "array", "items": {"type": "string"}},
+    "completed_quest_names_received": {"type": "integer", "minimum": 0},
+    "completed_quests_used_for_unlock_decisions": {"const": false},
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "item_name", "skill_status", "overall_status", "matched_requirement_record_count", "reasons", "manual_exclusion"],
+        "properties": {
+          "item_id": {"type": "integer", "minimum": 0},
+          "item_name": {"type": "string"},
+          "skill_status": {"enum": ["unknown", "ineligible", "meets_known_skill_requirements"]},
+          "overall_status": {"enum": ["excluded", "ineligible_by_known_skill_requirement", "unknown"]},
+          "matched_requirement_record_count": {"type": "integer", "minimum": 0},
+          "reasons": {"type": "array", "items": {"type": "string"}},
+          "manual_exclusion": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "safety_note": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

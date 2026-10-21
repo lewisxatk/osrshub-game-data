@@ -1,0 +1,13 @@
+{
+  "label": "Example account",
+  "skills": {
+    "Attack": 80,
+    "Strength": 86,
+    "Defence": 80,
+    "Ranged": 93,
+    "Magic": 84
+  },
+  "completed_quests": [],
+  "excluded_item_ids": [],
+  "excluded_item_names": []
+}

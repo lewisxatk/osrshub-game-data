@@ -31,8 +31,8 @@ python scripts/report_item_identity.py
 python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
-python scripts/build_item_requirements.py
-python scripts/report_combat_categories.py
+python scripts/build_item_requirements.py\npython -m unittest tests/test_evaluate_item_eligibility.py -v
+python scripts/report_combat_categories.py\npython scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
 python scripts/download_quest_catalog.py\npython scripts/import_quests.py
@@ -45,7 +45,7 @@ python scripts/validate_schemas.py
 python -m unittest discover -s tests -v
 ```
 
-On Windows, run these commands in Command Prompt or PowerShell.
+On Windows, run these commands in Command Prompt or PowerShell.\n\nTo evaluate a player profile against the currently normalized equipment dataset, create a profile JSON (see `examples/player-profile.json`) and run:\n\n```bash\npython scripts/evaluate_item_eligibility.py --profile examples/player-profile.json\n```\n\nThe report is deliberately conservative: it can identify known skill-level failures and manual exclusions, but it will not claim an item is fully usable while quest/unlock restrictions or requirement completeness remain unverified.
 
 ## Outputs
 
@@ -55,7 +55,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/equipment-stats.json`: compact equipment slots, bonuses, requirements, source names, and Wiki links
 - `dist/weapons.json`: compact weapon attack speeds, weapon types, stances, source names, and Wiki links
 - `dist/monsters-combat.json`: normalized monster combat fields where available, with unknown values left null
-- `dist/item-requirements.json`: item-ID keyed skill requirements normalized from source equipment metadata, preserving source names and URLs
+- `reports/item-eligibility.json`: conservative profile-to-item report separating known skill failures, manual exclusions, and unknown overall eligibility; quest and unlock eligibility is never assumed\n- `schemas/item-eligibility.schema.json`: schema for the conservative item eligibility report\n- `examples/player-profile.json`: example profile input for eligibility checks\n- `dist/item-requirements.json`: item-ID keyed skill requirements normalized from source equipment metadata, preserving source names and URLs
 - `dist/item-relationships.json`: explicit links from item IDs to available equipment-stat and weapon records, without guessing missing links
 
 - `sources/raw/quest-catalog.json`: OSRS Wiki quest-category title catalogue with page IDs, canonical page URLs, and a retrieval hash; title catalogue only, not prerequisites or account unlock facts
