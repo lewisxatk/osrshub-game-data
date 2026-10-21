@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub joined item combat profile",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "slot",
+    "bonuses",
+    "attack_speed",
+    "weapon_type",
+    "stances",
+    "skill_requirements",
+    "equipment_record_present",
+    "weapon_record_present",
+    "skill_requirement_record_present",
+    "source_urls",
+    "sources",
+    "data_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "name": {
+      "type": "string"
+    },
+    "slot": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bonuses": {
+      "type": "object",
+      "properties": {
+        "attack_stab": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "attack_slash": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "attack_crush": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "attack_magic": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "attack_ranged": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "defence_stab": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "defence_slash": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "defence_crush": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "defence_magic": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "defence_ranged": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "melee_strength": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "ranged_strength": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "magic_damage": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "prayer": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "attack_speed": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "weapon_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stances": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "skill_requirements": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "required": [
+          "skill",
+          "level"
+        ],
+        "properties": {
+          "skill": {
+            "type": "string"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "equipment_record_present": {
+      "type": "boolean"
+    },
+    "weapon_record_present": {
+      "type": "boolean"
+    },
+    "skill_requirement_record_present": {
+      "type": "boolean"
+    },
+    "source_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "data_status": {
+      "enum": [
+        "partial",
+        "joined_fields_present"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

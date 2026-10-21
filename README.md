@@ -31,6 +31,7 @@ python scripts/report_item_identity.py
 python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
+python scripts/build_item_combat_profiles.py
 python scripts/build_item_requirements.py
 python scripts/evaluate_item_eligibility.py --profile examples/player-profile.json
 python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength
@@ -118,3 +119,15 @@ Coverage reports describe field presence, not independent factual verification.
 3. Add source-backed effective-level and equipment effect rules, then model prayers, potions, target-specific defence, damage caps and special attacks.
 4. Connect formula primitives to validated player/equipment/monster records and add loadout search under budget and exclusions.
 5. Publish versioned datasets and integrate with the website only under a separate approved plan.
+
+
+## Joined item combat profiles
+
+After the item, equipment, weapon and skill-requirement datasets have been generated, run:
+
+```bash
+python scripts/build_item_combat_profiles.py
+python scripts/query_game_data.py --dataset equipment-stats --id 4151
+```
+
+The pipeline writes `dist/item-combat-profiles.json` and `reports/item-combat-profile-summary.json`. Each profile joins source-backed item identity, equipment bonuses, weapon speed/type/stances, normalized skill requirements and provenance URLs where available. Missing fields remain `null`; absent requirement records are explicitly distinguished from an empty list. This is a joined factual data profile, not a DPS result: the profile does not infer missing unlocks or calculate boss damage.

@@ -13,6 +13,7 @@ DATA_TARGETS = (
     ("items.json", "item.schema.json"),
     ("monsters-combat.json", "monster-combat.schema.json"),
     ("equipment-stats.json", "equipment-stats.schema.json"),
+    ("item-combat-profiles.json", "item-combat-profile.schema.json"),
     ("weapons.json", "weapon.schema.json"),
     ("item-relationships.json", "item-relationships.schema.json"),
     ("item-requirements.json", "item-requirements.schema.json"),
