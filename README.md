@@ -32,6 +32,7 @@ python scripts/validate_dataset.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
 python scripts/build_item_combat_profiles.py
+python scripts/evaluate_ranged_loadout.py --selected examples/ranged-loadout-selected.example.json --costs examples/ranged-loadout-costs.example.json --inputs examples/ranged-loadout-inputs.example.json --budget 1000000
 python scripts/normalize_player_profile.py --input examples/player-profile.json
 python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
 python scripts/audit_combat_loadout_evaluation.py
@@ -157,3 +158,7 @@ The generated evaluation is also checked by `scripts/audit_combat_loadout_evalua
 ## Account profile normalization
 
 Run `python scripts/normalize_player_profile.py --input examples/player-profile.json` to normalize known skill names, validate 1–99 levels, de-duplicate quest/exclusion lists and report missing skills. Partial profiles stay partial; missing skills and quests are never inferred. Account provenance and checked dates are retained when supplied.
+
+## Ranged loadout baseline
+
+The ranged evaluator aggregates supplied ranged attack/ranged-strength bonuses, enforces the GP budget and one-weapon rule, and produces a scoped baseline hit-chance/max-hit/DPS report. It does not model ammunition effects, boosts, prayers, special attacks or boss mechanics, and is not a Vorkath optimiser.

@@ -31,6 +31,7 @@ REPORT_TARGETS = (
     ("item-combat-profile-audit.json", "item-combat-profile-audit.schema.json"),
     ("combat-loadout-evaluation-audit.json", "combat-loadout-evaluation-audit.schema.json"),
     ("combat-loadout-evaluation.json", "combat-loadout-evaluation.schema.json"),
+    ("ranged-loadout-evaluation.json", "ranged-loadout-evaluation.schema.json"),
     ("normalized-player-profile.json", "normalized-player-profile.schema.json"),
 )
 

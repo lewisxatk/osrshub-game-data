@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ranged loadout baseline evaluation",
+  "type": "object",
+  "required": [
+    "status",
+    "budget_gp",
+    "total_cost_gp",
+    "remaining_budget_gp",
+    "selected_items",
+    "aggregated_bonuses",
+    "weapon",
+    "combat_result",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "baseline_ranged_loadout_estimate_with_limitations"
+    },
+    "budget_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_cost_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "remaining_budget_gp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selected_items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "aggregated_bonuses": {
+      "type": "object",
+      "required": [
+        "attack_ranged",
+        "ranged_strength"
+      ],
+      "properties": {
+        "attack_ranged": {
+          "type": "integer"
+        },
+        "ranged_strength": {
+          "type": "integer"
+        }
+      }
+    },
+    "weapon": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "item_name",
+        "attack_speed_ticks"
+      ]
+    },
+    "combat_result": {
+      "type": "object",
+      "required": [
+        "formula_version",
+        "status",
+        "dps",
+        "hit_chance",
+        "max_hit",
+        "limitations"
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
