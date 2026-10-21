@@ -30,6 +30,7 @@ python scripts/validate_dataset.py
 python scripts/report_coverage.py
 python scripts/audit_equipment.py
 python scripts/normalize_combat_data.py
+python scripts/normalize_monster_combat.py
 python -m unittest discover -s tests -v
 ```
 
@@ -42,6 +43,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `dist/equipment.json`: broad equipment candidates with available source metadata
 - `dist/equipment-stats.json`: compact equipment slots, bonuses, requirements, source names, and Wiki links
 - `dist/weapons.json`: compact weapon attack speeds, weapon types, stances, source names, and Wiki links
+- `dist/monsters-combat.json`: normalized monster combat fields where available, with unknown values left null
 - `dist/monsters.json`: compact merged monster records
 - `dist/manifest.json`: generated counts, source precedence, and input SHA-256 hashes
 - `reports/source-conflicts.json`: meaningful field disagreements, skipped source records, and counts of ignored volatile-field differences
@@ -49,6 +51,7 @@ On Windows, run these commands in Command Prompt or PowerShell.
 - `reports/coverage.json`: field-presence percentages across items, equipment, and monsters
 - `reports/equipment-audit.json`: examples and counts of missing equipment bonuses, weapon metadata, attack speeds, and stances
 - `reports/combat-data-summary.json`: counts of normalized equipment and weapon records
+- `reports/monster-combat-coverage.json`: per-field coverage percentages and examples of missing monster fields
 
 Generated data files are build outputs. Do not manually edit them; fix the pipeline or source mapping and rebuild. Raw snapshots are retained separately during the workflow and are available in the downloadable Actions artifact when included by the workflow.
 
