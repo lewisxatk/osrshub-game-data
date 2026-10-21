@@ -1,0 +1,8 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema","title":"OSRS Hub numeric and provenance audit","type":"object",
+ "required":["status","counts","datasets","errors","warnings","guardrails"],
+ "properties":{"generated_at":{"type":"string"},"status":{"enum":["passed","review_required","failed"]},
+ "counts":{"type":"object","required":["datasets_checked","records_checked","error_count","warning_count"],"additionalProperties":{"type":"integer","minimum":0}},
+ "datasets":{"type":"object","additionalProperties":{"type":"object","required":["records"],"properties":{"records":{"type":"integer","minimum":0}}}},
+ "errors":{"type":"array","items":{"type":"object"}},"warnings":{"type":"array","items":{"type":"object"}},
+ "guardrails":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}

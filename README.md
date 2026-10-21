@@ -185,3 +185,8 @@ The database scorecard's `coverage_index_percent` is the arithmetic mean of the 
 ## Actionable database gap queue
 
 Run `python scripts/report_database_gaps.py` after generating the datasets. It writes `reports/database-gap-queue.json`, prioritizing gaps in item requirement records, item relationships, combat-profile provenance, weapon attack speeds, monster core stats and quest coverage. Missing data remains unknown; this report never fills facts with guesses and never interprets missing quest relationships as proof that no prerequisites exist. CI generates and schema-validates the report.
+
+
+## Numeric range and provenance audit
+
+Run `python scripts/audit_numeric_provenance.py` after normalized datasets have been built. It checks IDs, weapon attack-speed tick values, numeric equipment bonuses, monster combat fields and retained HTTP(S) source URLs. It writes `reports/numeric-provenance-audit.json`. Broad outlier thresholds produce review warnings rather than silently changing data. Missing provenance is a warning, while malformed IDs, invalid numeric fields and invalid source URLs fail the audit. Passing means the selected structural/range checks passed—not that every game fact is independently verified.
