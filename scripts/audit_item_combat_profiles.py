@@ -2,6 +2,8 @@
 """Audit joined item combat profiles for structural gaps and suspicious values."""
 from __future__ import annotations
 import json
+import math
+from urllib.parse import urlparse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -49,9 +51,11 @@ def audit_profiles(rows):
                 bad_bonus = True
             elif isinstance(value, str):
                 try:
-                    float(value)
-                except ValueError:
-                    errors.append({**label, "field": field, "issue": "non_numeric_bonus_string"})
+                    parsed = float(value)
+                    if not math.isfinite(parsed):
+                        raise ValueError("non-finite")
+                except (TypeError, ValueError, OverflowError):
+                    errors.append({**label, "field": field, "issue": "non_finite_or_non_numeric_bonus"})
                     bad_bonus = True
         if not all(bonuses.get(field) is not None and bonuses.get(field) != "" for field in BONUS_FIELDS):
             warnings.append({**label, "issue": "incomplete_bonus_coverage"})
@@ -77,7 +81,7 @@ def audit_profiles(rows):
             else:
                 seen_skills = set()
                 for req in reqs:
-                    if not isinstance(req, dict) or not isinstance(req.get("skill"), str) or not req["skill"].strip() or isinstance(req.get("level"), bool) or not isinstance(req.get("level"), int) or req["level"] < 0:
+                    if not isinstance(req, dict) or not isinstance(req.get("skill"), str) or not req["skill"].strip() or isinstance(req.get("level"), bool) or not isinstance(req.get("level"), int) or not 0 <= req["level"] <= 99:
                         errors.append({**label, "field": "skill_requirements", "issue": "invalid_requirement"})
                         continue
                     key = " ".join(req["skill"].casefold().split())
@@ -87,12 +91,28 @@ def audit_profiles(rows):
         if row.get("skill_requirement_record_present") and reqs is None:
             errors.append({**label, "issue": "requirement_presence_flag_conflicts_with_null"})
         urls = row.get("source_urls")
-        if not isinstance(urls, list) or any(not isinstance(url, str) or not url.startswith(("https://", "http://")) for url in urls):
+        if not isinstance(urls, list):
             errors.append({**label, "field": "source_urls", "issue": "invalid_source_urls"})
-        elif urls:
-            counts["with_source_urls"] += 1
         else:
-            warnings.append({**label, "issue": "no_source_url"})
+            invalid_urls = []
+            for url in urls:
+                try:
+                    parsed_url = urlparse(url) if isinstance(url, str) else None
+                    valid = (parsed_url is not None and parsed_url.scheme in ("http", "https")
+                             and bool(parsed_url.hostname) and not any(ch.isspace() for ch in url))
+                    if valid:
+                        _ = parsed_url.port
+                except ValueError:
+                    valid = False
+                if not valid:
+                    invalid_urls.append(url)
+            if invalid_urls:
+                errors.append({**label, "field": "source_urls", "issue": "invalid_source_urls",
+                               "examples": invalid_urls[:5]})
+            elif urls:
+                counts["with_source_urls"] += 1
+            else:
+                warnings.append({**label, "issue": "no_source_url"})
         status = row.get("data_status")
         if status == "partial":
             counts["partial_profiles"] += 1
