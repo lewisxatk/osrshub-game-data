@@ -91,7 +91,7 @@ def main():
     records = []
     source_sha256 = None
     if not SOURCE_PATH.exists():
-        errors.append("No quest source snapshot configured at sources/raw/quests.json")
+        warnings.append("No quest source snapshot configured yet; generated dataset is empty until a source adapter is supplied")
     else:
         payload = SOURCE_PATH.read_bytes()
         source_sha256 = hashlib.sha256(payload).hexdigest()
@@ -119,7 +119,7 @@ def main():
     (DIST / "quests.json").write_text(json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "status": "failed" if errors else "passed_with_warnings" if warnings else "passed",
+        "status": "failed" if errors else "missing_source" if not SOURCE_PATH.exists() else "passed_with_warnings" if warnings else "passed",
         "source": "sources/raw/quests.json",
         "source_sha256": source_sha256,
         "source_record_count": len(raw_rows) if SOURCE_PATH.exists() and "raw_rows" in locals() else 0,
