@@ -38,6 +38,29 @@ class CombatReferenceTests(unittest.TestCase):
     def test_invalid_fixture_is_rejected(self):
         self.assertTrue(reference.validate_fixture({"version": 2, "cases": []}))
 
+
+    def test_duplicate_ids_in_normalized_dataset_fail(self):
+        fixture = {"version": 1, "cases": [{
+            "dataset": "weapons.json", "id": 1, "expected": {"attack_speed": 4},
+            "source": {"url": "https://example.com/item", "checked_on": "2026-01-01"}
+        }]}
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "weapons.json").write_text(
+                '[{"id":1,"attack_speed":4},{"id":1,"attack_speed":5}]', encoding="utf-8"
+            )
+            result = reference.run_cases(fixture, Path(tmp))
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(any(item.get("error") == "duplicate record IDs" for item in result["failures"]))
+
+    def test_fixture_requires_https_and_real_date(self):
+        fixture = {"version": 1, "cases": [{
+            "dataset": "weapons.json", "id": 1, "expected": {"attack_speed": 4},
+            "source": {"url": "http://example.com/item", "checked_on": "2026-02-30"}
+        }]}
+        errors = reference.validate_fixture(fixture)
+        self.assertTrue(any("HTTPS" in error for error in errors))
+        self.assertTrue(any("real calendar date" in error for error in errors))
+
     def test_missing_record_fails(self):
         fixture = {"version": 1, "cases": [{
             "dataset": "weapons.json", "id": 123, "expected": {"attack_speed": 4},
