@@ -1,0 +1,16 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Quest gap queue","type":"object",
+ "required":["generated_at","status","quest_count","quests_with_gaps","unresolved_prerequisite_reference_count","raw_requirement_evidence_records","prioritized_gaps","interpretation"],
+ "properties":{
+  "generated_at":{"type":"string","format":"date-time"},
+  "status":{"enum":["passed","review_required","failed"]},
+  "quest_count":{"type":"integer","minimum":0},
+  "quests_with_gaps":{"type":"integer","minimum":0},
+  "unresolved_prerequisite_reference_count":{"type":"integer","minimum":0},
+  "raw_requirement_evidence_records":{"type":"integer","minimum":0},
+  "prioritized_gaps":{"type":"array","items":{"type":"object","required":["quest_key","quest_name","priority_score","priority","unknown_fields","known_fields_without_field_source","has_quest_source_url","has_raw_requirement_evidence","raw_requirement_link_count","next_action"],"properties":{"quest_key":{"type":["string","null"]},"quest_name":{"type":["string","null"]},"priority_score":{"type":"integer","minimum":0},"priority":{"enum":["critical","high","medium","low"]},"unknown_fields":{"type":"array","items":{"type":"string"}},"known_fields_without_field_source":{"type":"array","items":{"type":"string"}},"has_quest_source_url":{"type":"boolean"},"has_raw_requirement_evidence":{"type":"boolean"},"raw_requirement_link_count":{"type":"integer","minimum":0},"next_action":{"type":"string"}},"additionalProperties":false}},
+  "interpretation":{"type":"string"}
+ },
+ "additionalProperties":true
+}
