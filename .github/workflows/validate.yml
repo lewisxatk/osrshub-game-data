@@ -65,6 +65,8 @@ jobs:
         run: python scripts/import_quests.py
       - name: Build quest prerequisite graph
         run: python scripts/build_quest_relationships.py
+      - name: Audit quest fact coverage and field-level evidence
+        run: python scripts/audit_quest_fact_quality.py
       - name: Report quest readiness
         run: python scripts/report_quest_readiness.py
       - name: Report normalized equipment and weapon provenance
