@@ -84,7 +84,7 @@ def build_profiles(items, equipment, weapons, requirements):
         summary["profiles_with_skill_requirements"] += bool(req and req.get("requirements_status") == "known")
         summary["profiles_with_known_empty_requirements"] += bool(req and req.get("requirements_status") == "known_empty")
         summary["profiles_with_partial_requirements"] += bool(req and req.get("requirements_status") == "partial")
-        summary["profiles_with_unknown_requirements"] += not req
+        summary["profiles_with_unknown_requirements"] += not req or req.get("requirements_status", "unknown") == "unknown"
         summary["profiles_with_attack_speed"] += bool(weapon and isinstance(weapon.get("attack_speed"), int) and not isinstance(weapon.get("attack_speed"), bool) and weapon["attack_speed"] > 0)
         summary["profiles_with_all_bonus_fields"] += bool(equip and all(isinstance(bonuses.get(field), (int, float)) and not isinstance(bonuses.get(field), bool) for field in BONUS_FIELDS))
         summary["profiles_missing_equipment_record"] += equip is None
