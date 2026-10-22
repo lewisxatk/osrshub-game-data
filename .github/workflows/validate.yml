@@ -129,12 +129,12 @@ jobs:
         run: python scripts/report_database_scorecard.py
       - name: Ensure cross-domain audit report exists before schema validation
         run: python scripts/audit_domain_consistency.py --output reports/domain-consistency-audit.json
+      - name: Audit cross-domain Combat Lab readiness
+        run: python scripts/report_combat_lab_readiness.py
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness
         run: python scripts/report_combat_readiness.py
-      - name: Audit cross-domain Combat Lab readiness
-        run: python scripts/report_combat_lab_readiness.py
       - name: Check combat reference fixtures
         run: python scripts/check_combat_reference.py
       - name: Summarize pipeline health
