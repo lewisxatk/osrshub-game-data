@@ -66,7 +66,24 @@ def build_graph(quests):
                 unres.append(str(req)); unresolved.append({"quest_key":key,"requirement":req,"reason":"ambiguous_name","candidate_keys":sorted(matches)})
             else:
                 unres.append(str(req)); unresolved.append({"quest_key":key,"requirement":req,"reason":"not_found"})
-        graph[key]={"quest_key":key,"name":q["name"],"prerequisites":[{"quest_key":pk,"name":by_key[pk]["name"],"completion_state":stage} for pk,stage in sorted(prereqs.items())],"dependents":[],"unresolved_requirements":sorted(set(unres),key=str.casefold),"skill_requirements":q.get("skill_requirements",[]),"source_url":q.get("source_url")}
+        evidence=q.get("requirement_evidence") if isinstance(q.get("requirement_evidence"),dict) else {}
+        candidates=[]
+        raw_links=evidence.get("requirement_links",[])
+        if isinstance(raw_links,list):
+            seen_candidates=set()
+            for link in raw_links:
+                if not isinstance(link,dict): continue
+                title=link.get("title"); url=link.get("url")
+                if not isinstance(title,str) or not title.strip() or not isinstance(url,str) or not url.startswith("https://"): continue
+                norm=canonical(title); matches=by_name.get(norm,[])
+                if len(matches)==1: status="unique_unverified_candidate"
+                elif len(matches)>1: status="ambiguous"
+                else: status="not_a_catalogue_match"
+                identity=(title.casefold(),url)
+                if identity in seen_candidates: continue
+                seen_candidates.add(identity)
+                candidates.append({"title":title,"url":url,"match_status":status,"candidate_quest_keys":sorted(matches)})
+        graph[key]={"quest_key":key,"name":q["name"],"prerequisites":[{"quest_key":pk,"name":by_key[pk]["name"],"completion_state":stage} for pk,stage in sorted(prereqs.items())],"dependents":[],"unresolved_requirements":sorted(set(unres),key=str.casefold),"skill_requirements":q.get("skill_requirements",[]),"source_url":q.get("source_url"),"requirement_candidates":candidates}
     for key in graph: graph[key]["dependents"]=[{"quest_key":child,"name":by_key[child]["name"]} for child in sorted(deps.get(key,set()))]
     cycles=find_cycles(graph)
     duplicates=[{"name":by_key[keys[0]]["name"],"quest_keys":sorted(keys)} for keys in by_name.values() if len(keys)>1]
