@@ -63,6 +63,8 @@ jobs:
         run: python scripts/normalize_monster_combat.py
       - name: Download source-backed raw quest requirement evidence
         run: python scripts/download_quest_requirement_evidence.py
+      - name: Extract conservative quest skill-level text candidates
+        run: python scripts/extract_quest_skill_requirement_candidates.py
       - name: Import quest fact snapshot when available
         run: python scripts/import_quests.py
       - name: Build quest prerequisite graph
@@ -143,5 +145,6 @@ jobs:
             sources/raw/manifest.json
             sources/raw/quest-catalog.json
             sources/raw/quest-requirement-evidence.json
+            sources/raw/quest-skill-requirement-candidates.json
           if-no-files-found: warn
           retention-days: 30
