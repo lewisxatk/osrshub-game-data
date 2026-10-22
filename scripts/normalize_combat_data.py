@@ -41,6 +41,7 @@ def normalize_weapon(row):
         if not isinstance(stance, dict):
             continue
         normalized_stances.append({
+            "name": stance.get("name"),
             "combat_style": stance.get("combat_style"),
             "attack_type": stance.get("attack_type"),
             "attack_style": stance.get("attack_style"),
