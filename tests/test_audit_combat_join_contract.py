@@ -49,11 +49,17 @@ class CombatJoinContractTests(unittest.TestCase):
         self.assertNotEqual(result["status"], "failed")
         self.assertIn(2, result["coverage_gaps"]["monsters_without_core_combat_fields"])
 
-    def test_weapon_stances_need_preserved_names(self):
+    def test_stance_without_name_is_valid_when_source_style_is_present(self):
         data = fixture()
         data["weapons.json"][0]["stances"] = [{"combat_style": "melee"}]
         result = audit_datasets(data)
-        self.assertTrue(any(e.get("issue") == "stance_name_missing" for e in result["errors"]))
+        self.assertFalse(any(e.get("issue") == "stance_metadata_missing" for e in result["errors"]))
+
+    def test_stance_with_no_identifying_metadata_is_rejected(self):
+        data = fixture()
+        data["weapons.json"][0]["stances"] = [{}]
+        result = audit_datasets(data)
+        self.assertTrue(any(e.get("issue") == "stance_metadata_missing" for e in result["errors"]))
 
 
 if __name__ == "__main__":
