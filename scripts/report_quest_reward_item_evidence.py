@@ -81,7 +81,7 @@ def build_report(quests, items):
     unmatched.sort(key=lambda row: (canon(row["quest_name"]), canon(row["reward_text"])))
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "status": "review_required" if unmatched or unknown_reward_quests else "passed",
+        "status": "review_required" if unmatched or unknown_reward_quests or not quests or not items else "passed",
         "quest_dataset_record_count": len(quests),
         "item_dataset_record_count": len(items),
         "exact_reward_item_match_count": len(matches),
