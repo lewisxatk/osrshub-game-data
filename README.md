@@ -239,3 +239,8 @@ The quest pipeline downloads the current OSRS Wiki quest title catalogue and ext
 ## Quest skill requirement candidates
 
 The quest pipeline now scans the Wiki's raw quest-requirement text for conservative patterns such as `35 Crafting` and emits a separate candidate report at `reports/quest-skill-requirement-candidates.json`. Every match retains the quest key, source URL, catalogue-match status and explicit interpretation limits. Candidates are **not** promoted into normalized quest facts: this text alone may not establish whether a level is needed to start or complete a quest, whether boosts apply, or whether a no-match means no requirement. The candidate report is schema-validated in CI and covered by regression tests.
+
+
+## Quest skill candidate quality audit
+
+Run `python scripts/audit_quest_skill_candidates.py` after downloading quest requirement evidence and extracting skill-level candidates. The report `reports/quest-skill-candidate-audit.json` counts candidate matches by skill, highlights unmatched catalogue titles and repeated quest/skill matches for manual review, and shows how many evidence rows produced no skill-level text candidate. The Sailing skill is included in the conservative text matcher. A missing match is not evidence that a quest has no skill requirement, and this audit never promotes candidates into verified planner facts. CI tests the audit and validates its report schema.
