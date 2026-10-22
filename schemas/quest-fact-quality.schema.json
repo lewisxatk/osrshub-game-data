@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub quest fact quality report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "quest_count",
+    "fields",
+    "duplicate_key_count",
+    "duplicate_normalized_name_count",
+    "unresolved_prerequisite_reference_count",
+    "errors",
+    "warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required",
+        "failed"
+      ]
+    },
+    "quest_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fields": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "known_count",
+          "unknown_count",
+          "known_empty_count",
+          "source_url_count",
+          "known_without_field_source_count"
+        ],
+        "properties": {
+          "known_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unknown_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "known_empty_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_url_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "known_without_field_source_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "duplicate_key_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_normalized_name_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unresolved_prerequisite_reference_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array"
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
