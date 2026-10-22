@@ -11,7 +11,7 @@
     "graph_sources": {"type": "array"},
     "relationship_count": {"type": "integer", "minimum": 0},
     "resolved_relationship_count": {"type": "integer", "minimum": 0},
-    "relationships": {"type": "array", "items": {"type": "object", "required": ["relationship_type", "target_dataset", "target_record_id", "record_facts", "known_fields", "unknown_fields"]}},
+    "relationships": {"type": "array", "items": {"type": "object", "required": ["relationship_type", "target_dataset", "target_record_id", "record_facts", "known_fields", "known_empty_fields", "unknown_fields"]}},
     "unresolved_relationships": {"type": "array", "items": {"type": "object"}},
     "guardrails": {"type": "array", "items": {"type": "string"}}
   },
