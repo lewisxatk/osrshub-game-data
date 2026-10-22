@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub item eligibility coverage summary",
+  "type": "object",
+  "required": ["generated_at", "status", "item_count_evaluated", "counts", "manual_exclusions", "items_missing_requirement_record", "items_missing_player_skill_levels", "items_with_malformed_requirement_data", "items_with_unverified_unlock_or_completeness_checks", "items_with_requirement_source_names", "items_with_https_requirement_source_urls", "source_name_coverage_percent", "https_source_url_coverage_percent", "errors", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["passed_with_warnings", "failed"]},
+    "item_count_evaluated": {"type": "integer", "minimum": 0},
+    "counts": {"type": "object", "required": ["excluded", "ineligible_by_known_skill_requirement", "unknown"], "properties": {
+      "excluded": {"type": "integer", "minimum": 0},
+      "ineligible_by_known_skill_requirement": {"type": "integer", "minimum": 0},
+      "unknown": {"type": "integer", "minimum": 0}
+    }, "additionalProperties": false},
+    "manual_exclusions": {"type": "integer", "minimum": 0},
+    "items_missing_requirement_record": {"type": "integer", "minimum": 0},
+    "items_missing_player_skill_levels": {"type": "integer", "minimum": 0},
+    "items_with_malformed_requirement_data": {"type": "integer", "minimum": 0},
+    "items_with_unverified_unlock_or_completeness_checks": {"type": "integer", "minimum": 0},
+    "items_with_requirement_source_names": {"type": "integer", "minimum": 0},
+    "items_with_https_requirement_source_urls": {"type": "integer", "minimum": 0},
+    "source_name_coverage_percent": {"type": "number", "minimum": 0, "maximum": 100},
+    "https_source_url_coverage_percent": {"type": "number", "minimum": 0, "maximum": 100},
+    "errors": {"type": "array", "items": {"type": "object"}},
+    "guardrails": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

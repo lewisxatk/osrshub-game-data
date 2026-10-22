@@ -22,6 +22,7 @@ DATA_TARGETS = (
 )
 REPORT_TARGETS = (
     ("item-eligibility.json", "item-eligibility.schema.json"),
+    ("item-eligibility-coverage.json", "item-eligibility-coverage.schema.json"),
     ("equipment-shortlist.json", "equipment-shortlist.schema.json"),
     ("weapon-baseline-comparison.json", "weapon-baseline-comparison.schema.json"),
     ("equipment-loadout-candidate.json", "equipment-loadout-candidate.schema.json"),
