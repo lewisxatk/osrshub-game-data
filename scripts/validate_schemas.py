@@ -10,6 +10,17 @@ DIST = ROOT / "dist"
 SCHEMAS = ROOT / "schemas"
 REPORTS = ROOT / "reports"
 DATA_TARGETS = (
+    ("prayers.json", "extended-source-record.schema.json"),
+    ("npc-drops.json", "extended-source-record.schema.json"),
+    ("drop-subtables.json", "extended-source-record.schema.json"),
+    ("shops-by-shop.json", "extended-source-record.schema.json"),
+    ("shops-by-npc.json", "extended-source-record.schema.json"),
+    ("slayer-tasks.json", "extended-source-record.schema.json"),
+    ("npc-interactions.json", "extended-source-record.schema.json"),
+    ("npc-dialogues.json", "extended-source-record.schema.json"),
+    ("npcs-summary.json", "extended-source-record.schema.json"),
+    ("objects-summary.json", "extended-source-record.schema.json"),
+    ("models-summary.json", "extended-source-record.schema.json"),
     ("items.json", "item.schema.json"),
     ("monsters-combat.json", "monster-combat.schema.json"),
     ("equipment-stats.json", "equipment-stats.schema.json"),
