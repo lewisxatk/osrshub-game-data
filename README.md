@@ -302,3 +302,16 @@ python scripts/report_quest_reward_item_evidence.py --output reports/quest-rewar
 ```
 
 The report joins structured quest reward text to `dist/items.json` using only exact, case-insensitive normalized name matches. It records both item IDs and the source pointers already present in the generated data. Fuzzy matches and duplicate item names are withheld; quests whose reward fields are not explicitly marked known are listed separately as unknown. This is intentionally conservative: an exact reward-text match does **not** prove the item is equippable, permanently unlocked, or usable only after that quest. CI runs regression tests and validates the report schema.
+
+
+## Combat Studio join contract audit
+
+After normalized items, equipment, weapons, requirements, item combat profiles, and monster combat records are generated, run:
+
+```bash
+python scripts/audit_combat_join_contract.py
+```
+
+The audit checks exact numeric-ID joins, duplicate or invalid identifiers, profile join flags, weapon stance names, numeric combat-field validity, and coverage gaps across the core Combat Studio datasets. Structural contradictions fail validation; missing facts are reported as gaps and are never converted into zeroes or treated as proof that an item has no requirements. The audit validates structural readiness only, not source accuracy, formula correctness, or boss-specific DPS.
+
+Weapon stance names are retained during normalization so the site can identify stances without reconstructing them from source snapshots.
