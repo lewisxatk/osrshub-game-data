@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Combat Lab readiness audit",
+  "type":"object",
+  "required":["generated_at","status","purpose","source_dataset_summaries","cross_domain_joins","findings","finding_groups_with_open_gaps","recommended_next_steps","errors","guardrails"],
+  "properties":{
+    "generated_at":{"type":"string"},
+    "status":{"enum":["failed","review_required","passed"]},
+    "purpose":{"type":"string"},
+    "source_dataset_summaries":{"type":"object"},
+    "cross_domain_joins":{"type":"object"},
+    "findings":{"type":"array","items":{"type":"object","required":["severity","area","count","examples","meaning"],"properties":{"severity":{"enum":["high","medium","low"]},"area":{"type":"string"},"count":{"type":"integer","minimum":0},"examples":{"type":"array"},"meaning":{"type":"string"}}}},
+    "finding_groups_with_open_gaps":{"type":"object"},
+    "recommended_next_steps":{"type":"array","items":{"type":"object"}},
+    "errors":{"type":"array","items":{"type":"string"}},
+    "guardrails":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}
