@@ -31,6 +31,9 @@ class ExtendedSourceImportTests(unittest.TestCase):
             report = build_datasets(Path(raw), Path(dist))
             self.assertEqual(report["status"], "passed")
             self.assertEqual(report["dataset_count"], len(SOURCES))
+            prayer_fields = report["datasets"]["prayers.json"]["field_inventory"]["fields"]
+            self.assertIn("name", prayer_fields)
+            self.assertEqual(prayer_fields["name"]["records_with_value"], 1)
             self.assertTrue(all(Path(dist, name).exists() for name in (spec[0] for spec in SOURCES.values())))
 
     def test_empty_source_is_not_silently_accepted(self):
