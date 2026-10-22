@@ -17,6 +17,7 @@ class ItemCombatProfileTests(unittest.TestCase):
         self.assertEqual(row["bonuses"]["attack_slash"], 82)
         self.assertIsNone(row["bonuses"]["attack_stab"])
         self.assertEqual(row["skill_requirements"][0]["level"], 70)
+        self.assertEqual(row["skill_requirements_status"], "unknown")
         self.assertEqual(row["data_status"], "partial")
         self.assertEqual(summary["profiles_with_attack_speed"], 1)
         self.assertIn("https://example.test/whip", row["source_urls"])
@@ -26,6 +27,8 @@ class ItemCombatProfileTests(unittest.TestCase):
         row = rows[0]
         self.assertIsNone(row["attack_speed"])
         self.assertIsNone(row["skill_requirements"])
+        self.assertEqual(row["skill_requirements_status"], "unknown")
+        self.assertEqual(summary["profiles_with_unknown_requirements"], 1)
         self.assertFalse(row["equipment_record_present"])
         self.assertEqual(row["bonuses"]["melee_strength"], None)
         self.assertEqual(summary["profiles_missing_weapon_record"], 1)
