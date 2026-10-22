@@ -46,6 +46,7 @@ REPORT_TARGETS = (
     ("domain-consistency-audit.json", "domain-consistency-audit.schema.json"),
     ("quest-gap-queue.json", "quest-gap-queue.schema.json"),
     ("quest-fact-quality.json", "quest-fact-quality.schema.json"),
+    ("quest-skill-requirement-candidates.json", "quest-skill-requirement-candidates.schema.json"),
 )
 
 
@@ -97,6 +98,8 @@ def main():
     for data_name, schema_name in REPORT_TARGETS:
         validate_file(REPORTS / data_name, SCHEMAS / schema_name, errors, checked, False)
     validate_file(ROOT / "sources" / "raw" / "quest-requirement-evidence.json", SCHEMAS / "quest-requirement-evidence.schema.json", errors, checked, True)
+    validate_file(REPORTS / "quest-skill-requirement-candidates.json", SCHEMAS / "quest-skill-requirement-candidates.schema.json", errors, checked, False)
+    validate_file(ROOT / "sources" / "raw" / "quest-skill-requirement-candidates.json", SCHEMAS / "quest-skill-requirement-candidates.schema.json", errors, checked, True) if False else None
     result = {
         "status": "failed" if errors else "passed",
         "datasets": checked, "error_count": len(errors), "errors": errors,
