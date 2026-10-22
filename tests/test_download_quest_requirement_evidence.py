@@ -11,8 +11,11 @@ class EvidenceTests(unittest.TestCase):
   bio=next(x for x in rows if x["quest_name"]=="Biohazard")
   self.assertEqual(bio["requirements_text"],"Plague City")
   self.assertEqual(bio["requirement_links"][0]["title"],"Plague City")
- def test_ignores_unmatched_rows(self):
-  self.assertEqual(extract_rows('<table class="wikitable"><tr><td>Other</td><td>Thing</td></tr></table>',[{"name":"Cook's Assistant"}]),[])
+ def test_preserves_unmatched_source_rows_for_audit(self):
+  rows=extract_rows('<table class="wikitable"><tr><td>Other</td><td>Thing</td></tr></table>',[{"name":"Cook's Assistant"}])
+  self.assertEqual(len(rows),1)
+  self.assertEqual(rows[0]["catalogue_match_status"],"unmatched_catalogue_title")
+  self.assertTrue(rows[0]["quest_key"].startswith("unmatched-"))
  def test_dash_is_raw_evidence_not_assertion_of_no_requirements(self):
   row=extract_rows('<table class="wikitable"><tr><td>Cook&#39;s Assistant</td><td>-</td></tr></table>',[{"name":"Cook's Assistant"}])[0]
   self.assertEqual(row["requirements_text"],"-")
