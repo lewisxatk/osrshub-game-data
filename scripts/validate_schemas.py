@@ -53,6 +53,7 @@ REPORT_TARGETS = (
     ("loadout-upgrade-delta.json", "loadout-upgrade-delta.schema.json"),
     ("game-fact-card-example.json", "game-fact-card.schema.json"),
     ("item-knowledge-explorer-example.json", "item-knowledge-explorer.schema.json"),
+    ("quest-reward-item-evidence.json", "quest-reward-item-evidence.schema.json"),
 )
 
 
