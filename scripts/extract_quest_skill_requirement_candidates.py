@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 RAW=ROOT/"sources"/"raw"
 REPORTS=ROOT/"reports"
-SKILLS=("Attack","Strength","Defence","Ranged","Prayer","Magic","Runecraft","Hitpoints","Crafting","Mining","Smithing","Fishing","Cooking","Firemaking","Woodcutting","Agility","Herblore","Thieving","Fletching","Slayer","Farming","Construction","Hunter")
+SKILLS=("Attack","Strength","Defence","Ranged","Prayer","Magic","Runecraft","Hitpoints","Crafting","Mining","Smithing","Fishing","Cooking","Firemaking","Woodcutting","Agility","Herblore","Thieving","Fletching","Slayer","Farming","Construction","Hunter","Sailing")
 # Deliberately strict: require a numeric level immediately followed by a known skill name.
 PATTERN=re.compile(r"(?<![A-Za-z0-9])(?P<level>\d{1,2})\s+(?P<skill>"+ "|".join(re.escape(s) for s in sorted(SKILLS,key=len,reverse=True))+r")(?![A-Za-z])",re.I)
 SOURCE="https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest"
