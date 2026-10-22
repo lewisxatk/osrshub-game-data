@@ -106,6 +106,16 @@ def load_source(path):
     raise ValueError("quest source must be a JSON array or object of records")
 
 
+def source_summary(source_path, primary_path, raw_rows):
+    """Describe the actual snapshot used, including catalogue fallback runs."""
+    used_catalogue = source_path == CATALOG_PATH
+    return {
+        "source_record_count": len(raw_rows) if isinstance(raw_rows, list) else 0,
+        "source_kind": "title_catalogue_only" if used_catalogue else "structured_quest_snapshot",
+        "catalogue_fallback_used": used_catalogue and primary_path.exists(),
+    }
+
+
 def main():
     errors = []
     warnings = []
@@ -171,7 +181,9 @@ def main():
         "status": "failed" if errors else "missing_source" if not source_path.exists() else "passed_with_warnings" if warnings else "passed",
         "source": str(source_path.relative_to(ROOT)) if source_path.exists() else "sources/raw/quests.json",
         "source_sha256": source_sha256,
-        "source_record_count": len(raw_rows) if SOURCE_PATH.exists() and "raw_rows" in locals() else 0,
+        "source_record_count": source_summary(source_path, SOURCE_PATH, raw_rows if "raw_rows" in locals() else None)["source_record_count"],
+        "source_kind": source_summary(source_path, SOURCE_PATH, raw_rows if "raw_rows" in locals() else None)["source_kind"],
+        "catalogue_fallback_used": source_summary(source_path, SOURCE_PATH, raw_rows if "raw_rows" in locals() else None)["catalogue_fallback_used"],
         "imported_record_count": len(records),
         "records_with_source_url": sum(bool(row["source_url"]) for row in records),
         "records_with_requirements": sum(bool(row["requirements"]) for row in records),
