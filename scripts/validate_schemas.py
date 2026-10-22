@@ -51,6 +51,8 @@ REPORT_TARGETS = (
     ("account-quest-progression.json", "account-quest-progression.schema.json"),
     ("combat-lab-readiness.json", "combat-lab-readiness.schema.json"),
     ("loadout-upgrade-delta.json", "loadout-upgrade-delta.schema.json"),
+    ("game-fact-card-example.json", "game-fact-card.schema.json"),
+    ("item-knowledge-explorer-example.json", "item-knowledge-explorer.schema.json"),
 )
 
 
