@@ -32,6 +32,16 @@ class QuestReadinessTests(unittest.TestCase):
         self.assertEqual(result["reward_coverage_percent"], 50.0)
         self.assertEqual(result["status"], "incomplete")
 
+    def test_explicit_known_empty_is_not_counted_as_unknown(self):
+        fields = ("requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type")
+        states = {field: "unknown" for field in fields}
+        states["requirements"] = "known"
+        quest = {"name": "A", "requirements": [], "skill_requirements": [], "rewards": [], "field_status": states}
+        result = readiness.build_report([quest], [], {"status": "passed"}, {"unresolved_requirement_count": 0})
+        self.assertEqual(result["field_status_counts"]["requirements"]["known"], 1)
+        self.assertEqual(result["field_status_counts"]["requirements"]["known_empty"], 1)
+        self.assertEqual(result["field_status_counts"]["rewards"]["unknown"], 1)
+
     def test_invalid_record_is_reported(self):
         result = readiness.build_report([{"name": " " }], [], {}, {})
         self.assertEqual(result["status"], "failed")
