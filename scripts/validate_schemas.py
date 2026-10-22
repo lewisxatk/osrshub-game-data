@@ -38,6 +38,7 @@ REPORT_TARGETS = (
     ("database-integrity.json", "database-integrity.schema.json"),
     ("database-gap-queue.json", "database-gap-queue.schema.json"),
     ("numeric-provenance-audit.json", "numeric-provenance-audit.schema.json"),
+    ("item-relationship-audit.json", "item-relationship-audit.schema.json"),
 )
 
 def load_schema(path):
