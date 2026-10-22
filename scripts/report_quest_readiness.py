@@ -12,12 +12,29 @@ def build_report(quests,relationships,import_report,relationship_report):
     if not isinstance(import_report,dict): errors.append("Quest import report missing or malformed"); import_report={}
     if not isinstance(relationship_report,dict): errors.append("Quest relationship report missing or malformed"); relationship_report={}
     names=set(); duplicates=0; source=prereqs=skills=rewards=0
+    field_status_counts = {field: {"known": 0, "unknown": 0, "known_empty": 0, "field_source_url": 0} for field in ("requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type")}
     for i,row in enumerate(quests):
         if not isinstance(row,dict) or not isinstance(row.get("name"),str) or not row["name"].strip():
             errors.append(f"Invalid quest record at index {i}"); continue
         name=" ".join(row["name"].casefold().split())
         if name in names: duplicates+=1
-        names.add(name); source+=bool(row.get("source_url")); prereqs+=bool(row.get("requirements")); skills+=bool(row.get("skill_requirements")); rewards+=bool(row.get("rewards"))
+        names.add(name); source+=bool(row.get("source_url"))
+        states = row.get("field_status") if isinstance(row.get("field_status"), dict) else {}
+        field_sources = row.get("field_sources") if isinstance(row.get("field_sources"), dict) else {}
+        for field, counts in field_status_counts.items():
+            state = states.get(field)
+            if state not in ("known", "unknown"):
+                # Legacy records have no explicit state; do not infer known from a non-empty value.
+                state = "unknown"
+            counts[state] += 1
+            value = row.get(field)
+            if state == "known" and field in ("requirements", "skill_requirements", "rewards") and isinstance(value, list) and not value:
+                counts["known_empty"] += 1
+            if isinstance(field_sources.get(field), str) and field_sources[field].startswith("https://"):
+                counts["field_source_url"] += 1
+        prereqs += states.get("requirements") == "known"
+        skills += states.get("skill_requirements") == "known"
+        rewards += states.get("rewards") == "known"
     total=len(quests)
     def percent(count): return round(100.0*count/total,2) if total else 0.0
     if not total: warnings.append("No quest fact records imported; title catalogue is not a quest-fact database")
@@ -37,6 +54,7 @@ def build_report(quests,relationships,import_report,relationship_report):
       "source_url_coverage_percent":percent(source),"prerequisite_coverage_percent":percent(prereqs),
       "skill_requirement_coverage_percent":percent(skills),"reward_coverage_percent":percent(rewards),
       "duplicate_name_count":duplicates,"relationship_count":len(relationships),"unresolved_requirement_count":unresolved,
+      "field_status_counts":field_status_counts,
       "account_restriction_safe_to_assume_unlisted_quests_complete":False,
       "warnings":warnings,"errors":errors,"import_status":import_report.get("status"),"relationship_status":relationship_report.get("status"),
       "interpretation":"Coverage measures field presence only. Empty fields are unknown until source review establishes that no requirement or reward applies."
