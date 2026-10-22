@@ -79,6 +79,8 @@ jobs:
         run: python scripts/compare_weapon_baselines.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000 --style slash --output reports/weapon-baseline-comparison.json
       - name: Build joined item combat profiles
         run: python scripts/build_item_combat_profiles.py
+      - name: Audit selected loadout compatibility using generated database only
+        run: python scripts/audit_loadout_compatibility.py --selected examples/loadout-compatibility-selected.example.json --profile examples/player-profile.json --output reports/loadout-compatibility.json
       - name: Build item relationship graph
         run: python scripts/build_item_relationships.py
       - name: Audit item relationship graph joins

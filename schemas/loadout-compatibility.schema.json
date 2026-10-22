@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub selected loadout compatibility audit",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "dataset",
+    "selection_count",
+    "results",
+    "summary",
+    "errors",
+    "warnings",
+    "profile_warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed_known_checks",
+        "review_required",
+        "failed"
+      ]
+    },
+    "dataset": {
+      "const": "item-combat-profiles.json"
+    },
+    "selection_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "status"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "requested_slot": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "database_slot": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "meets_known_checks",
+              "review_required",
+              "excluded",
+              "incompatible",
+              "ineligible_by_known_skill_requirement",
+              "unknown"
+            ]
+          },
+          "cost_gp": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "skill_requirements": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object"
+            }
+          },
+          "source_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "passed_known_checks",
+        "review_required",
+        "ineligible_or_excluded",
+        "known_cost_count",
+        "total_cost_gp",
+        "budget_gp",
+        "error_count",
+        "warning_count"
+      ],
+      "properties": {
+        "passed_known_checks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "review_required": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ineligible_or_excluded": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "known_cost_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_cost_gp": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "budget_gp": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "error_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "profile_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

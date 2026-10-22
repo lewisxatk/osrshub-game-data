@@ -217,3 +217,8 @@ python scripts/compare_weapons_from_database.py --left 4587 --right 4151 --outpu
 ```
 
 The weapon coverage report describes field presence and flags malformed or duplicate profile IDs. The comparison report shows stored bonus values side by side and computes a numeric delta only when both database records contain finite numeric values. Missing values remain unknown; no damage, eligibility, or DPS conclusion is inferred by this comparison. Both reports are checked against JSON Schemas in CI.
+
+
+## Database-only loadout compatibility audit
+
+Run `python scripts/audit_loadout_compatibility.py --selected examples/loadout-compatibility-selected.example.json --profile examples/player-profile.json` after joined item combat profiles have been generated. It checks selected item IDs against `dist/item-combat-profiles.json`, validates requested equipment slots, flags duplicate slots/items, evaluates only known skill requirements, respects manual exclusions, and can optionally audit caller-supplied GP costs and budgets. It never performs network lookups. Missing quest/unlock restrictions, requirements, skill levels, source URLs or prices remain unknown; a passing report means only that the selected known checks passed, not that the loadout is fully eligible or optimised for DPS.

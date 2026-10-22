@@ -42,6 +42,7 @@ REPORT_TARGETS = (
     ("item-relationship-audit.json", "item-relationship-audit.schema.json"),
     ("weapon-profile-coverage.json", "weapon-profile-coverage.schema.json"),
     ("weapon-database-comparison.json", "weapon-database-comparison.schema.json"),
+    ("loadout-compatibility.json", "loadout-compatibility.schema.json"),
 )
 
 def load_schema(path):
