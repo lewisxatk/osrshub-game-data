@@ -314,4 +314,4 @@ python scripts/audit_combat_join_contract.py
 
 The audit checks exact numeric-ID joins, duplicate or invalid identifiers, profile join flags, weapon stance names, numeric combat-field validity, and coverage gaps across the core Combat Studio datasets. Structural contradictions fail validation; missing facts are reported as gaps and are never converted into zeroes or treated as proof that an item has no requirements. The audit validates structural readiness only, not source accuracy, formula correctness, or boss-specific DPS.
 
-Weapon stance names are retained during normalization so the site can identify stances without reconstructing them from source snapshots.
+Weapon stance names are retained when supplied by the source, along with combat-style, attack-style, and attack-type fields; the audit accepts meaningful source stance metadata without inventing a label when the source has none.
