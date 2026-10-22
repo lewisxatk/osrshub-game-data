@@ -44,6 +44,7 @@ REPORT_TARGETS = (
     ("weapon-database-comparison.json", "weapon-database-comparison.schema.json"),
     ("loadout-compatibility.json", "loadout-compatibility.schema.json"),
     ("domain-consistency-audit.json", "domain-consistency-audit.schema.json"),
+    ("quest-gap-queue.json", "quest-gap-queue.schema.json"),
     ("quest-fact-quality.json", "quest-fact-quality.schema.json"),
 )
 
