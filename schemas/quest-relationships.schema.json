@@ -10,7 +10,8 @@
     "dependents": {"type": "array", "items": {"$ref": "#/$defs/dependentEdge"}},
     "unresolved_requirements": {"type": "array", "items": {"type": "string"}},
     "skill_requirements": {"type": "array", "items": {"type": "object", "required": ["skill", "level"], "properties": {"skill": {"type": "string", "minLength": 1}, "level": {"type": "integer", "minimum": 0}}, "additionalProperties": false}},
-    "source_url": {"type": ["string", "null"], "pattern": "^https://"}
+    "source_url": {"type": ["string", "null"], "pattern": "^https://"},
+    "requirement_candidates": {"type": "array", "items": {"type": "object", "required": ["title", "url", "match_status", "candidate_quest_keys"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "pattern": "^https://"}, "match_status": {"enum": ["unique_unverified_candidate", "ambiguous", "not_a_catalogue_match"]}, "candidate_quest_keys": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}}
   },
   "$defs": {
     "prerequisiteEdge": {
