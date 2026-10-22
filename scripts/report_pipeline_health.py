@@ -38,18 +38,30 @@ def read_report(path: Path):
         return None, f"unreadable: {exc}"
 
 def summarize_reports(reports):
-    checks, missing, failures = {}, [], []
+    checks, missing, failures, reviews = {}, [], [], []
     for key, (data, error) in reports.items():
         if error:
             checks[key] = {"status": "missing" if error == "missing" else "unreadable", "detail": error}
             (missing if error == "missing" else failures).append(key)
             continue
-        status = data.get("status", "informational") if isinstance(data, dict) else "unknown"
-        checks[key] = {"status": status}
-        if status in {"failed", "error"}:
+        if not isinstance(data, dict):
+            checks[key] = {"status": "invalid_report", "detail": "Report root must be a JSON object."}
             failures.append(key)
-    overall = "failed" if failures else "incomplete" if missing else "passed"
-    return {"status": overall, "checks": checks, "missing_reports": missing, "failed_reports": failures}
+            continue
+        status = data.get("status", "informational")
+        checks[key] = {"status": status}
+        if status in {"failed", "error", "invalid_report"}:
+            failures.append(key)
+        elif status in {"review_required", "warning", "warnings"}:
+            reviews.append(key)
+    overall = "failed" if failures else "review_required" if reviews else "incomplete" if missing else "passed"
+    return {
+        "status": overall,
+        "checks": checks,
+        "missing_reports": missing,
+        "failed_reports": failures,
+        "review_required_reports": reviews,
+    }
 
 def main():
     loaded = {key: read_report(REPORTS / filename) for key, filename in INPUTS.items()}
