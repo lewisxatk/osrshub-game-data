@@ -138,7 +138,11 @@ def main():
                     continue
                 evidence = evidence_by_name.get(" ".join(str(source_row.get("name", source_row.get("title", ""))).casefold().split()))
                 if evidence:
-                    source_row["requirement_evidence"] = evidence
+                    source_row["requirement_evidence"] = {
+                        field: evidence[field]
+                        for field in ("requirements_text", "requirement_links", "source_url", "evidence_status")
+                        if field in evidence
+                    }
                     source_row.setdefault("field_sources", {})
                     if isinstance(source_row["field_sources"], dict):
                         source_row["field_sources"].setdefault("requirements", evidence.get("source_url"))
