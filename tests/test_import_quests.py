@@ -42,7 +42,7 @@ class QuestImportTests(unittest.TestCase):
         summary = quests.source_summary(quests.CATALOG_PATH, Path("missing-quests.json"), rows)
         self.assertEqual(summary["source_record_count"], 2)
         self.assertEqual(summary["source_kind"], "title_catalogue_only")
-        self.assertFalse(summary["catalogue_fallback_used"])
+        self.assertTrue(summary["catalogue_fallback_used"])
 
     def test_rejects_record_without_name(self):
         row, error = quests.normalize_record({"id": 123, "rewards": ["Something"]})
