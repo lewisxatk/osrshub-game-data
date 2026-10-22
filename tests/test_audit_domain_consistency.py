@@ -114,6 +114,12 @@ class DomainConsistencyTests(unittest.TestCase):
         report = audit_datasets(data)
         self.assertTrue(any(e["issue"] == "orphan_relationship_target" for e in report["errors"]))
 
+    def test_duplicate_item_relationship_owner_row_is_detected(self):
+        data = fixtures()
+        data["item-relationships.json"].append(dict(data["item-relationships.json"][0]))
+        report = audit_datasets(data)
+        self.assertTrue(any(e["issue"] == "duplicate_item_relationship_row" for e in report["errors"]))
+
     def test_empty_quest_facts_are_a_warning_not_a_passed_fact(self):
         data = fixtures()
         data["quests.json"] = []
