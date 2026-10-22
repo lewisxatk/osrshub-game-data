@@ -61,6 +61,22 @@ python scripts/report_combat_readiness.py
 python -m unittest discover -s tests -v
 ```
 
+## Compare loadout upgrade deltas
+
+Compare a current loadout with a candidate upgrade using the same caller-supplied combat inputs. The report separates slot-by-slot item changes, caller-supplied GP cost changes, attack/strength bonus deltas, and the scoped baseline DPS delta.
+
+```bash
+python scripts/compare_loadout_upgrade_delta.py \
+  --baseline examples/loadout-upgrade-delta-baseline.example.json \
+  --candidate examples/loadout-upgrade-delta-candidate.example.json \
+  --costs examples/loadout-upgrade-delta-costs.example.json \
+  --inputs examples/combat-loadout-inputs.example.json \
+  --budget 100000000 --style slash \
+  --output reports/loadout-upgrade-delta.json
+```
+
+This is the first comparison layer toward account-specific upgrade advice: it shows what changed and how the repository's current scoped arithmetic responds, without pretending that the model already covers a particular boss. Both sides must fit the supplied budget. The same effective levels and target-defence inputs are used for both sides. Unknown restrictions remain warnings; caller-provided prices are not live GE prices. Prayers, potions, special attacks, boss phases, immunities, and other unimplemented mechanics are not inferred. CI generates and schema-validates an illustrative report and tests budget, duplicate-slot, and upgrade-delta behavior.
+
 ## Search the generated data
 
 ```bash
