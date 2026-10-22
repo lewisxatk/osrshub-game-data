@@ -25,6 +25,9 @@ INPUTS = {
     "combat_categories": "combat-category-coverage.json",
     "combat_reference_checks": "combat-reference-checks.json",
     "quest_catalog": "quest-catalog-coverage.json",
+    "quest_requirement_evidence": "quest-requirement-evidence-coverage.json",
+    "quest_fact_quality": "quest-fact-quality.json",
+    "quest_gap_queue": "quest-gap-queue.json",
     "weapon_profile_coverage": "weapon-profile-coverage.json",
     "weapon_database_comparison": "weapon-database-comparison.json",
 }
