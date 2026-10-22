@@ -43,12 +43,15 @@ REPORT_TARGETS = (
     ("weapon-profile-coverage.json", "weapon-profile-coverage.schema.json"),
     ("weapon-database-comparison.json", "weapon-database-comparison.schema.json"),
     ("loadout-compatibility.json", "loadout-compatibility.schema.json"),
+    ("domain-consistency-audit.json", "domain-consistency-audit.schema.json"),
 )
+
 
 def load_schema(path):
     schema = json.loads(path.read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
+
 
 def validate_file(data_path, schema_path, errors, checked, is_array):
     if not data_path.exists():
@@ -84,6 +87,7 @@ def validate_file(data_path, schema_path, errors, checked, is_array):
             errors.append({"error": "Further errors omitted after 100 reported issues"})
             return
 
+
 def main():
     errors, checked = [], {}
     for data_name, schema_name in DATA_TARGETS:
@@ -99,6 +103,7 @@ def main():
     (REPORTS / "schema-validation.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
     return 1 if errors else 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
