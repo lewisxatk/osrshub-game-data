@@ -39,7 +39,7 @@ class QuestImportTests(unittest.TestCase):
     def test_source_summary_reports_catalogue_fallback_truthfully(self):
         from pathlib import Path
         rows = [{"name": "Quest A"}, {"name": "Quest B"}]
-        summary = quests.source_summary(quests.CATALOG_PATH, Path("missing-quests.json"), rows)
+        summary = quests.source_summary(quests.CATALOG_PATH, rows)
         self.assertEqual(summary["source_record_count"], 2)
         self.assertEqual(summary["source_kind"], "title_catalogue_only")
         self.assertTrue(summary["catalogue_fallback_used"])
