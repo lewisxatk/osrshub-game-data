@@ -241,8 +241,14 @@ def audit_datasets(datasets: dict[str, Any]) -> dict[str, Any]:
         "has_skill_requirements": requirements, "has_combat_profile": profiles,
     }
     relationship_rows = arrays["item-relationships.json"]
+    relationship_owner_ids: set[int] = set()
     for index, row in enumerate(relationship_rows):
         item_id = row.get("item_id")
+        if isinstance(item_id, int) and not isinstance(item_id, bool):
+            if item_id in relationship_owner_ids:
+                errors.append({"dataset": "item-relationships.json", "index": index,
+                               "issue": "duplicate_item_relationship_row", "item_id": item_id})
+            relationship_owner_ids.add(item_id)
         if isinstance(item_id, bool) or not isinstance(item_id, int) or item_id not in items:
             errors.append({"dataset": "item-relationships.json", "index": index,
                            "issue": "invalid_or_orphan_item_id", "item_id": item_id})
