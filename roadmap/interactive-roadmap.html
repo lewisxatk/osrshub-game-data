@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OSRS Hub — Interactive Roadmap</title>
+<style>
+:root{color-scheme:light dark;font:16px/1.5 system-ui,-apple-system,sans-serif}body{max-width:1050px;margin:auto;padding:24px}header{padding:22px;border:1px solid #8885;border-radius:20px;margin-bottom:20px}h1{margin:0 0 8px}.muted{opacity:.72}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.controls input,.controls select,button{font:inherit;padding:10px;border:1px solid #8887;border-radius:10px;background:transparent}.progress{height:10px;background:#8883;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:#3a9d65;transition:width .25s}.stats{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0}.stat{padding:10px 14px;border:1px solid #8885;border-radius:12px}.phase{border:1px solid #8885;border-radius:16px;margin:12px 0;overflow:hidden}.phase h2{font-size:1.08rem;margin:0;padding:14px;background:#8881}.items{padding:4px 16px 12px}.item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #8883}.item:last-child{border:0}.item input{margin-top:6px;transform:scale(1.15)}.item strong{display:block}.tag{font-size:.78rem;border:1px solid #8886;border-radius:20px;padding:2px 8px;margin-left:6px;white-space:nowrap}.done strong{text-decoration:line-through;opacity:.65}.footer{margin-top:24px;font-size:.9rem}
+</style></head>
+<body>
+<header><h1>OSRS Hub — Interactive Roadmap</h1><p class="muted">Track the game-data pipeline and the wider Hub roadmap. Tick items as you verify them; your checklist saves in this browser only. Repository commits and CI are the source of truth for shipped code.</p><div class="stats"><div class="stat"><b id="doneCount">0</b> completed</div><div class="stat"><b id="totalCount">0</b> tracked items</div><div class="stat"><b id="percent">0%</b> progress</div></div><div class="progress"><span id="bar"></span></div></header>
+<div class="controls"><input id="search" placeholder="Search roadmap…" aria-label="Search roadmap"><select id="filter" aria-label="Filter status"><option value="all">All items</option><option value="open">Not checked off</option><option value="done">Checked off</option></select><button id="reset">Reset local checklist</button></div>
+<main id="roadmap"></main>
+<p class="footer muted">Important: a checkbox is your personal tracking state, not an automatic CI signal. Confirm code completion in the commit history and the latest GitHub Actions run. OSRS facts remain source-backed; missing data stays unknown.</p>
+<script>
+const items=[
+{phase:"Current batch — Pipeline reliability",entries:[
+["Fix missing domain-audit report before schema validation","Committed · CI verification pending","committed"],
+["Include cross-domain consistency status in pipeline-health roll-up","Committed · next CI run must verify","committed"],
+["Add regression tests for domain-audit health reporting","Committed · next CI run must verify","committed"],
+["Confirm all checks green before next feature batch","Next verification gate","next"]]},
+{phase:"Next — Data quality intelligence",entries:[
+["Make schema-validation failures easier to diagnose","Report exact file, record, path and concise error summary","next"],
+["Add regression tests for missing and malformed generated reports","Protect the pipeline from silent report omissions","next"],
+["Cross-domain audit trend summary","Track errors/warnings by dataset between runs without treating warnings as facts","next"],
+["Source freshness and provenance health view","Expose stale snapshots and missing source metadata clearly","next"]]},
+{phase:"Game-data expansion",entries:[
+["Item database spotlight after every batch","Use a real generated item record; show only fields present in the data","next"],
+["Equipment and weapon compatibility coverage","Improve joins and surface unknowns rather than infer compatibility","planned"],
+["Monster combat profile completeness","Track supported fields, provenance and missing values","planned"],
+["Quest prerequisite graph quality","Validate source-backed edges and reverse relationships","planned"],
+["Combat reference fixtures","Expand regression fixtures only where expected mechanics are sourced","planned"]]},
+{phase:"OSRS Hub product roadmap",entries:[
+["Market and screener intelligence","Historical context, after-tax margins, freshness and confidence","planned"],
+["OSRS Brain knowledge graph","Items, monsters, quests, recipes and source-backed answers","planned"],
+["Combat Lab and loadout builder","Compatibility, calculations, cost assumptions and diagnostics","planned"],
+["Account progression planner","Goals, prerequisites and upgrade pathways","planned"],
+["User experience and themes","Responsive terminal, Frost/white-frosted direction and mobile polish","planned"]]}
+];
+const key="osrshub-roadmap-v1";let checked={};try{checked=JSON.parse(localStorage.getItem(key)||"{}")}catch{}
+const root=document.getElementById("roadmap"),search=document.getElementById("search"),filter=document.getElementById("filter");
+function render(){root.innerHTML="";let total=0,done=0;const q=search.value.toLowerCase();for(const p of items){const section=document.createElement("section");section.className="phase";const h=document.createElement("h2");h.textContent=p.phase;section.appendChild(h);const list=document.createElement("div");list.className="items";for(const [title,detail,status] of p.entries){total++;const id=p.phase+"::"+title;const isDone=!!checked[id];if(isDone)done++;if(q&&!((title+" "+detail+" "+p.phase).toLowerCase().includes(q)))continue;if(filter.value==="done"&&!isDone||filter.value==="open"&&isDone)continue;const row=document.createElement("label");row.className="item"+(isDone?" done":"");const cb=document.createElement("input");cb.type="checkbox";cb.checked=isDone;cb.addEventListener("change",()=>{checked[id]=cb.checked;try{localStorage.setItem(key,JSON.stringify(checked))}catch{}render()});const copy=document.createElement("span");const strong=document.createElement("strong");strong.textContent=title;const detailEl=document.createElement("span");detailEl.className="muted";detailEl.textContent=detail;const tag=document.createElement("span");tag.className="tag";tag.textContent=status;strong.appendChild(tag);copy.append(strong,detailEl);row.append(cb,copy);list.appendChild(row)}if(list.children.length){section.appendChild(list);root.appendChild(section)}}document.getElementById("doneCount").textContent=done;document.getElementById("totalCount").textContent=total;const pct=total?Math.round(done/total*100):0;document.getElementById("percent").textContent=pct+"%";document.getElementById("bar").style.width=pct+"%"}
+search.addEventListener("input",render);filter.addEventListener("change",render);document.getElementById("reset").addEventListener("click",()=>{if(confirm("Clear your locally saved checklist?")){checked={};try{localStorage.removeItem(key)}catch{}render()}});render();
+</script></body></html>
