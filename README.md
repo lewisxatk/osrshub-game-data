@@ -279,3 +279,14 @@ The report writes `reports/account-quest-progression.json` and labels each struc
 Run `python scripts/report_combat_lab_readiness.py` after generating the normalized datasets. The report `reports/combat-lab-readiness.json` measures item/equipment/weapon/monster/quest coverage, cross-domain joins, requirement-record gaps, missing weapon mechanics, unresolved quest facts, and source provenance. It emits prioritized follow-up work for an account-aware, budget-constrained, boss-aware Combat Lab.
 
 This is a coverage and data-quality audit, not a DPS calculator or proof that source values are accurate. Missing facts remain unknown; a successful pipeline means checks passed, not that every item, quest restriction or combat mechanic is complete. CI runs regression tests and validates the report schema.
+
+
+## Quest reward to item evidence (database-only)
+
+Run this after the normalized item and quest datasets have been generated:
+
+```bash
+python scripts/report_quest_reward_item_evidence.py --output reports/quest-reward-item-evidence.json
+```
+
+The report joins structured quest reward text to `dist/items.json` using only exact, case-insensitive normalized name matches. It records both item IDs and the source pointers already present in the generated data. Fuzzy matches and duplicate item names are withheld; quests whose reward fields are not explicitly marked known are listed separately as unknown. This is intentionally conservative: an exact reward-text match does **not** prove the item is equippable, permanently unlocked, or usable only after that quest. CI runs regression tests and validates the report schema.
