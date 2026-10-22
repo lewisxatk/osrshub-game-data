@@ -133,6 +133,8 @@ jobs:
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness
         run: python scripts/report_combat_readiness.py
+      - name: Audit cross-domain Combat Lab readiness
+        run: python scripts/report_combat_lab_readiness.py
       - name: Check combat reference fixtures
         run: python scripts/check_combat_reference.py
       - name: Summarize pipeline health
