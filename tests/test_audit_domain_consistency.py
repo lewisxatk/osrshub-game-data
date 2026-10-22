@@ -90,6 +90,18 @@ class DomainConsistencyTests(unittest.TestCase):
         report = audit_datasets(data)
         self.assertTrue(any(e["issue"] == "dangling_prerequisite_key" for e in report["errors"]))
 
+    def test_quest_prerequisite_cycle_is_detected(self):
+        data = fixtures()
+        # A -> B already exists; adding B -> A's prerequisite creates a cycle.
+        data["quest-relationships.json"][0]["prerequisites"] = [
+            {"quest_key": "b", "name": "Quest B", "completion_state": "completed"}
+        ]
+        data["quest-relationships.json"][1]["dependents"] = [
+            {"quest_key": "a", "name": "Quest A"}
+        ]
+        report = audit_datasets(data)
+        self.assertTrue(any(e["issue"] == "prerequisite_cycle" for e in report["errors"]))
+
     def test_missing_reverse_quest_edge_is_detected(self):
         data = fixtures()
         data["quest-relationships.json"][0]["dependents"] = []
