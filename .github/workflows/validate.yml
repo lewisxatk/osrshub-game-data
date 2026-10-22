@@ -149,5 +149,6 @@ jobs:
             sources/raw/quest-requirement-evidence.json
             sources/raw/quest-skill-requirement-candidates.json
             reports/quest-skill-candidate-audit.json
+            reports/account-quest-progression.json
           if-no-files-found: warn
           retention-days: 30
