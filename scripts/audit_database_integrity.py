@@ -46,7 +46,17 @@ def audit_datasets(datasets):
     requirement_ids = ids(datasets["item-requirements.json"], "item_id", "item-requirements.json", errors)
     profile_ids = ids(datasets["item-combat-profiles.json"], "id", "item-combat-profiles.json", errors)
     monster_ids = ids(datasets["monsters-combat.json"], "id", "monsters-combat.json", errors)
-    quest_ids = ids(datasets["quests.json"], "id", "quests.json", errors)
+    quest_ids = set()
+    seen_quest_keys = set()
+    for index, row in enumerate(datasets["quests.json"]):
+        key = row.get("key")
+        if not isinstance(key, str) or not key.strip():
+            errors.append({"dataset":"quests.json","index":index,"issue":"invalid_quest_key","value":key})
+        elif key in seen_quest_keys:
+            errors.append({"dataset":"quests.json","index":index,"issue":"duplicate_quest_key","value":key})
+        else:
+            seen_quest_keys.add(key)
+            quest_ids.add(key)
     relationship_item_ids = set()
     broken_relationships = 0
     for index, row in enumerate(datasets["item-relationships.json"]):
@@ -115,17 +125,22 @@ def audit_datasets(datasets):
         warnings.append({"dataset":"quest-relationships.json","issue":"empty_quest_relationships","message":"No quest prerequisite relationships are currently available; this is not evidence that quests have no prerequisites."})
     bad_quest_refs = 0
     for index, row in enumerate(datasets["quest-relationships.json"]):
-        qid = row.get("quest_id")
+        qid = row.get("quest_key")
         if qid not in quest_ids:
             bad_quest_refs += 1
-            errors.append({"dataset":"quest-relationships.json","index":index,"issue":"orphan_quest_relationship","quest_id":qid})
-        prereqs = row.get("prerequisite_quest_ids", [])
+            errors.append({"dataset":"quest-relationships.json","index":index,"issue":"orphan_quest_relationship","quest_key":qid})
+        prereqs = row.get("prerequisites", [])
         if not isinstance(prereqs, list):
-            errors.append({"dataset":"quest-relationships.json","index":index,"issue":"prerequisite_ids_not_array","quest_id":qid})
+            errors.append({"dataset":"quest-relationships.json","index":index,"issue":"prerequisites_not_array","quest_key":qid})
             continue
         for prereq in prereqs:
-            if prereq not in quest_ids:
-                errors.append({"dataset":"quest-relationships.json","index":index,"issue":"unknown_prerequisite_quest_id","quest_id":qid,"prerequisite_quest_id":prereq})
+            prereq_key = prereq.get("quest_key") if isinstance(prereq, dict) else None
+            if prereq_key not in quest_ids:
+                errors.append({"dataset":"quest-relationships.json","index":index,"issue":"unknown_prerequisite_quest_key","quest_key":qid,"prerequisite_quest_key":prereq_key})
+        for dependent in row.get("dependents", []):
+            dependent_key = dependent.get("quest_key") if isinstance(dependent, dict) else None
+            if dependent_key not in quest_ids:
+                errors.append({"dataset":"quest-relationships.json","index":index,"issue":"unknown_dependent_quest_key","quest_key":qid,"dependent_quest_key":dependent_key})
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "failed" if errors else ("review_required" if warnings else "passed"),
