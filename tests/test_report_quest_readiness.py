@@ -21,9 +21,18 @@ class QuestReadinessTests(unittest.TestCase):
         self.assertEqual(result["unresolved_requirement_count"], 1)
 
     def test_field_coverage_is_measured_not_guessed(self):
+        fields = ("requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type")
+        known_a = {field: "unknown" for field in fields}
+        known_b = {field: "unknown" for field in fields}
+        known_a["requirements"] = "known"
+        known_b["requirements"] = "unknown"
+        known_a["skill_requirements"] = "unknown"
+        known_b["skill_requirements"] = "known"
+        known_a["rewards"] = "unknown"
+        known_b["rewards"] = "known"
         quests = [
-            {"name": "A", "source_url": "https://example.com", "requirements": ["B"], "skill_requirements": [], "rewards": []},
-            {"name": "B", "source_url": None, "requirements": [], "skill_requirements": [{"skill": "Attack", "level": 10}], "rewards": ["Reward"]},
+            {"name": "A", "source_url": "https://example.com", "requirements": ["B"], "skill_requirements": [], "rewards": [], "field_status": known_a},
+            {"name": "B", "source_url": None, "requirements": [], "skill_requirements": [{"skill": "Attack", "level": 10}], "rewards": ["Reward"], "field_status": known_b},
         ]
         result = readiness.build_report(quests, [{}, {}], {"status": "passed"}, {"unresolved_requirement_count": 0})
         self.assertEqual(result["source_url_coverage_percent"], 50.0)
