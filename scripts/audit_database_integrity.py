@@ -67,8 +67,16 @@ def audit_datasets(datasets):
                 errors.append({"dataset":"item-relationships.json","index":index,"issue":"relationship_not_object"})
                 continue
             rid, kind = rel.get("record_id"), rel.get("type")
-            target = equipment_ids if kind == "has_equipment_stats" else weapon_ids if kind == "has_weapon_data" else None
-            if target is not None and rid not in target:
+            targets = {
+                "has_equipment_stats": equipment_ids,
+                "has_weapon_data": weapon_ids,
+                "has_skill_requirements": requirement_ids,
+                "has_combat_profile": profile_ids,
+            }
+            target = targets.get(kind)
+            if kind not in targets:
+                errors.append({"dataset":"item-relationships.json","index":index,"issue":"unknown_relationship_type","relationship_type":kind})
+            elif rid not in target:
                 errors.append({"dataset":"item-relationships.json","index":index,"issue":"orphan_join_target","relationship_type":kind,"record_id":rid})
     orphan_requirements = sorted(requirement_ids - item_ids)
     for iid in orphan_requirements:
