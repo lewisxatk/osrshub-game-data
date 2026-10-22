@@ -194,6 +194,41 @@ def audit_datasets(datasets: dict[str, Any]) -> dict[str, Any]:
                 else:
                     dependent_edges.add((target, key))
 
+    # A prerequisite cycle makes a quest pathway impossible to topologically order.
+    # Only edges whose endpoints exist are considered, so dangling references remain
+    # reported by the checks above without being mislabelled as graph cycles.
+    prerequisite_graph: dict[str, set[str]] = {key: set() for key in quest_keys}
+    for quest_key, prerequisite_key in prerequisite_edges:
+        if quest_key in quest_keys and prerequisite_key in quest_keys:
+            prerequisite_graph[quest_key].add(prerequisite_key)
+    visited: set[str] = set()
+    active: set[str] = set()
+    reported_cycles: set[tuple[str, ...]] = set()
+
+    def visit_quest(node: str, path: list[str]) -> None:
+        if node in active:
+            start = path.index(node) if node in path else 0
+            cycle = tuple(sorted(path[start:]))
+            if cycle not in reported_cycles:
+                reported_cycles.add(cycle)
+                errors.append({"dataset": "quest-relationships.json", "issue": "prerequisite_cycle",
+                               "quest_keys": list(cycle),
+                               "message": "Quest prerequisites contain a cycle and cannot form a valid progression order."})
+            return
+        if node in visited:
+            return
+        active.add(node)
+        path.append(node)
+        for prerequisite in sorted(prerequisite_graph.get(node, set())):
+            visit_quest(prerequisite, path)
+        path.pop()
+        active.remove(node)
+        visited.add(node)
+
+    for quest_key in sorted(quest_keys):
+        if quest_key not in visited:
+            visit_quest(quest_key, [])
+
     for edge in sorted(prerequisite_edges - dependent_edges):
         errors.append({"dataset": "quest-relationships.json", "issue": "missing_reverse_dependent_edge",
                        "quest_key": edge[0], "prerequisite_key": edge[1]})
