@@ -111,8 +111,8 @@ def source_summary(source_path, primary_path, raw_rows):
     used_catalogue = source_path == CATALOG_PATH
     return {
         "source_record_count": len(raw_rows) if isinstance(raw_rows, list) else 0,
-        "source_kind": "title_catalogue_only" if used_catalogue else "structured_quest_snapshot",
-        "catalogue_fallback_used": used_catalogue and primary_path.exists(),
+        "source_kind": "missing" if not source_path.exists() else "title_catalogue_only" if used_catalogue else "structured_quest_snapshot",
+        "catalogue_fallback_used": used_catalogue,
     }
 
 
