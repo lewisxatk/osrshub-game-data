@@ -190,3 +190,17 @@ Run `python scripts/report_database_gaps.py` after generating the datasets. It w
 ## Numeric range and provenance audit
 
 Run `python scripts/audit_numeric_provenance.py` after normalized datasets have been built. It checks IDs, weapon attack-speed tick values, numeric equipment bonuses, monster combat fields and retained HTTP(S) source URLs. It writes `reports/numeric-provenance-audit.json`. Broad outlier thresholds produce review warnings rather than silently changing data. Missing provenance is a warning, while malformed IDs, invalid numeric fields and invalid source URLs fail the audit. Passing means the selected structural/range checks passed—not that every game fact is independently verified.
+
+
+## Expanded item relationship graph and audit
+
+The item relationship builder now links each item by exact numeric ID to any available equipment-stat record, weapon record, normalized skill-requirement record, and joined item-combat profile. The generated graph retains the target dataset name and record ID; it does not infer missing records, quest unlocks, recipes, or drop sources.
+
+Run:
+
+```bash
+python scripts/build_item_relationships.py
+python scripts/audit_item_relationships.py
+```
+
+The graph audit verifies relationship types, target datasets, target existence, same-item joins, duplicate links, expected link coverage, and item-name consistency. It writes `reports/item-relationship-audit.json`; CI also validates that report against its JSON Schema. A passing result confirms structural join consistency only, not independent factual verification of OSRS data. The item checker and existing database-integrity audit remain in the pipeline.
