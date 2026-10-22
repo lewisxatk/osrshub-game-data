@@ -13,6 +13,8 @@ DIST = ROOT / "dist"
 REPORTS = ROOT / "reports"
 SOURCE_NAME = "quests"
 SOURCE_PATH = RAW / "quests.json"
+CATALOG_PATH = RAW / "quest-catalog.json"
+REQUIREMENT_EVIDENCE_PATH = RAW / "quest-requirement-evidence.json"
 SCHEMA_PATH = ROOT / "schemas" / "quests.schema.json"
 
 
@@ -83,6 +85,7 @@ def normalize_record(row):
         "source_fields": sorted(row.keys()),
         "field_status": field_status,
         "field_sources": field_sources,
+        "requirement_evidence": row.get("requirement_evidence") if isinstance(row.get("requirement_evidence"), dict) else None,
     }
     return normalized, None
 
@@ -108,13 +111,31 @@ def main():
     warnings = []
     records = []
     source_sha256 = None
-    if not SOURCE_PATH.exists():
-        warnings.append("No quest source snapshot configured yet; generated dataset is empty until a source adapter is supplied")
+    source_path = SOURCE_PATH if SOURCE_PATH.exists() else CATALOG_PATH
+    evidence_by_name = {}
+    if REQUIREMENT_EVIDENCE_PATH.exists():
+        try:
+            evidence_rows = json.loads(REQUIREMENT_EVIDENCE_PATH.read_text(encoding="utf-8"))
+            if isinstance(evidence_rows, list):
+                evidence_by_name = {" ".join(str(x.get("quest_name", "")).casefold().split()): x for x in evidence_rows if isinstance(x, dict)}
+        except (OSError, json.JSONDecodeError):
+            warnings.append("Quest requirement evidence snapshot could not be read")
+    if not source_path.exists():
+        warnings.append("No quest source snapshot configured; generated dataset is empty")
     else:
-        payload = SOURCE_PATH.read_bytes()
+        payload = source_path.read_bytes()
         source_sha256 = hashlib.sha256(payload).hexdigest()
         try:
-            raw_rows = load_source(SOURCE_PATH)
+            raw_rows = load_source(source_path)
+            for source_row in raw_rows:
+                if not isinstance(source_row, dict):
+                    continue
+                evidence = evidence_by_name.get(" ".join(str(source_row.get("name", source_row.get("title", ""))).casefold().split()))
+                if evidence:
+                    source_row["requirement_evidence"] = evidence
+                    source_row.setdefault("field_sources", {})
+                    if isinstance(source_row["field_sources"], dict):
+                        source_row["field_sources"].setdefault("requirements", evidence.get("source_url"))
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             raw_rows = []
             errors.append(f"Cannot load quest source: {exc}")
@@ -137,8 +158,8 @@ def main():
     (DIST / "quests.json").write_text(json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "status": "failed" if errors else "missing_source" if not SOURCE_PATH.exists() else "passed_with_warnings" if warnings else "passed",
-        "source": "sources/raw/quests.json",
+        "status": "failed" if errors else "missing_source" if not source_path.exists() else "passed_with_warnings" if warnings else "passed",
+        "source": str(source_path.relative_to(ROOT)) if source_path.exists() else "sources/raw/quests.json",
         "source_sha256": source_sha256,
         "source_record_count": len(raw_rows) if SOURCE_PATH.exists() and "raw_rows" in locals() else 0,
         "imported_record_count": len(records),
