@@ -68,6 +68,25 @@ def preserve_rows(data: Any, identity_field: str, mode: str, source_url: str) ->
         rows.append(row)
     return rows
 
+def summarize_fields(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Inventory top-level fields without treating empty values as factual answers."""
+    field_rows: dict[str, list[Any]] = {}
+    for row in rows:
+        for key, value in row.items():
+            field_rows.setdefault(key, []).append(value)
+    fields = {}
+    for key in sorted(field_rows):
+        values = field_rows[key]
+        present = [value for value in values if value is not None and value != "" and value != [] and value != {}]
+        types = sorted({type(value).__name__ for value in present})
+        fields[key] = {
+            "records_with_value": len(present),
+            "records_missing_or_empty": len(rows) - len(present),
+            "value_types": types,
+            "coverage_percent": round(100 * len(present) / len(rows), 2) if rows else 0.0,
+        }
+    return {"field_count": len(fields), "fields": fields}
+
 def build_datasets(raw_dir: Path = RAW, dist_dir: Path = DIST) -> dict[str, Any]:
     dist_dir.mkdir(parents=True, exist_ok=True)
     outputs = {}
@@ -101,6 +120,7 @@ def build_datasets(raw_dir: Path = RAW, dist_dir: Path = DIST) -> dict[str, Any]
             "source_file": source_file,
             "source_url": source_url,
             "record_count": len(rows),
+            "field_inventory": summarize_fields(rows),
             "output_file": str(target),
         }
     return {
