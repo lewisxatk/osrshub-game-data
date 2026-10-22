@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub Combat Studio join contract audit",
+  "type": "object",
+  "required": ["generated_at", "status", "summary", "coverage_gaps", "errors", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["failed", "passed_with_gaps", "passed"]},
+    "summary": {"type": "object"},
+    "coverage_gaps": {"type": "object"},
+    "errors": {"type": "array", "items": {"type": "object"}},
+    "warnings": {"type": "array", "items": {"type": "object"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
