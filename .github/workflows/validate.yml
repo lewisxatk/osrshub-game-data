@@ -113,6 +113,8 @@ jobs:
         run: python scripts/audit_item_combat_profiles.py
       - name: Smoke-test joined combat profile query
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
+      - name: Generate database fact card for a known item ID
+        run: python scripts/explain_game_fact.py --dataset item-combat-profiles --id 4151 --output reports/game-fact-card-example.json
       - name: Check weapon facts from the generated database only
         run: python scripts/check_weapon_from_database.py --id 4587
       - name: Report generated weapon-profile coverage
@@ -156,5 +158,6 @@ jobs:
             sources/raw/quest-skill-requirement-candidates.json
             reports/quest-skill-candidate-audit.json
             reports/account-quest-progression.json
+            reports/game-fact-card-example.json
           if-no-files-found: warn
           retention-days: 30
