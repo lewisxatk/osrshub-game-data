@@ -5,11 +5,13 @@ from explain_game_fact import build_fact_card, find_record, load_rows
 
 class ExplainGameFactTests(unittest.TestCase):
     def test_fact_card_preserves_record_and_provenance(self):
-        row = {"id": 4151, "name": "Abyssal whip", "attack_speed": 4, "source_urls": ["https://example.invalid/source"], "bonus": None}
+        row = {"id": 4151, "name": "Abyssal whip", "attack_speed": 4, "source_urls": ["https://example.invalid/source"], "stances": [], "bonus": None}
         card = build_fact_card("item-combat-profiles", row)
         self.assertEqual(card["status"], "found")
         self.assertEqual(card["record"], row)
         self.assertIn("bonus", card["unknown_fields"])
+        self.assertIn("stances", card["known_empty_fields"])
+        self.assertIn("stances", card["known_fields"])
         self.assertTrue(card["provenance"]["has_source_url"])
         self.assertIn("not independently verified", " ".join(card["guardrails"]))
 
