@@ -281,6 +281,31 @@ def audit_datasets(datasets: dict[str, Any]) -> dict[str, Any]:
                                "type": kind, "record_id": record_id})
             seen_links.add(pair)
 
+    # Coverage is reported separately from correctness: an absent record is
+    # a known gap, not a fabricated zero-valued game fact.
+    profile_rows = arrays["item-combat-profiles.json"]
+    item_ids = set(items)
+    profile_ids = set(profiles)
+    quest_prerequisite_counts = {key: 0 for key in quest_keys}
+    for source_key, _target_key in prerequisite_edges:
+        if source_key in quest_prerequisite_counts:
+            quest_prerequisite_counts[source_key] += 1
+    coverage = {
+        "items_with_equipment_stats": len(item_ids & equipment),
+        "items_without_equipment_stats": len(item_ids - equipment),
+        "items_with_weapon_data": len(item_ids & weapons),
+        "items_without_weapon_data": len(item_ids - weapons),
+        "items_with_skill_requirements_record": len(item_ids & requirements),
+        "items_without_skill_requirements_record": len(item_ids - requirements),
+        "items_with_combat_profile": len(item_ids & profile_ids),
+        "items_without_combat_profile": len(item_ids - profile_ids),
+        "profiles_missing_attack_speed": sum(1 for row in profile_rows if row.get("attack_speed") is None),
+        "profiles_missing_bonuses": sum(1 for row in profile_rows if row.get("bonuses") is None),
+        "profiles_missing_skill_requirements": sum(1 for row in profile_rows if row.get("skill_requirements") is None),
+        "quest_nodes_without_prerequisites": sum(1 for count in quest_prerequisite_counts.values() if count == 0),
+        "quest_nodes_with_prerequisites": sum(1 for count in quest_prerequisite_counts.values() if count > 0),
+    }
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "failed" if errors else ("review_required" if warnings else "passed"),
@@ -290,6 +315,7 @@ def audit_datasets(datasets: dict[str, Any]) -> dict[str, Any]:
             "monsters": len(monsters), "quest_graph_nodes": len(quest_keys),
             "item_relationship_rows": len(relationship_rows),
         },
+        "coverage": coverage,
         "counts": {"error_count": len(errors), "warning_count": len(warnings),
                    "quest_prerequisite_edges": len(prerequisite_edges),
                    "item_relationship_rows": len(relationship_rows)},
