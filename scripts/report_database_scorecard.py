@@ -24,6 +24,18 @@ SPECS = {
     "item_requirements": ("item-requirements.json", ("item_id", "item_name", "requirements", "source_url", "sources")),
     "quests": ("quests.json", ("id", "name", "source_urls")),
     "quest_relationships": ("quest-relationships.json", ("quest_id", "prerequisite_quest_ids", "sources")),
+    # Extended source domains imported losslessly for future site features.
+    "prayers": ("prayers.json", ("id", "name", "description", "requirements", "bonuses", "source_snapshot_url")),
+    "npc_drops": ("npc-drops.json", ("npc_id", "source_value", "source_snapshot_url")),
+    "drop_subtables": ("drop-subtables.json", ("table_key", "source_value", "source_snapshot_url")),
+    "shops_by_shop": ("shops-by-shop.json", ("shop_name", "shop_info", "owners", "items", "source_snapshot_url")),
+    "shops_by_npc": ("shops-by-npc.json", ("npc_id", "shops", "source_snapshot_url")),
+    "slayer_tasks": ("slayer-tasks.json", ("slayer_master_id", "tasks", "source_snapshot_url")),
+    "npc_interactions": ("npc-interactions.json", ("source_key", "source_snapshot_url")),
+    "npc_dialogues": ("npc-dialogues.json", ("source_key", "source_snapshot_url")),
+    "npcs_summary": ("npcs-summary.json", ("id", "name", "source_snapshot_url")),
+    "objects_summary": ("objects-summary.json", ("id", "name", "source_snapshot_url")),
+    "models_summary": ("models-summary.json", ("source_key", "source_snapshot_url")),
 }
 PROFILE_FIELDS = ("equipment_record_present", "weapon_record_present", "skill_requirement_record_present", "attack_speed", "source_urls")
 
