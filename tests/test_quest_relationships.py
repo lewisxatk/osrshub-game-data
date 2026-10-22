@@ -30,6 +30,16 @@ class QuestRelationshipTests(unittest.TestCase):
     def test_long_chain_is_iterative(self):
         graph={str(i):{"prerequisites":[{"quest_key":str(i-1)}] if i else []} for i in range(1500)}
         self.assertEqual(find_cycles(graph),[])
+    def test_raw_evidence_links_are_candidates_not_verified_edges(self):
+        q1=quest("a","Biohazard")
+        q1["requirement_evidence"]={"requirement_links":[{"title":"Plague City","url":"https://oldschool.runescape.wiki/w/Plague_City"}]}
+        q2=quest("b","Plague City")
+        rows,report=build_graph([q1,q2])
+        bio=next(r for r in rows if r["quest_key"]=="a")
+        self.assertEqual(bio["prerequisites"],[])
+        self.assertEqual(bio["requirement_candidates"][0]["match_status"],"unique_unverified_candidate")
+        self.assertEqual(bio["requirement_candidates"][0]["candidate_quest_keys"],["b"])
+
     def test_empty_graph(self):
         rows,report=build_graph([]); self.assertEqual(rows,[]); self.assertEqual(report["status"],"passed")
 if __name__=="__main__": unittest.main()
