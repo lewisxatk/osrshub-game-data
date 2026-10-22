@@ -21,7 +21,32 @@
     "difficulty": {"type": ["string", "null"]},
     "quest_type": {"type": ["string", "null"]},
     "source_url": {"type": ["string", "null"], "pattern": "^https://"},
-    "source_fields": {"type": "array", "items": {"type": "string"}}
+    "source_fields": {"type": "array", "items": {"type": "string"}},
+    "field_status": {
+      "type": "object",
+      "properties": {
+        "requirements": {"enum": ["known", "unknown"]},
+        "skill_requirements": {"enum": ["known", "unknown"]},
+        "rewards": {"enum": ["known", "unknown"]},
+        "members": {"enum": ["known", "unknown"]},
+        "difficulty": {"enum": ["known", "unknown"]},
+        "quest_type": {"enum": ["known", "unknown"]}
+      },
+      "required": ["requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type"],
+      "additionalProperties": false
+    },
+    "field_sources": {
+      "type": "object",
+      "properties": {
+        "requirements": {"type": "string", "pattern": "^https://"},
+        "skill_requirements": {"type": "string", "pattern": "^https://"},
+        "rewards": {"type": "string", "pattern": "^https://"},
+        "members": {"type": "string", "pattern": "^https://"},
+        "difficulty": {"type": "string", "pattern": "^https://"},
+        "quest_type": {"type": "string", "pattern": "^https://"}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }
