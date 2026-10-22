@@ -120,10 +120,13 @@ def audit_datasets(datasets):
             errors.append({"dataset": "weapons.json", "item_id": rid, "issue": "stances_not_array"})
         else:
             for stance_index, stance in enumerate(stances):
-                if not isinstance(stance, dict) or not isinstance(stance.get("name"), str) or not stance["name"].strip():
+                if not isinstance(stance, dict) or not any(
+                    isinstance(stance.get(field), str) and stance[field].strip()
+                    for field in ("name", "combat_style", "attack_style", "attack_type")
+                ):
                     malformed_stances.append({"item_id": rid, "stance_index": stance_index})
     if malformed_stances:
-        errors.append({"dataset": "weapons.json", "issue": "stance_name_missing",
+        errors.append({"dataset": "weapons.json", "issue": "stance_metadata_missing",
                        "count": len(malformed_stances), "examples": malformed_stances[:20]})
 
     invalid_monster_values = []
