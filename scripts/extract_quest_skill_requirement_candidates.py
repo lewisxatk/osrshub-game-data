@@ -13,7 +13,7 @@ RAW=ROOT/"sources"/"raw"
 REPORTS=ROOT/"reports"
 SKILLS=("Attack","Strength","Defence","Ranged","Prayer","Magic","Runecraft","Hitpoints","Crafting","Mining","Smithing","Fishing","Cooking","Firemaking","Woodcutting","Agility","Herblore","Thieving","Fletching","Slayer","Farming","Construction","Hunter")
 # Deliberately strict: require a numeric level immediately followed by a known skill name.
-PATTERN=re.compile(r"(?<![A-Za-z0-9])(?P<level>\\d{1,2})\\s+(?P<skill>"+ "|".join(re.escape(s) for s in sorted(SKILLS,key=len,reverse=True))+r")(?![A-Za-z])",re.I)
+PATTERN=re.compile(r"(?<![A-Za-z0-9])(?P<level>\d{1,2})\s+(?P<skill>"+ "|".join(re.escape(s) for s in sorted(SKILLS,key=len,reverse=True))+r")(?![A-Za-z])",re.I)
 SOURCE="https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest"
 def extract_candidates(records):
  if not isinstance(records,list): raise ValueError("quest evidence must be an array")
@@ -38,10 +38,10 @@ def main():
  except (OSError,json.JSONDecodeError,ValueError) as exc:
   print("Quest skill candidate extraction failed: "+str(exc),file=sys.stderr);return 1
  RAW.mkdir(parents=True,exist_ok=True);REPORTS.mkdir(parents=True,exist_ok=True)
- (RAW/"quest-skill-requirement-candidates.json").write_text(json.dumps(candidates,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+ (RAW/"quest-skill-requirement-candidates.json").write_text(json.dumps(candidates,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  matched=sum(x["catalogue_match_status"]=="matched" for x in candidates)
  report={"generated_at":datetime.now(timezone.utc).isoformat(),"status":"review_required","source_url":SOURCE,"candidate_count":len(candidates),"matched_catalogue_candidates":matched,"unmatched_catalogue_candidates":len(candidates)-matched,"distinct_quests_with_candidates":len({x["quest_key"] for x in candidates}),"distinct_skills_found":sorted({x["skill"] for x in candidates}),"candidates":candidates,"not_claimed":["verified quest planner skill requirements","whether requirement is needed to start or complete","boostability","absence of requirements when no pattern matches"],"note":"Strict text matches are review candidates only. No candidate is silently promoted into the normalized quest dataset."}
- (REPORTS/"quest-skill-requirement-candidates.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+ (REPORTS/"quest-skill-requirement-candidates.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print(json.dumps({k:v for k,v in report.items() if k!="candidates"},ensure_ascii=False,indent=2))
  return 0
 if __name__=="__main__":raise SystemExit(main())
