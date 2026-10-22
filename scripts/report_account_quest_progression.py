@@ -50,8 +50,10 @@ def build_report(quests, relationships, profile):
                     required_name = text.split(":", 1)[1].strip() if text.casefold().startswith("started:") else text.strip()
                     if not required_name:
                         unknowns.append("Malformed prerequisite fact"); continue
-                    if canon(required_name) not in completed:
-                        blockers.append({"type": "quest", "name": required_name, "required_state": "started" if text.casefold().startswith("started:") else "completed", "reason": "not listed as completed in this profile"})
+                    if text.casefold().startswith("started:"):
+                        unknowns.append(f"Started-state tracking is unavailable for prerequisite: {required_name}")
+                    elif canon(required_name) not in completed:
+                        blockers.append({"type": "quest", "name": required_name, "required_state": "completed", "reason": "not listed as completed in this profile"})
             else:
                 unknowns.append("Known prerequisite field is not a list")
             if skill_state != "known":
