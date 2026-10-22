@@ -37,6 +37,27 @@ class PipelineHealthTests(unittest.TestCase):
     def test_domain_consistency_review_status_is_preserved(self):
         result = summarize_reports({'domain_consistency': ({'status': 'review_required'}, None)})
         self.assertEqual(result['checks']['domain_consistency']['status'], 'review_required')
+        self.assertEqual(result['status'], 'review_required')
+        self.assertEqual(result['review_required_reports'], ['domain_consistency'])
+
+    def test_review_required_takes_precedence_over_missing_reports(self):
+        result = summarize_reports({
+            'missing': (None, 'missing'),
+            'coverage': ({'status': 'review_required'}, None),
+        })
+        self.assertEqual(result['status'], 'review_required')
+        self.assertEqual(result['missing_reports'], ['missing'])
+
+    def test_non_object_json_payload_is_a_failure(self):
+        result = summarize_reports({'bad_shape': (['not', 'an', 'object'], None)})
+        self.assertEqual(result['status'], 'failed')
+        self.assertEqual(result['checks']['bad_shape']['status'], 'invalid_report')
+        self.assertEqual(result['failed_reports'], ['bad_shape'])
+
+    def test_unknown_status_is_preserved_without_fabricating_a_failure(self):
+        result = summarize_reports({'future_report': ({'status': 'candidate_only'}, None)})
+        self.assertEqual(result['status'], 'passed')
+        self.assertEqual(result['checks']['future_report']['status'], 'candidate_only')
 
 if __name__ == "__main__":
     unittest.main()
