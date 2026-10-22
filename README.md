@@ -44,9 +44,12 @@ python scripts/report_combat_categories.py
 python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
 python scripts/download_quest_catalog.py
+python scripts/download_quest_requirement_evidence.py
 python scripts/import_quests.py
 python scripts/build_quest_relationships.py
+python scripts/audit_quest_fact_quality.py
 python scripts/report_quest_readiness.py
+python scripts/report_quest_gap_queue.py
 python scripts/report_normalized_combat_provenance.py
 python scripts/check_combat_reference.py
 python scripts/audit_combat_inputs.py --profile examples/player-profile.json --costs examples/item-costs.example.json --inputs examples/weapon-baseline-input.json --budget 100000000
@@ -222,3 +225,11 @@ The weapon coverage report describes field presence and flags malformed or dupli
 ## Database-only loadout compatibility audit
 
 Run `python scripts/audit_loadout_compatibility.py --selected examples/loadout-compatibility-selected.example.json --profile examples/player-profile.json` after joined item combat profiles have been generated. It checks selected item IDs against `dist/item-combat-profiles.json`, validates requested equipment slots, flags duplicate slots/items, evaluates only known skill requirements, respects manual exclusions, and can optionally audit caller-supplied GP costs and budgets. It never performs network lookups. Missing quest/unlock restrictions, requirements, skill levels, source URLs or prices remain unknown; a passing report means only that the selected known checks passed, not that the loadout is fully eligible or optimised for DPS.
+
+### Quest data scope and trust model
+
+The quest pipeline downloads the current OSRS Wiki quest title catalogue and extracts raw requirement-cell text and links from the [quest requirements table](https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest). The extracted evidence is stored in `sources/raw/quest-requirement-evidence.json` and summarized in `reports/quest-requirement-evidence-coverage.json`.
+
+**Raw evidence is not a verified prerequisite graph.** Links that match catalogue titles are emitted as unverified candidates; they are not promoted into prerequisite edges until the source facts are structurally reviewed. Skill levels, boostability, required-to-start versus required-to-complete, quest-point thresholds, rewards, and membership restrictions remain unknown unless supplied in structured source facts. A dash in a source table is retained as source text, not treated as proof that a quest has no requirements.
+
+`reports/quest-fact-quality.json` separates known, unknown and known-empty fields. `reports/quest-gap-queue.json` ranks records needing source review. These reports measure evidence coverage and work priority, not factual accuracy. The full pipeline validates the extracted evidence schema and runs regression tests against known graph cases.
