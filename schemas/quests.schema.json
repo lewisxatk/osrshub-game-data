@@ -22,6 +22,17 @@
     "quest_type": {"type": ["string", "null"]},
     "source_url": {"type": ["string", "null"], "pattern": "^https://"},
     "source_fields": {"type": "array", "items": {"type": "string"}},
+    "requirement_evidence": {
+      "type": ["object", "null"],
+      "required": ["requirements_text", "requirement_links", "source_url", "evidence_status"],
+      "properties": {
+        "requirements_text": {"type": "string"},
+        "requirement_links": {"type": "array", "items": {"type": "object", "required": ["title", "url"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"}}, "additionalProperties": false}},
+        "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
+        "evidence_status": {"const": "raw_source_extracted_needs_structured_review"}
+      },
+      "additionalProperties": false
+    },
     "field_status": {
       "type": "object",
       "properties": {
