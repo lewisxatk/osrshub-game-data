@@ -127,6 +127,12 @@ def main():
         source_sha256 = hashlib.sha256(payload).hexdigest()
         try:
             raw_rows = load_source(source_path)
+            if not raw_rows and source_path != CATALOG_PATH and CATALOG_PATH.exists():
+                source_path = CATALOG_PATH
+                payload = source_path.read_bytes()
+                source_sha256 = hashlib.sha256(payload).hexdigest()
+                raw_rows = load_source(source_path)
+                warnings.append("Primary quest snapshot was empty; used the downloaded title catalogue and kept all unprovided facts unknown")
             for source_row in raw_rows:
                 if not isinstance(source_row, dict):
                     continue
