@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Extended OSRS source record",
+  "description": "A source-preserving record imported from an extended OSRS source snapshot. Shape validation does not verify game-fact accuracy.",
+  "type": "object",
+  "required": [
+    "source_key",
+    "source_snapshot_url"
+  ],
+  "properties": {
+    "source_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_snapshot_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "id": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "npc_id": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "table_key": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "shop_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "slayer_master_id": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
