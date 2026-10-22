@@ -52,6 +52,7 @@ def build_relationships(items, equipment, weapons, requirements=None, profiles=N
         "items_with_skill_requirement_record": 0,
         "items_with_combat_profile": 0,
         "items_with_both_equipment_and_weapon": 0,
+        "items_with_both": 0,  # Backward-compatible summary key
         "equipment_records_without_item": 0,
         "weapon_records_without_item": 0,
         "requirement_records_without_item": 0,
@@ -99,6 +100,7 @@ def build_relationships(items, equipment, weapons, requirements=None, profiles=N
             summary["items_with_combat_profile"] += 1
         if equipment_record is not None and weapon_record is not None:
             summary["items_with_both_equipment_and_weapon"] += 1
+            summary["items_with_both"] += 1
         if links:
             relationships.append({
                 "item_id": rid,
