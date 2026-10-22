@@ -9,7 +9,8 @@
     "requirements_text": {"type": "string"},
     "requirement_links": {"type": "array", "items": {"type": "object", "required": ["title", "url"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"}}, "additionalProperties": false}},
     "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
-    "evidence_status": {"const": "raw_source_extracted_needs_structured_review"}
+    "evidence_status": {"const": "raw_source_extracted_needs_structured_review"},
+    "catalogue_match_status": {"enum": ["matched", "unmatched_catalogue_title"]}
   },
   "additionalProperties": false
 }
