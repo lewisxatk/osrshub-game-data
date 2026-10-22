@@ -43,7 +43,8 @@ def build_profiles(items, equipment, weapons, requirements):
     profiles = []
     summary = {
         "item_count": len(items_by_id), "profiles_with_equipment_stats": 0,
-        "profiles_with_weapon_data": 0, "profiles_with_skill_requirements": 0,
+        "profiles_with_weapon_data": 0, "profiles_with_skill_requirements": 0, "profiles_with_known_empty_requirements": 0,
+        "profiles_with_partial_requirements": 0, "profiles_with_unknown_requirements": 0,
         "profiles_with_attack_speed": 0, "profiles_with_all_bonus_fields": 0,
         "profiles_missing_equipment_record": 0, "profiles_missing_weapon_record": 0,
         "profiles_missing_skill_requirement_record": 0,
@@ -64,6 +65,7 @@ def build_profiles(items, equipment, weapons, requirements):
             "weapon_type": weapon.get("weapon_type") if weapon else None,
             "stances": weapon.get("stances", []) if weapon else [],
             "skill_requirements": requirements_list if isinstance(requirements_list, list) else None,
+            "skill_requirements_status": req.get("requirements_status") if isinstance(req, dict) else "unknown",
             "equipment_record_present": equip is not None,
             "weapon_record_present": weapon is not None,
             "skill_requirement_record_present": req is not None,
@@ -79,7 +81,10 @@ def build_profiles(items, equipment, weapons, requirements):
         }
         summary["profiles_with_equipment_stats"] += equip is not None
         summary["profiles_with_weapon_data"] += weapon is not None
-        summary["profiles_with_skill_requirements"] += req is not None
+        summary["profiles_with_skill_requirements"] += bool(req and req.get("requirements_status") == "known")
+        summary["profiles_with_known_empty_requirements"] += bool(req and req.get("requirements_status") == "known_empty")
+        summary["profiles_with_partial_requirements"] += bool(req and req.get("requirements_status") == "partial")
+        summary["profiles_with_unknown_requirements"] += not req
         summary["profiles_with_attack_speed"] += bool(weapon and isinstance(weapon.get("attack_speed"), int) and not isinstance(weapon.get("attack_speed"), bool) and weapon["attack_speed"] > 0)
         summary["profiles_with_all_bonus_fields"] += bool(equip and all(isinstance(bonuses.get(field), (int, float)) and not isinstance(bonuses.get(field), bool) for field in BONUS_FIELDS))
         summary["profiles_missing_equipment_record"] += equip is None
@@ -89,7 +94,7 @@ def build_profiles(items, equipment, weapons, requirements):
             profile["data_status"] = "joined_fields_present"
         profiles.append(profile)
     summary["profile_count"] = len(profiles)
-    summary["note"] = "This joins available source-backed records; null means unknown/not supplied, not zero. No DPS is calculated here, and record presence does not prove factual completeness."
+    summary["note"] = "This joins available source-backed records; unknown requirement fields are distinct from source-explicit empty requirements. Null means unknown/not supplied, not zero. No DPS is calculated here, and record presence does not prove factual completeness."
     return profiles, summary
 
 def main():
