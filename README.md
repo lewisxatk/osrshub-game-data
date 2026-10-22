@@ -256,3 +256,10 @@ python scripts/report_account_quest_progression.py --profile reports/normalized-
 
 The report writes `reports/account-quest-progression.json` and labels each structured quest as completed, ready, blocked by a known unmet requirement, or unknown because the profile or facts are incomplete. A quest is only marked ready when prerequisite and skill requirement fields are explicitly marked known and all supplied requirements pass. Started-state prerequisites remain unknown because the current profile format tracks completed quests only. Raw wiki links and unverified candidates are never promoted to verified prerequisites by this report. CI tests the planner and validates its output schema.
 
+
+
+## Cross-domain Combat Lab readiness audit
+
+Run `python scripts/report_combat_lab_readiness.py` after generating the normalized datasets. The report `reports/combat-lab-readiness.json` measures item/equipment/weapon/monster/quest coverage, cross-domain joins, requirement-record gaps, missing weapon mechanics, unresolved quest facts, and source provenance. It emits prioritized follow-up work for an account-aware, budget-constrained, boss-aware Combat Lab.
+
+This is a coverage and data-quality audit, not a DPS calculator or proof that source values are accurate. Missing facts remain unknown; a successful pipeline means checks passed, not that every item, quest restriction or combat mechanic is complete. CI runs regression tests and validates the report schema.
