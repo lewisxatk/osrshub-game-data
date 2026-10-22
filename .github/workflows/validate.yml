@@ -97,6 +97,8 @@ jobs:
         run: python scripts/audit_item_combat_profiles.py
       - name: Smoke-test joined combat profile query
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
+      - name: Check weapon facts from the generated database only
+        run: python scripts/check_weapon_from_database.py --id 4587
       - name: Audit numeric ranges and source provenance
         run: python scripts/audit_numeric_provenance.py
       - name: Build actionable database gap queue

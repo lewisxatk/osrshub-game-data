@@ -84,7 +84,7 @@ def summarize_eligibility(report):
         "https_source_url_coverage_percent": round(100 * with_source_urls / total, 2) if total else 0.0,
         "errors": errors[:100],
         "guardrails": [
-            "No item is promoted to fully eligible by this summary.",
+            "Items are not promoted to fully eligible by this summary.",
             "Unknown includes incomplete requirements, profile gaps, and unmodelled quest or unlock restrictions.",
             "Source presence is not proof that the source fact is correct or complete.",
             "The summary reads the eligibility report and does not mutate item data.",
