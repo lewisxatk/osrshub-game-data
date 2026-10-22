@@ -45,6 +45,7 @@ python scripts/normalize_monster_combat.py
 python scripts/build_item_relationships.py
 python scripts/download_quest_catalog.py
 python scripts/download_quest_requirement_evidence.py
+python scripts/extract_quest_skill_requirement_candidates.py
 python scripts/import_quests.py
 python scripts/build_quest_relationships.py
 python scripts/audit_quest_fact_quality.py
@@ -233,3 +234,8 @@ The quest pipeline downloads the current OSRS Wiki quest title catalogue and ext
 **Raw evidence is not a verified prerequisite graph.** Links that match catalogue titles are emitted as unverified candidates; they are not promoted into prerequisite edges until the source facts are structurally reviewed. Skill levels, boostability, required-to-start versus required-to-complete, quest-point thresholds, rewards, and membership restrictions remain unknown unless supplied in structured source facts. A dash in a source table is retained as source text, not treated as proof that a quest has no requirements.
 
 `reports/quest-fact-quality.json` separates known, unknown and known-empty fields. `reports/quest-gap-queue.json` ranks records needing source review. These reports measure evidence coverage and work priority, not factual accuracy. The full pipeline validates the extracted evidence schema and runs regression tests against known graph cases.
+
+
+## Quest skill requirement candidates
+
+The quest pipeline now scans the Wiki's raw quest-requirement text for conservative patterns such as `35 Crafting` and emits a separate candidate report at `reports/quest-skill-requirement-candidates.json`. Every match retains the quest key, source URL, catalogue-match status and explicit interpretation limits. Candidates are **not** promoted into normalized quest facts: this text alone may not establish whether a level is needed to start or complete a quest, whether boosts apply, or whether a no-match means no requirement. The candidate report is schema-validated in CI and covered by regression tests.
