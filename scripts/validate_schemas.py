@@ -95,6 +95,7 @@ def main():
         validate_file(DIST / data_name, SCHEMAS / schema_name, errors, checked, True)
     for data_name, schema_name in REPORT_TARGETS:
         validate_file(REPORTS / data_name, SCHEMAS / schema_name, errors, checked, False)
+    validate_file(ROOT / "sources" / "raw" / "quest-requirement-evidence.json", SCHEMAS / "quest-requirement-evidence.schema.json", errors, checked, True)
     result = {
         "status": "failed" if errors else "passed",
         "datasets": checked, "error_count": len(errors), "errors": errors,
