@@ -83,8 +83,9 @@ def build_fact_card(dataset: str, record: dict[str, Any] | None) -> dict[str, An
             "provenance": {"source_urls": [], "source_fields_present": [], "has_source_url": False},
             "guardrails": ["A missing record is unknown, not evidence that the game entity or mechanic does not exist."]
         }
-    known = sorted(k for k, v in record.items() if present(v) and not k.startswith("_"))
-    unknown = sorted(k for k, v in record.items() if not present(v) and not k.startswith("_"))
+    known = sorted(k for k, v in record.items() if v is not None and v != "" and not k.startswith("_"))
+    known_empty = sorted(k for k, v in record.items() if v in ([], {}) and not k.startswith("_"))
+    unknown = sorted(k for k, v in record.items() if (v is None or v == "") and not k.startswith("_"))
     p = provenance(record)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -93,6 +94,7 @@ def build_fact_card(dataset: str, record: dict[str, Any] | None) -> dict[str, An
         "record": record,
         "fact_count": len(known),
         "known_fields": known,
+        "known_empty_fields": known_empty,
         "unknown_fields": unknown,
         "provenance": p,
         "guardrails": [
