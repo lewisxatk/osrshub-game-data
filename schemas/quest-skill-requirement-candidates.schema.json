@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quest skill requirement text candidates report",
+  "type": "object",
+  "required": ["generated_at", "status", "source_url", "candidate_count", "matched_catalogue_candidates", "unmatched_catalogue_candidates", "distinct_quests_with_candidates", "distinct_skills_found", "candidates", "not_claimed", "note"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"const": "review_required"},
+    "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "matched_catalogue_candidates": {"type": "integer", "minimum": 0},
+    "unmatched_catalogue_candidates": {"type": "integer", "minimum": 0},
+    "distinct_quests_with_candidates": {"type": "integer", "minimum": 0},
+    "distinct_skills_found": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "candidates": {"type": "array", "items": {"type": "object", "required": ["quest_key", "quest_name", "skill", "level", "matched_text", "source_url", "catalogue_match_status", "candidate_status", "interpretation_limits"], "properties": {"quest_key": {"type": "string"}, "quest_name": {"type": "string"}, "skill": {"type": "string"}, "level": {"type": "integer", "minimum": 1, "maximum": 99}, "matched_text": {"type": "string"}, "source_url": {"type": "string", "pattern": "^https://"}, "catalogue_match_status": {"enum": ["matched", "unmatched_catalogue_title", "unknown"]}, "candidate_status": {"const": "raw_text_candidate_needs_manual_review"}, "interpretation_limits": {"type": "array", "minItems": 1, "items": {"type": "string"}}}, "additionalProperties": false}},
+    "not_claimed": {"type": "array", "items": {"type": "string"}},
+    "note": {"type": "string"}
+  },
+  "additionalProperties": false
+}
