@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Loadout upgrade delta",
+  "type": "object",
+  "required": ["generated_at", "status", "attack_style", "budget_gp", "baseline", "candidate", "delta", "slot_changes", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "status": {"const": "baseline_upgrade_delta_with_limitations"},
+    "attack_style": {"enum": ["stab", "slash", "crush"]},
+    "budget_gp": {"type": "integer", "minimum": 0},
+    "baseline": {"$ref": "#/$defs/loadout"},
+    "candidate": {"$ref": "#/$defs/loadout"},
+    "delta": {
+      "type": "object",
+      "required": ["cost_gp", "dps", "dps_percent", "attack_bonus", "melee_strength"],
+      "properties": {
+        "cost_gp": {"type": "integer"},
+        "dps": {"type": "number"},
+        "dps_percent": {"type": ["number", "null"]},
+        "attack_bonus": {"type": "integer"},
+        "melee_strength": {"type": "integer"}
+      },
+      "additionalProperties": true
+    },
+    "slot_changes": {"type": "array", "items": {"type": "object", "required": ["slot", "cost_delta_gp", "attack_bonus_delta", "melee_strength_delta"], "additionalProperties": true}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "loadout": {
+      "type": "object",
+      "required": ["total_cost_gp", "remaining_budget_gp", "dps", "attack_bonus", "melee_strength", "weapon"],
+      "properties": {
+        "total_cost_gp": {"type": "integer"},
+        "remaining_budget_gp": {"type": "integer"},
+        "dps": {"type": "number"},
+        "attack_bonus": {"type": "integer"},
+        "melee_strength": {"type": "integer"},
+        "weapon": {"type": "object"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
