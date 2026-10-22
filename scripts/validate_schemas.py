@@ -50,6 +50,7 @@ REPORT_TARGETS = (
     ("quest-skill-candidate-audit.json", "quest-skill-candidate-audit.schema.json"),
     ("account-quest-progression.json", "account-quest-progression.schema.json"),
     ("combat-lab-readiness.json", "combat-lab-readiness.schema.json"),
+    ("loadout-upgrade-delta.json", "loadout-upgrade-delta.schema.json"),
 )
 
 
