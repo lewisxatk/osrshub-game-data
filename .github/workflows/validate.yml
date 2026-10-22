@@ -111,6 +111,8 @@ jobs:
         run: python scripts/report_database_gaps.py
       - name: Audit cross-dataset IDs and relationships
         run: python scripts/audit_database_integrity.py
+      - name: Audit cross-domain combat, item and quest consistency
+        run: python scripts/audit_domain_consistency.py
       - name: Build database coverage scorecard
         run: python scripts/report_database_scorecard.py
       - name: Validate generated datasets against JSON Schemas
