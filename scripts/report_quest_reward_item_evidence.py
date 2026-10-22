@@ -34,7 +34,7 @@ def build_report(quests, items):
         if not isinstance(name, str) or isinstance(item_id, bool) or not isinstance(item_id, int):
             continue
         key = canon(name)
-        if key in items_by_name and items_by_name[key].get("id") != item_id:
+        if key in items_by_name and items_by_name[key].get("item_id") != item_id:
             duplicate_item_names.add(key)
         else:
             items_by_name[key] = {"item_id": item_id, "item_name": name, "source_urls": item.get("sources", [])}
