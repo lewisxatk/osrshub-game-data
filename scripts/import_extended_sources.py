@@ -56,7 +56,7 @@ def preserve_rows(data: Any, identity_field: str, mode: str, source_url: str) ->
         elif isinstance(value, dict):
             row = dict(value)
             row.setdefault(identity_field, identity_value(key))
-            row.setdefault("source_key", str(key))
+            row["source_key"] = str(key)
             row["source_snapshot_url"] = source_url
         else:
             row = {
