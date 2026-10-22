@@ -24,7 +24,9 @@ class ExploreItemKnowledgeTests(unittest.TestCase):
         self.assertEqual(result["resolved_relationship_count"], 2)
         profile = next(x for x in result["relationships"] if x["target_dataset"] == "item-combat-profiles.json")
         self.assertEqual(profile["record_facts"]["attack_speed"], 4)
-        self.assertIn("stances", next(x for x in result["relationships"] if x["target_dataset"] == "weapons.json")["unknown_fields"])
+        weapon = next(x for x in result["relationships"] if x["target_dataset"] == "weapons.json")
+        self.assertIn("stances", weapon["known_empty_fields"])
+        self.assertNotIn("stances", weapon["unknown_fields"])
 
     def test_missing_graph_node_is_not_found_not_empty_fact(self):
         with tempfile.TemporaryDirectory() as tmp:
