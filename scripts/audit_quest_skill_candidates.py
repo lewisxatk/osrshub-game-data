@@ -75,7 +75,7 @@ def main():
         return 1
     REPORTS.mkdir(parents=True, exist_ok=True)
     target = REPORTS / "quest-skill-candidate-audit.json"
-    target.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    target.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if not report["malformed_candidates"] else 1
 
