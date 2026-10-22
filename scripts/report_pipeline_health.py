@@ -12,6 +12,7 @@ INPUTS = {
     "coverage": "coverage.json",
     "normalized_data_audit": "normalized-data-audit.json",
     "schema_validation": "schema-validation.json",
+    "domain_consistency": "domain-consistency-audit.json",
     "combat_readiness": "combat-readiness.json",
     "equipment_shortlist": "equipment-shortlist.json",
     "equipment_loadout_candidate": "equipment-loadout-candidate.json",
