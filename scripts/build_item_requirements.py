@@ -91,6 +91,7 @@ def normalize_requirements(items):
         "equipment_item_count": equipment_count,
         "items_with_requirement_field": len(records),
         "items_with_nonempty_skill_requirements": sum(row["requirements_status"] == "known" for row in records),
+        "items_with_skill_requirements": sum(row["requirements_status"] == "known" for row in records),
         "items_with_explicit_empty_requirements": known_empty_count,
         "items_with_partially_invalid_requirements": partial_count,
         "items_with_unknown_requirements": unknown_count,
