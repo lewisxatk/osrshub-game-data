@@ -22,6 +22,9 @@ class QuestImportTests(unittest.TestCase):
         self.assertEqual(row["skill_requirements"], [{"skill": "Cooking", "level": 10}])
         self.assertFalse(row["members"])
         self.assertTrue(row["source_url"].startswith("https://"))
+        self.assertEqual(row["field_status"]["requirements"], "known")
+        self.assertEqual(row["field_status"]["skill_requirements"], "known")
+        self.assertEqual(row["field_status"]["members"], "known")
 
     def test_missing_values_remain_unknown(self):
         row, error = quests.normalize_record({"name": "Example Quest"})
@@ -29,6 +32,8 @@ class QuestImportTests(unittest.TestCase):
         self.assertIsNone(row["members"])
         self.assertIsNone(row["difficulty"])
         self.assertEqual(row["requirements"], [])
+        self.assertEqual(row["field_status"]["requirements"], "unknown")
+        self.assertEqual(row["field_status"]["rewards"], "unknown")
         self.assertIsNone(row["source_url"])
 
     def test_rejects_record_without_name(self):
