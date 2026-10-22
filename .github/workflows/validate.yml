@@ -71,6 +71,8 @@ jobs:
         run: python scripts/import_quests.py
       - name: Build quest prerequisite graph
         run: python scripts/build_quest_relationships.py
+      - name: Build exact-match quest reward to item evidence from generated datasets
+        run: python scripts/report_quest_reward_item_evidence.py --output reports/quest-reward-item-evidence.json
       - name: Audit quest fact coverage and field-level evidence
         run: python scripts/audit_quest_fact_quality.py
       - name: Report quest readiness
@@ -162,5 +164,6 @@ jobs:
             reports/account-quest-progression.json
             reports/game-fact-card-example.json
             reports/item-knowledge-explorer-example.json
+            reports/quest-reward-item-evidence.json
           if-no-files-found: warn
           retention-days: 30
