@@ -24,6 +24,8 @@ INPUTS = {
     "combat_categories": "combat-category-coverage.json",
     "combat_reference_checks": "combat-reference-checks.json",
     "quest_catalog": "quest-catalog-coverage.json",
+    "weapon_profile_coverage": "weapon-profile-coverage.json",
+    "weapon_database_comparison": "weapon-database-comparison.json",
 }
 
 def read_report(path: Path):

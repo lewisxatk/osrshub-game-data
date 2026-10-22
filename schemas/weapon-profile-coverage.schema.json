@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub generated weapon profile coverage report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "dataset",
+    "meaning",
+    "counts",
+    "field_coverage",
+    "bonus_coverage",
+    "quality_samples",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ]
+    },
+    "dataset": {
+      "const": "item-combat-profiles.json"
+    },
+    "meaning": {
+      "type": "string"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "profile_records_total",
+        "valid_unique_profile_ids",
+        "weapon_profiles",
+        "record_errors",
+        "malformed_bonus_values",
+        "invalid_attack_speed_count",
+        "missing_requirement_record_count",
+        "missing_source_url_count"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "field_coverage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "present_count",
+          "missing_count",
+          "coverage_percent",
+          "sample_missing_ids"
+        ],
+        "properties": {
+          "present_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "missing_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage_percent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "sample_missing_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "bonus_coverage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "numeric_count",
+          "unknown_or_non_numeric_count",
+          "coverage_percent",
+          "sample_missing_ids"
+        ],
+        "properties": {
+          "numeric_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unknown_or_non_numeric_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage_percent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "sample_missing_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "quality_samples": {
+      "type": "object",
+      "required": [
+        "record_errors",
+        "malformed_bonus_values",
+        "invalid_attack_speed",
+        "missing_requirement_record_ids",
+        "missing_source_url_ids"
+      ],
+      "properties": {
+        "record_errors": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "malformed_bonus_values": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "invalid_attack_speed": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "missing_requirement_record_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "missing_source_url_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

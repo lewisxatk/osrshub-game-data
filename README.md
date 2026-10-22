@@ -204,3 +204,16 @@ python scripts/audit_item_relationships.py
 ```
 
 The graph audit verifies relationship types, target datasets, target existence, same-item joins, duplicate links, expected link coverage, and item-name consistency. It writes `reports/item-relationship-audit.json`; CI also validates that report against its JSON Schema. A passing result confirms structural join consistency only, not independent factual verification of OSRS data. The item checker and existing database-integrity audit remain in the pipeline.
+
+
+## Database-only weapon checker and comparison
+
+These commands read only the generated `dist/item-combat-profiles.json` dataset. They do not request external websites; retained source URLs are provenance fields, not live lookups.
+
+```bash
+python scripts/check_weapon_from_database.py --id 4587
+python scripts/report_weapon_coverage.py
+python scripts/compare_weapons_from_database.py --left 4587 --right 4151 --output reports/weapon-database-comparison.json
+```
+
+The weapon coverage report describes field presence and flags malformed or duplicate profile IDs. The comparison report shows stored bonus values side by side and computes a numeric delta only when both database records contain finite numeric values. Missing values remain unknown; no damage, eligibility, or DPS conclusion is inferred by this comparison. Both reports are checked against JSON Schemas in CI.

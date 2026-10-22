@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub database-only weapon comparison",
+  "type": "object",
+  "required": [
+    "status",
+    "dataset",
+    "left_item_id",
+    "right_item_id",
+    "comparison"
+  ],
+  "properties": {
+    "status": {
+      "const": "compared"
+    },
+    "dataset": {
+      "const": "item-combat-profiles.json"
+    },
+    "left_item_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "right_item_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "comparison": {
+      "type": "object",
+      "required": [
+        "left",
+        "right",
+        "bonus_differences",
+        "attack_speed_delta_right_minus_left",
+        "attack_speed_delta_status",
+        "interpretation",
+        "guardrails"
+      ],
+      "properties": {
+        "left": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "slot",
+            "weapon_type",
+            "attack_speed",
+            "skill_requirements",
+            "weapon_record_present",
+            "data_status"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "slot": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weapon_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "attack_speed": {
+              "type": [
+                "integer",
+                "number",
+                "null"
+              ]
+            },
+            "skill_requirements": {
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "weapon_record_present": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "data_status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "right": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "slot",
+            "weapon_type",
+            "attack_speed",
+            "skill_requirements",
+            "weapon_record_present",
+            "data_status"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "slot": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weapon_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "attack_speed": {
+              "type": [
+                "integer",
+                "number",
+                "null"
+              ]
+            },
+            "skill_requirements": {
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "weapon_record_present": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "data_status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "bonus_differences": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "left_value",
+              "right_value",
+              "delta_right_minus_left",
+              "delta_status"
+            ],
+            "properties": {
+              "left_value": {},
+              "right_value": {},
+              "delta_right_minus_left": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "delta_status": {
+                "enum": [
+                  "calculated",
+                  "unknown_input"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "attack_speed_delta_right_minus_left": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "attack_speed_delta_status": {
+          "enum": [
+            "calculated",
+            "unknown_input"
+          ]
+        },
+        "interpretation": {
+          "type": "string"
+        },
+        "guardrails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

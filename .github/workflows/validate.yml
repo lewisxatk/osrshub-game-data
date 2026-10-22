@@ -99,6 +99,10 @@ jobs:
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
       - name: Check weapon facts from the generated database only
         run: python scripts/check_weapon_from_database.py --id 4587
+      - name: Report generated weapon-profile coverage
+        run: python scripts/report_weapon_coverage.py
+      - name: Compare weapons using generated database records only
+        run: python scripts/compare_weapons_from_database.py --left 4587 --right 4151 --output reports/weapon-database-comparison.json
       - name: Audit numeric ranges and source provenance
         run: python scripts/audit_numeric_provenance.py
       - name: Build actionable database gap queue

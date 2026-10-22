@@ -40,6 +40,8 @@ REPORT_TARGETS = (
     ("database-gap-queue.json", "database-gap-queue.schema.json"),
     ("numeric-provenance-audit.json", "numeric-provenance-audit.schema.json"),
     ("item-relationship-audit.json", "item-relationship-audit.schema.json"),
+    ("weapon-profile-coverage.json", "weapon-profile-coverage.schema.json"),
+    ("weapon-database-comparison.json", "weapon-database-comparison.schema.json"),
 )
 
 def load_schema(path):
