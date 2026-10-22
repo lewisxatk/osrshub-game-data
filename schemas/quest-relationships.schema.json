@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OSRS Hub quest relationship record",
   "type": "object",
-  "required": ["quest_key", "name", "prerequisites", "dependents", "unresolved_requirements", "skill_requirements", "source_url"],
+  "required": ["quest_key", "name", "prerequisites", "dependents", "unresolved_requirements", "skill_requirements", "source_url", "requirement_candidates"],
   "properties": {
     "quest_key": {"type": "string", "minLength": 1},
     "name": {"type": "string", "minLength": 1},
