@@ -115,6 +115,8 @@ jobs:
         run: python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
       - name: Generate database fact card for a known item ID
         run: python scripts/explain_game_fact.py --dataset item-combat-profiles --id 4151 --output reports/game-fact-card-example.json
+      - name: Explore item knowledge graph from generated database
+        run: python scripts/explore_item_knowledge.py --item-id 4151 --output reports/item-knowledge-explorer-example.json
       - name: Check weapon facts from the generated database only
         run: python scripts/check_weapon_from_database.py --id 4587
       - name: Report generated weapon-profile coverage
@@ -159,5 +161,6 @@ jobs:
             reports/quest-skill-candidate-audit.json
             reports/account-quest-progression.json
             reports/game-fact-card-example.json
+            reports/item-knowledge-explorer-example.json
           if-no-files-found: warn
           retention-days: 30
