@@ -66,8 +66,9 @@ def resolve_relationships(item_id: int, dist_dir: Path = DIST) -> dict[str, Any]
             "data_status": target.get("data_status", edge.get("data_status")),
             "source_urls": target.get("source_urls", [target.get("source_url")] if target.get("source_url") else []),
             "record_facts": {field: target.get(field) for field in fields if field in target},
-            "known_fields": [field for field in fields if field in target and target.get(field) not in (None, "", [], {})],
-            "unknown_fields": [field for field in fields if field not in target or target.get(field) in (None, "", [], {})],
+            "known_fields": [field for field in fields if field in target and target.get(field) is not None and target.get(field) != ""],
+            "known_empty_fields": [field for field in fields if field in target and target.get(field) in ([], {})],
+            "unknown_fields": [field for field in fields if field not in target or target.get(field) is None or target.get(field) == ""],
         })
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
