@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub item knowledge graph exploration",
+  "type": "object",
+  "required": ["generated_at", "status", "item_id", "relationships", "unresolved_relationships", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "status": {"enum": ["found", "not_found"]},
+    "item_id": {"type": "integer"},
+    "item_name": {"type": ["string", "null"]},
+    "graph_sources": {"type": "array"},
+    "relationship_count": {"type": "integer", "minimum": 0},
+    "resolved_relationship_count": {"type": "integer", "minimum": 0},
+    "relationships": {"type": "array", "items": {"type": "object", "required": ["relationship_type", "target_dataset", "target_record_id", "record_facts", "known_fields", "unknown_fields"]}},
+    "unresolved_relationships": {"type": "array", "items": {"type": "object"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
