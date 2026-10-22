@@ -37,9 +37,12 @@ class QuestImportTests(unittest.TestCase):
         self.assertIsNone(row["source_url"])
 
     def test_source_summary_reports_catalogue_fallback_truthfully(self):
-        from pathlib import Path
+        import tempfile
         rows = [{"name": "Quest A"}, {"name": "Quest B"}]
-        summary = quests.source_summary(quests.CATALOG_PATH, rows)
+        with tempfile.TemporaryDirectory() as tmp:
+            catalogue_path = Path(tmp) / "quest-catalog.json"
+            catalogue_path.write_text('[{"name":"Quest A"},{"name":"Quest B"}]', encoding="utf-8")
+            summary = quests.source_summary(catalogue_path, rows)
         self.assertEqual(summary["source_record_count"], 2)
         self.assertEqual(summary["source_kind"], "title_catalogue_only")
         self.assertTrue(summary["catalogue_fallback_used"])
