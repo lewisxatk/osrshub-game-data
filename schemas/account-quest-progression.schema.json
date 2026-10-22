@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub account quest progression report",
+  "type": "object",
+  "required": ["generated_at", "status", "account_label", "quest_count", "counts", "ready_quest_names", "quests", "errors", "warnings", "interpretation"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "account_label": {"type": "string"},
+    "quest_count": {"type": "integer", "minimum": 0},
+    "counts": {"type": "object", "required": ["completed", "ready", "blocked", "unknown"], "properties": {
+      "completed": {"type": "integer", "minimum": 0}, "ready": {"type": "integer", "minimum": 0},
+      "blocked": {"type": "integer", "minimum": 0}, "unknown": {"type": "integer", "minimum": 0}
+    }, "additionalProperties": false},
+    "ready_quest_names": {"type": "array", "items": {"type": "string"}},
+    "quests": {"type": "array", "items": {"type": "object", "required": ["quest_key", "quest_name", "status", "blockers", "unknowns", "requirement_fact_status", "skill_requirement_fact_status", "source_url"], "properties": {
+      "quest_key": {"type": ["string", "null"]}, "quest_name": {"type": "string"},
+      "status": {"enum": ["completed", "ready", "blocked", "unknown"]},
+      "blockers": {"type": "array", "items": {"type": "object"}},
+      "unknowns": {"type": "array", "items": {"type": "string"}},
+      "requirement_fact_status": {"enum": ["known", "unknown"]},
+      "skill_requirement_fact_status": {"enum": ["known", "unknown"]},
+      "source_url": {"type": ["string", "null"]}
+    }, "additionalProperties": false}},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "interpretation": {"type": "string"}
+  },
+  "additionalProperties": false
+}
