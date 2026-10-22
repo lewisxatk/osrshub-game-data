@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Raw quest requirement evidence",
+  "type": "object",
+  "required": ["quest_key", "quest_name", "requirements_text", "requirement_links", "source_url", "evidence_status"],
+  "properties": {
+    "quest_key": {"type": "string", "minLength": 1},
+    "quest_name": {"type": "string", "minLength": 1},
+    "requirements_text": {"type": "string"},
+    "requirement_links": {"type": "array", "items": {"type": "object", "required": ["title", "url"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"}}, "additionalProperties": false}},
+    "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
+    "evidence_status": {"const": "raw_source_extracted_needs_structured_review"}
+  },
+  "additionalProperties": false
+}
