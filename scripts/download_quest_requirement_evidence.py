@@ -50,7 +50,7 @@ def extract_rows(page_html,catalogue):
   cells=[c for c in row if c["tag"]=="td"]
   if len(cells)<2:continue
   name=cells[0]["text"];norm=" ".join(name.casefold().split())
-  if norm not in by_name or norm in seen:continue
+  if not norm or norm in seen:continue
   seen.add(norm);req=cells[1];links=[]
   for link in req["links"]:
    href=link["href"];title=link.get("title") or link.get("text")
@@ -59,8 +59,8 @@ def extract_rows(page_html,catalogue):
    elif href.startswith("https://oldschool.runescape.wiki/"):url=href
    else:continue
    links.append({"title":title,"url":url})
-  quest=by_name[norm]
-  rows.append({"quest_key":str(quest.get("id") or norm.replace(" ","-")),"quest_name":quest["name"],"requirements_text":req["text"],"requirement_links":links,"source_url":"https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest","evidence_status":"raw_source_extracted_needs_structured_review"})
+  quest=by_name.get(norm)
+  rows.append({"quest_key":str(quest.get("id") or norm.replace(" ","-")) if quest else "unmatched-"+norm.replace(" ","-"),"quest_name":quest["name"] if quest else name,"requirements_text":req["text"],"requirement_links":links,"source_url":"https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest","evidence_status":"raw_source_extracted_needs_structured_review","catalogue_match_status":"matched" if quest else "unmatched_catalogue_title"})
  return sorted(rows,key=lambda x:x["quest_name"].casefold())
 def main():
  RAW.mkdir(parents=True,exist_ok=True);REPORTS.mkdir(parents=True,exist_ok=True)
@@ -68,11 +68,11 @@ def main():
   catalogue=json.loads((RAW/"quest-catalog.json").read_text(encoding="utf-8"))
   if not isinstance(catalogue,list):raise ValueError("quest catalogue is not an array")
   page,payload=fetch_html();rows=extract_rows(page,catalogue)
-  if not rows:raise ValueError("no rows matched quest catalogue")
+  if not rows:raise ValueError("no requirement rows extracted from source table")
  except (OSError,urllib.error.URLError,TimeoutError,json.JSONDecodeError,ValueError) as exc:
   print("Quest requirement evidence extraction failed: "+str(exc),file=sys.stderr);return 1
  (RAW/"quest-requirement-evidence.json").write_text(json.dumps(rows,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
- report={"generated_at":datetime.now(timezone.utc).isoformat(),"status":"review_required","source_url":"https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest","source_response_sha256":hashlib.sha256(payload).hexdigest(),"record_count":len(rows),"catalogue_record_count":len(catalogue),"coverage_percent":round(100*len(rows)/len(catalogue),2) if catalogue else 0,"records_with_requirement_links":sum(bool(x["requirement_links"]) for x in rows),"not_claimed":["normalized skill requirements","boostability","required-to-start distinction","quest-point requirements","rewards","membership restrictions"],"note":"Raw source text is evidence for review, not normalized quest-planner rules."}
+ report={"generated_at":datetime.now(timezone.utc).isoformat(),"status":"review_required","source_url":"https://oldschool.runescape.wiki/w/Quests/Requirements_by_quest","source_response_sha256":hashlib.sha256(payload).hexdigest(),"record_count":len(rows),"catalogue_record_count":len(catalogue),"matched_catalogue_records":sum(x["catalogue_match_status"]=="matched" for x in rows),"unmatched_source_records":sum(x["catalogue_match_status"]!="matched" for x in rows),"matched_coverage_percent":round(100*sum(x["catalogue_match_status"]=="matched" for x in rows)/len(catalogue),2) if catalogue else 0,"unmatched_source_titles":[x["quest_name"] for x in rows if x["catalogue_match_status"]!="matched"][:100],"records_with_requirement_links":sum(bool(x["requirement_links"]) for x in rows),"not_claimed":["normalized skill requirements","boostability","required-to-start distinction","quest-point requirements","rewards","membership restrictions"],"note":"Raw source text is evidence for review, not normalized quest-planner rules."}
  (REPORTS/"quest-requirement-evidence-coverage.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print(json.dumps(report,ensure_ascii=False,indent=2));return 0
 if __name__=="__main__":raise SystemExit(main())
