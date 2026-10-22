@@ -244,3 +244,15 @@ The quest pipeline now scans the Wiki's raw quest-requirement text for conservat
 ## Quest skill candidate quality audit
 
 Run `python scripts/audit_quest_skill_candidates.py` after downloading quest requirement evidence and extracting skill-level candidates. The report `reports/quest-skill-candidate-audit.json` counts candidate matches by skill, highlights unmatched catalogue titles and repeated quest/skill matches for manual review, and shows how many evidence rows produced no skill-level text candidate. The Sailing skill is included in the conservative text matcher. A missing match is not evidence that a quest has no skill requirement, and this audit never promotes candidates into verified planner facts. CI tests the audit and validates its report schema.
+
+## Account quest progression report
+
+Run the account profile normalizer first, then build a conservative per-account quest progression report:
+
+```bash
+python scripts/normalize_player_profile.py --input examples/player-profile.json
+python scripts/report_account_quest_progression.py --profile reports/normalized-player-profile.json
+```
+
+The report writes `reports/account-quest-progression.json` and labels each structured quest as completed, ready, blocked by a known unmet requirement, or unknown because the profile or facts are incomplete. A quest is only marked ready when prerequisite and skill requirement fields are explicitly marked known and all supplied requirements pass. Started-state prerequisites remain unknown because the current profile format tracks completed quests only. Raw wiki links and unverified candidates are never promoted to verified prerequisites by this report. CI tests the planner and validates its output schema.
+
