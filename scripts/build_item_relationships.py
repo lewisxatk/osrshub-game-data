@@ -33,7 +33,7 @@ def index_by_id(rows, filename, field="id"):
             duplicates.append(rid)
         indexed[rid] = row
     if duplicates:
-        raise ValueError(f"{filename} contains duplicate {field}s: {sorted(set(duplicates))[:25]}")
+        raise ValueError(f"{filename} contains duplicate IDs: {sorted(set(duplicates))[:25]}")
     return indexed
 
 
