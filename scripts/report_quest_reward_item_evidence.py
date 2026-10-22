@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -64,7 +63,7 @@ def build_report(quests, items):
                     "reward_text": reward_text,
                     "item_id": item["item_id"],
                     "item_name": item["item_name"],
-                    "quest_source_url": quest.get("field_sources", {}).get("rewards") or quest.get("source_url"),
+                    "quest_source_url": (quest.get("field_sources") if isinstance(quest.get("field_sources"), dict) else {}).get("rewards") or quest.get("source_url"),
                     "item_source_urls": item["source_urls"] if isinstance(item["source_urls"], list) else [],
                     "match_method": "exact_case_insensitive_normalized_name",
                     "evidence_status": "source_reward_text_exactly_matches_item_name",
