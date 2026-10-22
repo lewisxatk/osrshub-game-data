@@ -120,6 +120,31 @@ class DomainConsistencyTests(unittest.TestCase):
         report = audit_datasets(data)
         self.assertTrue(any(e["issue"] == "duplicate_item_relationship_row" for e in report["errors"]))
 
+
+    def test_coverage_report_counts_known_gaps_without_failing_audit(self):
+        data = fixtures()
+        data["equipment-stats.json"] = []
+        data["weapons.json"] = []
+        data["item-requirements.json"] = []
+        data["item-relationships.json"][0]["relationships"] = [
+            {"type": "has_combat_profile", "record_id": 1}
+        ]
+        profile = data["item-combat-profiles.json"][0]
+        profile["equipment_record_present"] = False
+        profile["weapon_record_present"] = False
+        profile["skill_requirement_record_present"] = False
+        report = audit_datasets(data)
+        self.assertEqual(report["status"], "passed")
+        self.assertEqual(report["coverage"]["items_without_equipment_stats"], 1)
+        self.assertEqual(report["coverage"]["items_without_weapon_data"], 1)
+        self.assertEqual(report["coverage"]["items_without_skill_requirements_record"], 1)
+        self.assertEqual(report["coverage"]["items_with_combat_profile"], 1)
+
+    def test_coverage_counts_quest_nodes_with_and_without_prerequisites(self):
+        report = audit_datasets(fixtures())
+        self.assertEqual(report["coverage"]["quest_nodes_with_prerequisites"], 1)
+        self.assertEqual(report["coverage"]["quest_nodes_without_prerequisites"], 1)
+
     def test_empty_quest_facts_are_a_warning_not_a_passed_fact(self):
         data = fixtures()
         data["quests.json"] = []
