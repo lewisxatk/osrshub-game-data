@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quest skill candidate audit report",
+  "type": "object",
+  "required": ["generated_at", "status", "source_url", "candidate_count", "evidence_quest_count", "distinct_quests_with_candidates", "evidence_quests_without_skill_candidates", "candidate_counts_by_skill", "malformed_candidates", "unmatched_catalogue_candidates", "repeated_quest_skill_matches", "checks", "limitations"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["review_required", "passed_with_review_limits"]},
+    "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "evidence_quest_count": {"type": "integer", "minimum": 0},
+    "distinct_quests_with_candidates": {"type": "integer", "minimum": 0},
+    "evidence_quests_without_skill_candidates": {"type": "integer", "minimum": 0},
+    "candidate_counts_by_skill": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "malformed_candidates": {"type": "array", "items": {"type": "object"}},
+    "unmatched_catalogue_candidates": {"type": "array", "items": {"type": "object"}},
+    "repeated_quest_skill_matches": {"type": "array", "items": {"type": "object"}},
+    "checks": {"type": "object", "required": ["candidate_status_preserved", "does_not_promote_candidates_to_facts", "no_candidate_match_is_not_proof_of_no_skill_requirement"], "properties": {"candidate_status_preserved": {"type": "boolean"}, "does_not_promote_candidates_to_facts": {"const": true}, "no_candidate_match_is_not_proof_of_no_skill_requirement": {"const": true}}, "additionalProperties": false},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
