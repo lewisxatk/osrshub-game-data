@@ -27,6 +27,12 @@ class QuestRewardItemEvidenceTests(unittest.TestCase):
         self.assertEqual(report["exact_reward_item_match_count"], 0)
         self.assertIn("ambiguous", report["unmatched_reward_text"][0]["reason"])
 
+    def test_same_item_id_duplicate_is_not_marked_ambiguous(self):
+        quests = [{"key": "q", "name": "Q", "rewards": ["Dragon scimitar"], "field_status": {"rewards": "known"}}]
+        items = [{"id": 1, "name": "Dragon scimitar"}, {"id": 1, "name": " Dragon  scimitar "}]
+        report = build_report(quests, items)
+        self.assertEqual(report["exact_reward_item_match_count"], 1)
+
     def test_unknown_rewards_stay_unknown(self):
         report = build_report([{"key": "q", "name": "Q", "rewards": []}], [])
         self.assertEqual(report["quests_with_unknown_reward_fields"], 1)
