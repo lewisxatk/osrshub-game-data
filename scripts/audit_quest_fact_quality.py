@@ -126,7 +126,7 @@ def main():
         result["errors"].append({"issue":"quest_dataset_load_error","message":load_error})
         result["status"]="failed"
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    args.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(result,ensure_ascii=False,indent=2))
     return 1 if result["status"]=="failed" else 0
 if __name__=="__main__":
