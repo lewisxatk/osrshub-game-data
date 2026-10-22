@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OSRS Hub database fact card",
   "type": "object",
-  "required": ["generated_at", "status", "dataset", "record", "fact_count", "known_fields", "unknown_fields", "provenance", "guardrails"],
+  "required": ["generated_at", "status", "dataset", "record", "fact_count", "known_fields", "known_empty_fields", "unknown_fields", "provenance", "guardrails"],
   "properties": {
     "generated_at": {"type": "string"},
     "status": {"enum": ["found", "not_found"]},
@@ -10,6 +10,7 @@
     "record": {"type": ["object", "null"]},
     "fact_count": {"type": "integer", "minimum": 0},
     "known_fields": {"type": "array", "items": {"type": "string"}},
+    "known_empty_fields": {"type": "array", "items": {"type": "string"}},
     "unknown_fields": {"type": "array", "items": {"type": "string"}},
     "provenance": {"type": "object", "required": ["source_urls", "source_fields_present", "has_source_url"], "properties": {
       "source_urls": {"type": "array"},
