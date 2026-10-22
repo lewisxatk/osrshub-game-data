@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub quest reward to item exact-match evidence report",
+  "type": "object",
+  "required": ["generated_at", "status", "quest_dataset_record_count", "item_dataset_record_count", "exact_reward_item_match_count", "unmatched_reward_text_count", "quests_with_unknown_reward_fields", "matches", "unmatched_reward_text", "unknown_reward_quests", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "quest_dataset_record_count": {"type": "integer", "minimum": 0},
+    "item_dataset_record_count": {"type": "integer", "minimum": 0},
+    "exact_reward_item_match_count": {"type": "integer", "minimum": 0},
+    "unmatched_reward_text_count": {"type": "integer", "minimum": 0},
+    "quests_with_unknown_reward_fields": {"type": "integer", "minimum": 0},
+    "matches": {"type": "array", "items": {"type": "object", "required": ["quest_key", "quest_name", "reward_text", "item_id", "item_name", "quest_source_url", "item_source_urls", "match_method", "evidence_status", "interpretation"], "properties": {
+      "quest_key": {"type": ["string", "null"]},
+      "quest_name": {"type": "string"},
+      "reward_text": {"type": "string"},
+      "item_id": {"type": "integer", "minimum": 0},
+      "item_name": {"type": "string"},
+      "quest_source_url": {"type": ["string", "null"]},
+      "item_source_urls": {"type": "array", "items": {"type": "string"}},
+      "match_method": {"const": "exact_case_insensitive_normalized_name"},
+      "evidence_status": {"const": "source_reward_text_exactly_matches_item_name"},
+      "interpretation": {"type": "string"}
+    }, "additionalProperties": false}},
+    "unmatched_reward_text": {"type": "array", "items": {"type": "object", "required": ["quest_key", "quest_name", "reward_text", "reason"], "properties": {
+      "quest_key": {"type": ["string", "null"]}, "quest_name": {"type": "string"}, "reward_text": {"type": "string"}, "reason": {"type": "string"}
+    }, "additionalProperties": false}},
+    "unknown_reward_quests": {"type": "array", "items": {"type": "object", "required": ["quest_key", "quest_name", "reason"], "properties": {
+      "quest_key": {"type": ["string", "null"]}, "quest_name": {"type": "string"}, "reason": {"type": "string"}
+    }, "additionalProperties": false}},
+    "guardrails": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
