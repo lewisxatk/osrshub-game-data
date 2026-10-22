@@ -36,7 +36,8 @@ def normalize_record(row):
         if not isinstance(value, list):
             return []
         return sorted({x.strip() for x in value if isinstance(x, str) and x.strip()})
-    requirements = string_list(row.get("requirements") or row.get("quest_requirements"))
+    requirements_key = "requirements" if "requirements" in row else "quest_requirements" if "quest_requirements" in row else None
+    requirements = string_list(row.get(requirements_key)) if requirements_key else []
     skills = []
     raw_skills = row.get("skill_requirements")
     if isinstance(raw_skills, dict):
@@ -48,6 +49,21 @@ def normalize_record(row):
             if level >= 0:
                 skills.append({"skill": str(skill), "level": level})
     rewards = string_list(row.get("rewards"))
+    # Presence means the source explicitly supplied the field; it does not independently certify accuracy.
+    field_status = {
+        "requirements": "known" if requirements_key is not None and isinstance(row.get(requirements_key), list) else "unknown",
+        "skill_requirements": "known" if isinstance(raw_skills, dict) else "unknown",
+        "rewards": "known" if isinstance(row.get("rewards"), list) else "unknown",
+        "members": "known" if isinstance(row.get("members"), bool) else "unknown",
+        "difficulty": "known" if isinstance(row.get("difficulty"), str) and row.get("difficulty").strip() else "unknown",
+        "quest_type": "known" if isinstance(row.get("quest_type", row.get("type")), str) and str(row.get("quest_type", row.get("type"))).strip() else "unknown",
+    }
+    raw_field_sources = row.get("field_sources", {})
+    field_sources = {}
+    if isinstance(raw_field_sources, dict):
+        for field, url in raw_field_sources.items():
+            if field in field_status and isinstance(url, str) and url.strip().startswith("https://"):
+                field_sources[field] = url.strip()
     members = row.get("members") if isinstance(row.get("members"), bool) else None
     difficulty = row.get("difficulty") if isinstance(row.get("difficulty"), str) else None
     quest_type = row.get("quest_type", row.get("type"))
@@ -65,6 +81,8 @@ def normalize_record(row):
         "quest_type": quest_type,
         "source_url": source_url,
         "source_fields": sorted(row.keys()),
+        "field_status": field_status,
+        "field_sources": field_sources,
     }
     return normalized, None
 
@@ -126,7 +144,9 @@ def main():
         "imported_record_count": len(records),
         "records_with_source_url": sum(bool(row["source_url"]) for row in records),
         "records_with_requirements": sum(bool(row["requirements"]) for row in records),
-        "records_with_skill_requirements": sum(bool(row["skill_requirements"]) for row in records),
+        "records_with_skill_requirements": sum(row["field_status"]["skill_requirements"] == "known" for row in records),
+        "field_status_counts": {field: {state: sum(row["field_status"][field] == state for row in records) for state in ("known", "unknown")} for field in ("requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type")},
+        "field_source_url_counts": {field: sum(bool(row.get("field_sources", {}).get(field)) for row in records) for field in ("requirements", "skill_requirements", "rewards", "members", "difficulty", "quest_type")},
         "warnings": warnings[:100],
         "warning_count": len(warnings),
         "errors": errors,
