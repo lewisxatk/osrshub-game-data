@@ -65,7 +65,7 @@ def build_profiles(items, equipment, weapons, requirements):
             "weapon_type": weapon.get("weapon_type") if weapon else None,
             "stances": weapon.get("stances", []) if weapon else [],
             "skill_requirements": requirements_list if isinstance(requirements_list, list) else None,
-            "skill_requirements_status": req.get("requirements_status") if isinstance(req, dict) else "unknown",
+            "skill_requirements_status": req.get("requirements_status") if isinstance(req, dict) and req.get("requirements_status") in {"known", "known_empty", "partial", "unknown"} else "unknown",
             "equipment_record_present": equip is not None,
             "weapon_record_present": weapon is not None,
             "skill_requirement_record_present": req is not None,

@@ -26,7 +26,10 @@ class ItemRequirementTests(unittest.TestCase):
                 "requirements": {"Attack": "70", "Magic": -1, "Defence": True}
             }
         }])
-        self.assertEqual(rows, [])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["requirements_status"], "partial")
+        self.assertEqual(rows[0]["requirements"], [])
+        self.assertEqual(report["items_with_partially_invalid_requirements"], 1)
         self.assertEqual(report["warning_count"], 3)
 
     def test_items_without_requirements_are_not_emitted(self):

@@ -108,7 +108,7 @@ def load_source(path):
 
 def source_summary(source_path, raw_rows):
     """Describe the actual snapshot used, including catalogue fallback runs."""
-    used_catalogue = source_path == CATALOG_PATH
+    used_catalogue = source_path.name == CATALOG_PATH.name
     return {
         "source_record_count": len(raw_rows) if isinstance(raw_rows, list) else 0,
         "source_kind": "missing" if not source_path.exists() else "title_catalogue_only" if used_catalogue else "structured_quest_snapshot",
