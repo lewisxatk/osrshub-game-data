@@ -45,10 +45,10 @@ class DatabaseIntegrityTests(unittest.TestCase):
 
     def test_unknown_prerequisite_fails(self):
         data=fixture()
-        data["quests.json"]=[{"id":10,"name":"Quest"}]
-        data["quest-relationships.json"]=[{"quest_id":10,"prerequisite_quest_ids":[999]}]
+        data["quests.json"]=[{"key":"quest-a","name":"Quest A"}]
+        data["quest-relationships.json"]=[{"quest_key":"quest-a","name":"Quest A","prerequisites":[{"quest_key":"missing","name":"Missing","completion_state":"completed"}],"dependents":[]}]
         report=audit_datasets(data)
-        self.assertTrue(any(e["issue"]=="unknown_prerequisite_quest_id" for e in report["errors"]))
+        self.assertTrue(any(e["issue"]=="unknown_prerequisite_quest_key" for e in report["errors"]))
 
     def test_duplicate_item_ids_fail(self):
         data=fixture()
