@@ -28,6 +28,12 @@ class NormalizeCombatDataTests(unittest.TestCase):
         result = normalizer.normalize_weapon({"id": 1, "weapon": {"attack_speed": 4, "stances": None}})
         self.assertEqual(result["stances"], [])
 
+    def test_weapon_stance_name_is_preserved_for_site_selection(self):
+        result = normalizer.normalize_weapon({
+            "id": 1, "weapon": {"stances": [{"name": "Accurate", "combat_style": "melee"}]}
+        })
+        self.assertEqual(result["stances"][0]["name"], "Accurate")
+
     def test_non_equipment_record_is_ignored(self):
         self.assertIsNone(normalizer.normalize_equipment({"id": 1, "equipment": None}))
 
