@@ -11,6 +11,7 @@
     "weapon_type",
     "stances",
     "skill_requirements",
+    "skill_requirements_status",
     "equipment_record_present",
     "weapon_record_present",
     "skill_requirement_record_present",
@@ -203,6 +204,15 @@
       "enum": [
         "partial",
         "joined_fields_present"
+      ]
+    },
+    "skill_requirements_status": {
+      "type": "string",
+      "enum": [
+        "known",
+        "known_empty",
+        "partial",
+        "unknown"
       ]
     }
   },
