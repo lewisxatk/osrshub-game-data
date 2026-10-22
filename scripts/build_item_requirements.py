@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalize item skill requirements into explicit, auditable item records."""
+"""Normalize item skill requirements while distinguishing empty from unknown source fields."""
 from __future__ import annotations
 
 import json
@@ -19,6 +19,11 @@ def normalize_requirements(items):
     warnings = []
     seen_ids = set()
     skills = Counter()
+    equipment_count = 0
+    unknown_count = 0
+    known_empty_count = 0
+    partial_count = 0
+
     for index, item in enumerate(items):
         if not isinstance(item, dict):
             warnings.append({"index": index, "reason": "record_not_object"})
@@ -30,43 +35,71 @@ def normalize_requirements(items):
         if item_id in seen_ids:
             raise ValueError(f"duplicate item ID {item_id}")
         seen_ids.add(item_id)
+
         equipment = item.get("equipment")
-        raw = equipment.get("requirements") if isinstance(equipment, dict) else None
-        if not isinstance(raw, dict) or not raw:
+        if not isinstance(equipment, dict) or not equipment:
             continue
+        equipment_count += 1
+
+        # Missing/malformed requirements are unknown. An explicit empty object is
+        # meaningful source evidence and must not disappear from the dataset.
+        if "requirements" not in equipment or not isinstance(equipment["requirements"], dict):
+            unknown_count += 1
+            continue
+
+        raw = equipment["requirements"]
         normalized = []
+        invalid_entries = []
         normalized_pairs = sorted(
             raw.items(),
             key=lambda pair: " ".join(pair[0].split()).casefold() if isinstance(pair[0], str) else str(pair[0]).casefold(),
         )
         for skill, level in normalized_pairs:
             if not isinstance(skill, str) or not skill.strip():
-                warnings.append({"item_id": item_id, "reason": "invalid_skill_name"})
+                invalid_entries.append({"skill": skill, "value": level, "reason": "invalid_skill_name"})
                 continue
             if isinstance(level, bool) or not isinstance(level, (int, float)) or int(level) != level or level < 0:
-                warnings.append({"item_id": item_id, "skill": skill, "reason": "invalid_skill_level", "value": level})
+                invalid_entries.append({"skill": skill, "value": level, "reason": "invalid_skill_level"})
                 continue
             normalized.append({"skill": " ".join(skill.split()), "level": int(level)})
             skills[skill.casefold()] += 1
-        if normalized:
-            records.append({
-                "item_id": item_id,
-                "item_name": item.get("name") if isinstance(item.get("name"), str) else "",
-                "requirements": normalized,
-                "sources": sorted({x for x in item.get("sources", []) if isinstance(x, str)}) if isinstance(item.get("sources"), list) else [],
-                "source_url": item.get("wiki_url") if isinstance(item.get("wiki_url"), str) else None,
-            })
+
+        if invalid_entries:
+            warnings.extend({"item_id": item_id, **entry} for entry in invalid_entries)
+            status = "partial"
+            partial_count += 1
+        elif not normalized:
+            status = "known_empty"
+            known_empty_count += 1
+        else:
+            status = "known"
+
+        records.append({
+            "item_id": item_id,
+            "item_name": item.get("name") if isinstance(item.get("name"), str) else "",
+            "requirements": normalized,
+            "requirements_status": status,
+            "sources": sorted({x for x in item.get("sources", []) if isinstance(x, str)}) if isinstance(item.get("sources"), list) else [],
+            "source_url": item.get("wiki_url") if isinstance(item.get("wiki_url"), str) else None,
+        })
+
     records.sort(key=lambda row: row["item_id"])
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "passed_with_warnings" if warnings else "passed",
         "source_item_count": len(items),
-        "items_with_skill_requirements": len(records),
+        "equipment_item_count": equipment_count,
+        "items_with_requirement_field": len(records),
+        "items_with_nonempty_skill_requirements": sum(row["requirements_status"] == "known" for row in records),
+        "items_with_explicit_empty_requirements": known_empty_count,
+        "items_with_partially_invalid_requirements": partial_count,
+        "items_with_unknown_requirements": unknown_count,
+        "requirement_field_coverage_percent": round(100.0 * len(records) / equipment_count, 2) if equipment_count else 0.0,
         "requirement_entry_count": sum(len(row["requirements"]) for row in records),
         "skill_counts": dict(sorted(skills.items())),
         "warning_count": len(warnings),
         "warnings": warnings[:100],
-        "note": "Requirements are copied from source equipment metadata; this output does not infer quest unlocks or claim every item requirement is present.",
+        "note": "Known-empty means the source explicitly supplied an empty requirements object. Missing or malformed source fields remain unknown; structural coverage does not independently verify factual accuracy.",
     }
     return records, report
 
