@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub item relationship graph audit report",
+  "type": "object",
+  "required": ["status", "counts", "errors", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "counts": {
+      "type": "object",
+      "required": ["items", "relationship_records", "expected_links", "missing_links", "error_count", "warning_count"],
+      "properties": {
+        "items": {"type": "integer", "minimum": 0},
+        "relationship_records": {"type": "integer", "minimum": 0},
+        "expected_links": {"type": "integer", "minimum": 0},
+        "missing_links": {"type": "integer", "minimum": 0},
+        "error_count": {"type": "integer", "minimum": 0},
+        "warning_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "errors": {"type": "array", "items": {"type": "object"}},
+    "warnings": {"type": "array", "items": {"type": "object"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
