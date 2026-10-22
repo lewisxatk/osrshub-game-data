@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "reports"
 INPUTS = {
     "validation": "validation.json",
+    "extended_source_import": "extended-source-import.json",
     "coverage": "coverage.json",
     "normalized_data_audit": "normalized-data-audit.json",
     "schema_validation": "schema-validation.json",
