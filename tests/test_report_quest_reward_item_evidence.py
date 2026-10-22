@@ -32,6 +32,11 @@ class QuestRewardItemEvidenceTests(unittest.TestCase):
         self.assertEqual(report["quests_with_unknown_reward_fields"], 1)
         self.assertEqual(report["exact_reward_item_match_count"], 0)
 
+    def test_empty_datasets_do_not_look_like_a_complete_success(self):
+        report = build_report([], [])
+        self.assertEqual(report["status"], "review_required")
+        self.assertEqual(report["exact_reward_item_match_count"], 0)
+
     def test_dataset_shapes_are_validated(self):
         with self.assertRaises(ValueError):
             build_report({}, [])
