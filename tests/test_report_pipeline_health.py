@@ -28,5 +28,15 @@ class PipelineHealthTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertEqual(result["checks"]["bad_json"]["status"], "unreadable")
 
+
+    def test_domain_consistency_failure_is_reported(self):
+        result = summarize_reports({'domain_consistency': ({'status': 'failed'}, None)})
+        self.assertEqual(result['status'], 'failed')
+        self.assertIn('domain_consistency', result['failed_reports'])
+
+    def test_domain_consistency_review_status_is_preserved(self):
+        result = summarize_reports({'domain_consistency': ({'status': 'review_required'}, None)})
+        self.assertEqual(result['checks']['domain_consistency']['status'], 'review_required')
+
 if __name__ == "__main__":
     unittest.main()
