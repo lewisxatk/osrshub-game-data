@@ -13,12 +13,14 @@
         "type": "object",
         "required": ["type", "dataset", "record_id"],
         "properties": {
-          "type": {"enum": ["has_equipment_stats", "has_weapon_data"]},
-          "dataset": {"enum": ["equipment-stats.json", "weapons.json"]},
+          "type": {"enum": ["has_equipment_stats", "has_weapon_data", "has_skill_requirements", "has_combat_profile"]},
+          "dataset": {"enum": ["equipment-stats.json", "weapons.json", "item-requirements.json", "item-combat-profiles.json"]},
           "record_id": {"type": "integer", "minimum": 0},
           "slot": {"type": ["string", "null"]},
           "weapon_type": {"type": ["string", "null"]},
-          "attack_speed": {"type": ["integer", "null"], "minimum": 1}
+          "attack_speed": {"type": ["integer", "null"], "minimum": 1},
+          "requirement_count": {"type": ["integer", "null"], "minimum": 0},
+          "data_status": {"type": ["string", "null"]}
         },
         "additionalProperties": false
       }
