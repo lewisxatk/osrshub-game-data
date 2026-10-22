@@ -47,6 +47,7 @@ REPORT_TARGETS = (
     ("quest-gap-queue.json", "quest-gap-queue.schema.json"),
     ("quest-fact-quality.json", "quest-fact-quality.schema.json"),
     ("quest-skill-requirement-candidates.json", "quest-skill-requirement-candidates.schema.json"),
+    ("quest-skill-candidate-audit.json", "quest-skill-candidate-audit.schema.json"),
 )
 
 
