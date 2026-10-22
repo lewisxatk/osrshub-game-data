@@ -99,6 +99,8 @@ jobs:
         run: python scripts/evaluate_combat_loadout.py --selected examples/combat-loadout-selected.example.json --costs examples/combat-loadout-costs.example.json --inputs examples/combat-loadout-inputs.example.json --budget 1000000 --style slash
       - name: Normalize example account profile
         run: python scripts/normalize_player_profile.py --input examples/player-profile.json
+      - name: Build account quest progression report
+        run: python scripts/report_account_quest_progression.py --profile reports/normalized-player-profile.json
       - name: Smoke-test ranged loadout evaluator
         run: python scripts/evaluate_ranged_loadout.py --selected examples/ranged-loadout-selected.example.json --costs examples/ranged-loadout-costs.example.json --inputs examples/ranged-loadout-inputs.example.json --budget 1000000
       - name: Generate and smoke-test loadout comparison report
