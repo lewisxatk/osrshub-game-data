@@ -61,6 +61,8 @@ jobs:
         run: python scripts/report_combat_categories.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py
+      - name: Download source-backed raw quest requirement evidence
+        run: python scripts/download_quest_requirement_evidence.py
       - name: Import quest fact snapshot when available
         run: python scripts/import_quests.py
       - name: Build quest prerequisite graph
@@ -138,5 +140,6 @@ jobs:
             reports/*.json
             sources/raw/manifest.json
             sources/raw/quest-catalog.json
+            sources/raw/quest-requirement-evidence.json
           if-no-files-found: warn
           retention-days: 30
