@@ -22,11 +22,11 @@ class CombatStudioPlanTests(unittest.TestCase):
             {"item_id": 6, "requirements_status": "known_empty", "requirements": []},
         ]
         self.unlocks = [
-            {"item_id": 1, "requirements_status": "known_empty", "required_quests": []},
-            {"item_id": 2, "requirements_status": "known", "required_quests": ["Monkey Madness I"]},
-            {"item_id": 3, "requirements_status": "known_empty", "required_quests": []},
-            {"item_id": 5, "requirements_status": "known_empty", "required_quests": []},
-            {"item_id": 6, "requirements_status": "known_empty", "required_quests": []},
+            {"item_id": 1, "requirements_status": "known_empty", "required_quests": [], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"},
+            {"item_id": 2, "requirements_status": "known", "required_quests": ["Monkey Madness I"], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"},
+            {"item_id": 3, "requirements_status": "known_empty", "required_quests": [], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"},
+            {"item_id": 5, "requirements_status": "known_empty", "required_quests": [], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"},
+            {"item_id": 6, "requirements_status": "known_empty", "required_quests": [], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"},
         ]
         self.profile = {"skills": {"Defence": 50}, "completed_quests": [], "excluded_item_ids": [6],
                         "excluded_item_names": [], "current_equipment": {"head": 1}}
