@@ -32,7 +32,7 @@ class CombatStudioPlanTests(unittest.TestCase):
                         "excluded_item_names": [], "current_equipment": {"head": 1}}
         self.costs = {"1": 100, "2": 5000, "3": 1000, "4": 100, "5": 500, "6": 10}
 
-    def plan(self, budget=1200, **kwargs):
+    def plan(self, budget=1500, **kwargs):
         return build_plan(self.equipment, self.requirements, self.unlocks, self.profile, self.costs, budget, **kwargs)
 
     def test_quest_locked_item_is_excluded_with_reason_and_alternative_selected(self):
