@@ -12,7 +12,7 @@ class CombatStudioUpgradePlanTests(unittest.TestCase):
             {"id": 3, "name": "Bronze body", "slot": "body", "bonuses": {"attack_slash": 0, "melee_strength": 1}},
         ]
         self.requirements = [{"item_id": i, "requirements_status": "known_empty", "requirements": []} for i in (1, 2, 3)]
-        self.unlocks = [{"item_id": i, "requirements_status": "known_empty", "required_quests": []} for i in (1, 2, 3)]
+        self.unlocks = [{"item_id": i, "requirements_status": "known_empty", "required_quests": [], "source_url": "https://oldschool.runescape.wiki/w/Test_fixture_source"} for i in (1, 2, 3)]
         self.profiles = [
             {"id": 1, "name": "Bronze sword", "slot": "weapon", "bonuses": {"attack_slash": 5, "melee_strength": 4}, "attack_speed": 4, "skill_requirements": [], "source_urls": [], "data_status": "joined_fields_present"},
             {"id": 2, "name": "Steel sword", "slot": "weapon", "bonuses": {"attack_slash": 10, "melee_strength": 8}, "attack_speed": 4, "skill_requirements": [], "source_urls": [], "data_status": "joined_fields_present"},
