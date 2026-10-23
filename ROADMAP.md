@@ -155,3 +155,15 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Improve source-verified combat mechanics and candidate coverage before treating any ranking as boss-accurate or globally optimal.
 
 **Acceptance boundary:** this update improves decision control and transparency only. It does not alter the combat formula, claim probabilities, discover new candidates, or remove the upstream bounded-search and source-verification limitations.
+
+
+## Combat Studio risk-preference sensitivity (this update)
+
+- [x] Evaluate the existing bounded candidate set across a configurable grid of risk-aversion preferences.
+- [x] Report the top candidates, winner, and score at every sampled setting from average-DPS preference to worst-case preference.
+- [x] Summarize how often each candidate ranks first across the preference grid, explicitly labelled as ranking stability rather than a win probability.
+- [x] Fail closed on duplicate candidate identities, malformed IDs/costs, non-finite or negative metrics, and inconsistent best/average/worst DPS ranges.
+- [x] Add regression tests, a dedicated report schema, CI generation/schema validation, and user-facing documentation.
+- [ ] Increase source-verified mechanics coverage and candidate search breadth before interpreting results as boss-accurate or globally optimal.
+
+**Acceptance boundary:** this batch shows whether recommendations depend heavily on a chosen risk preference. It does not model fight failure probabilities, improve the baseline combat formulas, or recover candidates omitted by the source search.
