@@ -46,6 +46,7 @@
     },
     "search": {"type": "object"},
     "candidate_counts": {"type": "object"},
+    "non_improving_candidates_excluded": {"type": "integer", "minimum": 0},
     "eligibility_audit": {"type": "array", "items": {"type": "object"}},
     "warnings": {"type": "array", "items": {"type": "string"}},
     "guardrails": {"type": "array", "items": {"type": "string"}}
