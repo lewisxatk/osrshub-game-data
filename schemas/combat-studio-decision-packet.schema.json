@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat Studio integrated decision packet",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "decision_scope", "baseline", "top_candidate", "recommendations", "mechanics", "risk_sensitivity", "gates", "action_queue", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["no_candidate", "review_required", "candidate_only"]},
+    "decision_scope": {
+      "type": "object",
+      "required": ["attack_style", "budget_gp", "candidate_count", "search_truncated", "risk_profile_count", "distinct_risk_winners"],
+      "properties": {
+        "attack_style": {"type": ["string", "null"]},
+        "budget_gp": {"type": ["number", "null"], "minimum": 0},
+        "candidate_count": {"type": "integer", "minimum": 0},
+        "search_truncated": {"type": "boolean"},
+        "risk_profile_count": {"type": "integer", "minimum": 0},
+        "distinct_risk_winners": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "baseline": {"type": "object"},
+    "top_candidate": {"type": ["object", "null"]},
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rank", "readiness", "baseline_dps", "candidate_dps", "dps_gain", "dps_gain_percent", "upgrade_cost_gp", "remaining_budget_gp", "dps_gain_per_million_gp", "weapon", "slot_changes", "selected_items", "blockers", "review_items", "planner_warnings"],
+        "properties": {
+          "rank": {},
+          "readiness": {"type": "string"},
+          "baseline_dps": {"type": ["number", "null"]},
+          "candidate_dps": {"type": ["number", "null"]},
+          "dps_gain": {"type": ["number", "null"]},
+          "dps_gain_percent": {"type": ["number", "null"]},
+          "upgrade_cost_gp": {"type": ["number", "null"]},
+          "remaining_budget_gp": {"type": ["number", "null"]},
+          "dps_gain_per_million_gp": {"type": ["number", "null"]},
+          "weapon": {},
+          "slot_changes": {"type": "array", "items": {"type": "object"}},
+          "selected_items": {"type": "array", "items": {"type": "object"}},
+          "blockers": {"type": "array", "items": {"type": "string"}},
+          "review_items": {"type": "array", "items": {"type": "string"}},
+          "planner_warnings": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "mechanics": {
+      "type": "object",
+      "required": ["registry_status", "total", "verified", "unverified_or_in_review", "unsupported", "verified_percent"],
+      "properties": {
+        "registry_status": {"type": "string"},
+        "total": {"type": "integer", "minimum": 0},
+        "verified": {"type": "integer", "minimum": 0},
+        "unverified_or_in_review": {"type": "integer", "minimum": 0},
+        "unsupported": {"type": "integer", "minimum": 0},
+        "verified_percent": {"type": ["number", "null"], "minimum": 0, "maximum": 100}
+      },
+      "additionalProperties": false
+    },
+    "risk_sensitivity": {
+      "type": "object",
+      "required": ["source_candidate_count", "profile_count", "winner_change_count", "most_frequent_winner", "most_frequent_winner_share_of_sampled_preferences", "interpretation"],
+      "properties": {
+        "source_candidate_count": {"type": "integer", "minimum": 0},
+        "profile_count": {"type": "integer", "minimum": 0},
+        "winner_change_count": {"type": "integer", "minimum": 0},
+        "most_frequent_winner": {"type": ["array", "null"], "items": {"type": "integer", "minimum": 0}},
+        "most_frequent_winner_share_of_sampled_preferences": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "interpretation": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "status", "detail"],
+        "properties": {
+          "gate": {"type": "string"},
+          "status": {"enum": ["passed", "review_required", "blocked"]},
+          "detail": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "action_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["priority", "action_id", "title", "reason"],
+        "properties": {
+          "priority": {"enum": ["P0", "P1", "P2"]},
+          "action_id": {"type": "string"},
+          "title": {"type": "string"},
+          "reason": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}
