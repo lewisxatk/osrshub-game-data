@@ -113,6 +113,12 @@ class CombatScenarioComparisonTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "OSRS Wiki source_url"):
             self.run_compare_scenarios(scenarios)
 
+    def test_lookalike_wiki_hostname_rejected(self):
+        scenarios = [dict(self.scenarios[0]), dict(self.scenarios[1])]
+        scenarios[0]["source_url"] = "https://oldschool.runescape.wiki.attacker.example/w/Combat"
+        with self.assertRaisesRegex(ValueError, "OSRS Wiki source_url"):
+            self.run_compare_scenarios(scenarios)
+
     def test_boolean_weight_rejected(self):
         scenarios = [dict(self.scenarios[0]), dict(self.scenarios[1])]
         scenarios[0]["weight"] = True
