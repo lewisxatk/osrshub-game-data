@@ -122,3 +122,12 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 - Validation, conflict-priority, coverage, equipment-gap, combat-readiness, source-integrity, pipeline-health, and dataset-diff reports.
 
 Field presence is not the same as correctness, and imported records are not considered verified solely because CI is green.
+
+## Combat arithmetic invariant hardening (next update)
+
+- [x] Add a wider deterministic invariant suite for hit-chance bounds and monotonicity across attack/defence rolls.
+- [x] Check linear attack/defence roll scaling, monotonic max-hit behavior, uniform-roll average damage, and DPS scaling with attack interval/tick rate.
+- [x] Add regression cases confirming invalid effective-level types, boolean values, and zero attack speed fail closed.
+- [ ] Expand reviewed, source-cited reference cases for effective-level derivation, prayers, potions, special attacks, and target-specific rules before implementing those mechanics.
+
+**Acceptance boundary:** these tests catch arithmetic regressions and contract violations; they are not source verification of the full OSRS combat model and do not expand the calculator's supported mechanics.
