@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Combat Studio upgrade plan",
   "type": "object",
-  "required": ["generated_at", "schema_version", "status", "attack_style", "upgrade_budget_gp", "baseline", "recommendations", "search", "candidate_counts", "eligibility_audit", "warnings", "guardrails"],
+  "required": ["generated_at", "schema_version", "status", "attack_style", "upgrade_budget_gp", "baseline", "recommendations", "search", "candidate_counts", "non_improving_candidates_excluded", "eligibility_audit", "warnings", "guardrails"],
   "properties": {
     "generated_at": {"type": "string"},
     "schema_version": {"const": "1.0.0"},
@@ -46,6 +46,7 @@
     },
     "search": {"type": "object"},
     "candidate_counts": {"type": "object"},
+    "non_improving_candidates_excluded": {"type": "integer", "minimum": 0},
     "eligibility_audit": {"type": "array", "items": {"type": "object"}},
     "warnings": {"type": "array", "items": {"type": "string"}},
     "guardrails": {"type": "array", "items": {"type": "string"}}

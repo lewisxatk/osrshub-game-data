@@ -32,6 +32,7 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
                              candidates_per_slot, node_limit)
     old_by_slot = {item["slot"]: item for item in baseline["selected_items"]}
     recommendations = []
+    non_improving_candidates_excluded = 0
     for row in search.get("top_loadouts", []):
         selected = row.get("selected_items", [])
         new_by_slot = {item["slot"]: item for item in selected}
@@ -60,6 +61,11 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
             continue
         baseline_dps = baseline["combat_result"]["dps"]
         gain = float(candidate_dps) - float(baseline_dps)
+        # A changed loadout is not necessarily an upgrade. Never recommend
+        # equal-or-worse DPS as an upgrade; keep the report honest when none win.
+        if gain <= 0:
+            non_improving_candidates_excluded += 1
+            continue
         recommendations.append({
             "rank": 0, "upgrade_cost_gp": cost, "remaining_budget_gp": budget - cost,
             "baseline_dps": baseline_dps, "candidate_dps": candidate_dps,
@@ -86,10 +92,12 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
         "recommendations": recommendations,
         "search": search.get("search", {}),
         "candidate_counts": search.get("candidate_counts", {}),
+        "non_improving_candidates_excluded": non_improving_candidates_excluded,
         "eligibility_audit": search.get("eligibility_audit", []),
         "warnings": baseline.get("warnings", []),
         "guardrails": [
             "Baseline items are treated as owned at zero cost; budget applies to replacement items.",
+            "Only candidates with strictly positive estimated DPS gain are recommended; equal-or-worse results are excluded.",
             "Prices and effective combat/target inputs are caller-supplied, not live GE data.",
             "Uses scoped baseline melee arithmetic, not boss-verified DPS; prayers, potions, specials, phases, immunities, set effects, damage caps and supplies are not modelled.",
             "Unknown skill or quest requirements are withheld by the existing eligibility gate.",
@@ -128,7 +136,7 @@ def main():
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({key: result[key] for key in ("status", "baseline", "recommendations", "search", "candidate_counts")}, indent=2))
+    print(json.dumps({key: result[key] for key in ("status", "baseline", "recommendations", "search", "candidate_counts", "non_improving_candidates_excluded")}, indent=2))
     return 0
 
 if __name__ == "__main__":

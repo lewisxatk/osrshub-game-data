@@ -22,19 +22,34 @@ class CombatStudioUpgradePlanTests(unittest.TestCase):
         self.costs = {"1": 100, "2": 500, "3": 100}
         self.inputs = {"effective_attack": 50, "effective_strength": 50, "effective_defence": 50, "defence_bonus": 0}
 
+    def make_plan(self, baseline=None):
+        return plan_upgrades(self.equipment, self.requirements, self.unlocks, self.profiles,
+            self.profile, baseline or [1, 3], self.costs, 1000, self.inputs, "slash")
+
     def test_owned_gear_is_free_and_upgrade_is_ranked(self):
-        result = plan_upgrades(self.equipment, self.requirements, self.unlocks, self.profiles,
-            self.profile, [1, 3], self.costs, 1000, self.inputs, "slash")
+        result = self.make_plan()
         self.assertEqual(result["status"], "upgrade_recommendations_with_limitations")
         self.assertEqual(result["baseline"]["total_cost_gp"], 0)
         self.assertTrue(any(2 in [item["item_id"] for item in row["selected_items"]] for row in result["recommendations"]))
         self.assertGreater(result["recommendations"][0]["dps_gain"], 0)
+        self.assertTrue(all(row["dps_gain"] > 0 for row in result["recommendations"]))
         self.assertEqual(result["recommendations"][0]["upgrade_cost_gp"], 500)
+
+    def test_no_improving_change_is_not_called_an_upgrade(self):
+        # With the stronger candidate removed, every changed combination is
+        # equal or worse than the current gear and must not be recommended.
+        equipment = [row for row in self.equipment if row["id"] != 2]
+        profiles = [row for row in self.profiles if row["id"] != 2]
+        requirements = [row for row in self.requirements if row["item_id"] != 2]
+        unlocks = [row for row in self.unlocks if row["item_id"] != 2]
+        result = plan_upgrades(equipment, requirements, unlocks, profiles, self.profile,
+            [1, 3], self.costs, 1000, self.inputs, "slash")
+        self.assertEqual(result["status"], "no_improving_upgrade_found")
+        self.assertEqual(result["recommendations"], [])
 
     def test_duplicate_baseline_ids_rejected(self):
         with self.assertRaisesRegex(ValueError, "duplicates"):
-            plan_upgrades(self.equipment, self.requirements, self.unlocks, self.profiles,
-                self.profile, [1, 1], self.costs, 1000, self.inputs)
+            self.make_plan([1, 1])
 
 if __name__ == "__main__":
     unittest.main()
