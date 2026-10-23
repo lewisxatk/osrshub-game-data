@@ -468,3 +468,17 @@ python scripts/compare_combat_scenarios.py \\
 The report unions candidates found by each scenario's bounded search, evaluates every retained loadout against every supplied scenario, and ranks by normalized weighted-average baseline DPS. It also exposes worst-case DPS, best-case DPS, spread, per-scenario hit chance/max hit/rolls, search truncation, and each scenario's source pointer. Scenarios require a non-empty unique ID, complete precomputed effective-level/defence inputs, a positive finite weight, and an HTTPS OSRS Wiki URL. The URL is provenance metadata, not automatic verification of numeric inputs. Candidate union is deliberately not described as a global exhaustive optimum. Illustrative CI inputs are not claims about real bosses; unsupported prayers, potions, specials, phases, immunities, set effects, caps and supply costs remain out of scope.
 
 Focused tests: `python -m unittest tests.test_combat_scenario_comparison -v`. CI generates and schema-validates the report.
+
+
+## Risk-aware Combat Studio ranking
+
+Re-rank the candidates from a scenario comparison without re-running combat calculations:
+
+```bash
+python scripts/rank_combat_scenario_robustness.py \
+  --input reports/combat-studio-scenario-comparison.json \
+  --risk-aversion 0.5 --top-n 20 \
+  --output reports/combat-studio-robustness-ranking.json
+```
+
+The transparent score is `(1 - risk_aversion) * weighted_average_dps + risk_aversion * worst_case_dps`. Use 0 to prefer weighted-average DPS, 1 to prefer worst-case DPS, or a value between them to trade average output for consistency. This does not infer a probability of failure, add new candidates, or improve the underlying combat model. It re-ranks only the already bounded candidate list and carries forward the source report's limitations. CI runs focused tests and validates the resulting report against `schemas/combat-studio-robustness-ranking.schema.json`.
