@@ -394,3 +394,17 @@ Validate it locally with:
 python scripts/validate_combat_mechanics_registry.py
 python -m unittest tests.test_combat_mechanics_registry -v
 ```
+
+
+## Combat Studio upgrade readiness audit
+
+After producing an account-aware upgrade plan, run:
+
+```bash
+python scripts/audit_combat_upgrade_readiness.py \
+  --plan reports/combat-studio-upgrade-plan.json \
+  --registry data/combat-mechanics-registry.json \
+  --output reports/combat-upgrade-readiness.json
+```
+
+This report adds an evidence-aware review layer to each recommendation. It flags non-positive DPS deltas, invalid or unreconciled budget arithmetic, truncated searches, missing item source URLs, unknown requirement-status metadata, planner warnings, and mechanics that remain unverified or unsupported. It produces deterministic states (`blocked`, `review_required`, or `candidate_only`), not a statistical confidence score. It does not alter the original plan, independently verify caller-supplied prices/inputs, or certify boss-accurate DPS. CI runs regression tests and validates the report against its schema.

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat Studio upgrade readiness audit",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "plan_status", "mechanics_registry_status", "mechanics_summary", "search_truncated", "upgrade_budget_gp", "recommendation_counts", "recommendations", "errors", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["failed", "review_required", "candidate_only"]},
+    "plan_status": {"type": "string"},
+    "mechanics_registry_status": {"type": "string"},
+    "mechanics_summary": {"type": "object", "required": ["total", "verified", "unverified_or_in_review", "unsupported"], "properties": {
+      "total": {"type": "integer", "minimum": 0},
+      "verified": {"type": "integer", "minimum": 0},
+      "unverified_or_in_review": {"type": "integer", "minimum": 0},
+      "unsupported": {"type": "integer", "minimum": 0}
+    }, "additionalProperties": false},
+    "search_truncated": {"type": "boolean"},
+    "upgrade_budget_gp": {"type": ["integer", "null"], "minimum": 0},
+    "recommendation_counts": {"type": "object", "required": ["candidate_only", "review_required", "blocked"], "properties": {
+      "candidate_only": {"type": "integer", "minimum": 0},
+      "review_required": {"type": "integer", "minimum": 0},
+      "blocked": {"type": "integer", "minimum": 0}
+    }, "additionalProperties": false},
+    "recommendations": {"type": "array", "items": {"type": "object", "required": ["rank", "readiness", "dps_gain", "upgrade_cost_gp", "remaining_budget_gp", "blockers", "review_items", "selected_items"], "properties": {
+      "rank": {"type": ["integer", "string"]},
+      "readiness": {"enum": ["blocked", "review_required", "candidate_only"]},
+      "dps_gain": {"type": ["number", "null"]},
+      "upgrade_cost_gp": {"type": ["number", "null"]},
+      "remaining_budget_gp": {"type": ["number", "null"]},
+      "blockers": {"type": "array", "items": {"type": "string"}},
+      "review_items": {"type": "array", "items": {"type": "string"}},
+      "selected_items": {"type": "array", "items": {"type": "object", "required": ["item_id", "item_name", "source_url_present", "requirements_status"], "properties": {
+        "item_id": {}, "item_name": {}, "source_url_present": {"type": "boolean"}, "requirements_status": {"type": "string"}
+      }, "additionalProperties": false}}
+    }, "additionalProperties": false}},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}},
+    "error": {"type": "string"}
+  },
+  "additionalProperties": false
+}
