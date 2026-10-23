@@ -446,3 +446,25 @@ The worklist attaches the relevant raw requirement text and source pointers wher
 ## Combat arithmetic regression coverage
 
 The standard unit-test command also runs `tests/test_combat_math_invariants.py`. It checks bounded and monotonic hit chance, linear roll scaling, monotonic max-hit behavior, the current uniform damage-roll assumption, DPS scaling, and rejection of malformed inputs. These are mathematical contract tests for the scoped baseline only; they do not establish that upstream effective levels, boosts, or boss-specific mechanics are accurate.
+
+
+## Multi-scenario Combat Studio comparison
+
+Compare bounded account-eligible melee loadout candidates across 2–10 caller-supplied combat scenarios:
+
+```bash
+python scripts/compare_combat_scenarios.py \\
+  --equipment examples/combat-studio-dps-equipment.example.json \\
+  --requirements examples/combat-studio-dps-requirements.example.json \\
+  --quest-unlocks examples/combat-studio-dps-unlocks.example.json \\
+  --profiles examples/combat-studio-dps-profiles.example.json \\
+  --profile examples/player-profile.json \\
+  --costs examples/combat-studio-dps-costs.example.json \\
+  --scenarios examples/combat-studio-scenarios.example.json \\
+  --budget 5000 --style slash \\
+  --output reports/combat-studio-scenario-comparison.json
+```
+
+The report unions candidates found by each scenario's bounded search, evaluates every retained loadout against every supplied scenario, and ranks by normalized weighted-average baseline DPS. It also exposes worst-case DPS, best-case DPS, spread, per-scenario hit chance/max hit/rolls, search truncation, and each scenario's source pointer. Scenarios require a non-empty unique ID, complete precomputed effective-level/defence inputs, a positive finite weight, and an HTTPS OSRS Wiki URL. The URL is provenance metadata, not automatic verification of numeric inputs. Candidate union is deliberately not described as a global exhaustive optimum. Illustrative CI inputs are not claims about real bosses; unsupported prayers, potions, specials, phases, immunities, set effects, caps and supply costs remain out of scope.
+
+Focused tests: `python -m unittest tests.test_combat_scenario_comparison -v`. CI generates and schema-validates the report.
