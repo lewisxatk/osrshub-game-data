@@ -86,8 +86,9 @@ Run the source download and import with:
 
     python scripts/download_sources.py
     python scripts/import_extended_sources.py
+python scripts/report_extended_domain_readiness.py
 
-The importer preserves upstream record fields and nested payloads, retains source keys, and attaches the upstream snapshot URL to each generated record. It deliberately does not guess joins between NPCs, items, drops, shops, or objects. These extra domains expand the data available to the website, but do not yet mean every OSRS domain or every field is complete. Source availability and structural validation are not proof of game-fact accuracy. The snapshots are kept separately so source changes and field-level disagreements can be audited instead of silently blended.
+The importer preserves upstream record fields and nested payloads, retains source keys, and attaches the upstream snapshot URL to each generated record. It deliberately does not guess joins between NPCs, items, drops, shops, or objects. Run `python scripts/report_extended_domain_readiness.py` after importing to inventory nested field paths and per-domain coverage across all 11 extended datasets. It flags duplicate source keys and missing provenance URLs, and emits a schema-validated report at `reports/extended-domain-readiness.json`. These extra domains expand the data available to the website, but do not yet mean every OSRS domain or every field is complete. Source availability and structural validation are not proof of game-fact accuracy. The snapshots are kept separately so source changes and field-level disagreements can be audited instead of silently blended.
 
 ## Unified OSRS Hub readiness matrix
 
