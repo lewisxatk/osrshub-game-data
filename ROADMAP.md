@@ -191,3 +191,14 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Source-verify combat-critical formulas and widen the candidate search before promoting outputs beyond review-only guidance.
 
 **Acceptance boundary:** the frontier and decision packet reorganize existing bounded results; neither recalculates DPS, invents OSRS facts, changes candidate eligibility, or proves global optimality. The packet intentionally remains review-required while source verification is incomplete.
+
+
+## Monster Atlas / DPS coverage milestone
+- [x] Build a source-preserving monster atlas and a random existing-field fact card.
+- [x] Report monster field coverage by combat-level bands.
+- [x] Audit duplicate monster IDs/names and invalid numeric fields without auto-merging.
+- [x] Audit only explicit numeric monster-to-drop joins; keep unresolved records separate.
+- [x] Estimate constant-DPS time-to-kill from explicit DPS and known positive monster HP.
+- [x] Add schema validation and regression coverage for empty/malformed datasets, unknown IDs, missing HP, and numeric edge cases.
+- [ ] Independently verify source-specific monster stats and authoritative combat formulas.
+- [ ] Add target-specific defence, phases, immunities, and damage caps only when source evidence and regression fixtures are available.

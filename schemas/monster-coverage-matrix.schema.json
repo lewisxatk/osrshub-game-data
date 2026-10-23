@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster field coverage matrix",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "dataset",
+    "record_count",
+    "field_names",
+    "bands",
+    "interpretation",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "field_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bands": {
+      "type": "object",
+      "required": [
+        "unknown",
+        "0-49",
+        "50-99",
+        "100-199",
+        "200-499",
+        "500+"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "record_count",
+          "fields"
+        ],
+        "properties": {
+          "record_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "present",
+                "missing_or_invalid",
+                "coverage_percent"
+              ],
+              "properties": {
+                "present": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "missing_or_invalid": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "coverage_percent": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

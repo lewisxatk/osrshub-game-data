@@ -89,6 +89,16 @@ jobs:
         run: python scripts/report_combat_categories.py
       - name: Normalize monster combat data
         run: python scripts/normalize_monster_combat.py
+      - name: Build source-preserving monster atlas and random fact
+        run: python scripts/build_monster_atlas.py --output reports/monster-atlas.json --fact-output reports/monster-random-fact.json
+      - name: Audit monster field coverage by combat-level band
+        run: python scripts/audit_monster_coverage_matrix.py --output reports/monster-coverage-matrix.json
+      - name: Audit monster IDs, names and numeric fields
+        run: python scripts/audit_monster_identity.py --output reports/monster-identity-audit.json
+      - name: Audit explicit monster-to-drop links
+        run: python scripts/audit_monster_drop_links.py --output reports/monster-drop-link-audit.json
+      - name: Analyze explicit DPS envelope fixtures against known monster data
+        run: python scripts/analyze_monster_dps_envelope.py --input examples/monster-dps-scenarios.example.json --output reports/monster-dps-envelope.json
       - name: Download source-backed raw quest requirement evidence
         run: python scripts/download_quest_requirement_evidence.py
       - name: Extract conservative quest skill-level text candidates

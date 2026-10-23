@@ -535,3 +535,20 @@ python scripts/build_combat_studio_decision_packet.py \\
 ```
 
 The packet combines the baseline and ranked upgrades with per-candidate review blockers, mechanics coverage, search-truncation state, risk-preference stability, release gates, and a prioritized action queue. It is a decision-support artifact, not a new combat calculator. The gate status remains `review_required` while mechanics are unverified or unsupported, and a green schema check is not proof of game accuracy. Both reports are generated and validated in CI.
+
+
+## Monster Atlas and DPS Envelope
+
+The generated monster atlas now reports the current snapshot's record count, unique
+IDs, field coverage, combat-level bands, highest-HP entries, and a random populated
+database fact. The random fact can be made repeatable with \`--seed\`; values remain
+marked as not independently verified by the atlas.
+
+The monster coverage matrix shows missing combat fields by band. Identity and drop-link
+audits report duplicate IDs/names, invalid numeric fields, explicit NPC-ID joins,
+unresolved records, and orphaned explicit IDs without guessing name-based joins.
+
+The DPS envelope uses caller-supplied positive DPS and either known database monster
+hitpoints or an explicit synthetic target. It estimates constant-DPS time-to-kill and
+theoretical kills/hour only. It is not a complete combat simulator and does not infer
+DPS from monster stats. See [Monster Atlas and DPS Envelope](docs/monster-atlas-and-dps.md).

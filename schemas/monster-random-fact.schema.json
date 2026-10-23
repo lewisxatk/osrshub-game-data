@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Random monster database fact",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "fact_type",
+    "monster",
+    "field",
+    "value",
+    "source_names",
+    "verification_status",
+    "explanation",
+    "selection_seed"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "found",
+        "not_found"
+      ]
+    },
+    "fact_type": {
+      "const": "random_existing_database_field"
+    },
+    "monster": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "field": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value": {},
+    "source_names": {
+      "type": "array"
+    },
+    "verification_status": {
+      "type": "string"
+    },
+    "explanation": {
+      "type": "string"
+    },
+    "selection_seed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
