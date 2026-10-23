@@ -52,6 +52,7 @@ V1 is the complete account-aware combat planning experience: imported account st
 - [x] Normalize source-backed item skill requirements into an item-ID keyed dataset with schema validation and malformed-value warnings.
 - [x] Add a conservative profile-to-item eligibility evaluator that applies manual exclusions and known skill requirements while keeping quest/unlock eligibility unknown.
 - [x] Prevent the budgeted multi-slot stat shortlist from equipping the same item ID in multiple slots.\n- [ ] Add quest/unlock relationships once verified quest facts are supplied by a maintained source.
+- [x] Require exactly one internally consistent item-to-quest record with a non-placeholder HTTPS source before the planner can treat unlock status as known; unknown, duplicate, contradictory, and fixture-only records are excluded from recommendation candidates.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
 - [x] Inventory nested field-path coverage and source-key/provenance integrity across all 11 extended source domains without inventing cross-domain joins.\n- [x] Extend the bounded query interface to all 11 extended source domains with exact source-key lookup and expanded identity-field filtering.
@@ -94,7 +95,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Build on the item-to-quest unlock evidence audit: maintain a source-backed unlock dataset and connect its completeness to account eligibility decisions.
+1. Build on the item-to-quest unlock evidence audit and fail-closed planner gate: maintain a source-backed unlock dataset and connect verified coverage to account eligibility decisions.
 2. Expand the optimiser from summed-stat scoring to verified attack-roll, max-hit, accuracy, attack-speed and target-specific DPS scoring, with sourced regression fixtures.
 3. Verify each regression fixture against its cited reference and source mapping.
 4. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
