@@ -44,6 +44,8 @@ class HubReadinessMatrixTests(unittest.TestCase):
         self.assertEqual(result["cross_domain_joins"]["equipment_missing_profile_ids"], [2])
         self.assertEqual(result["cross_domain_joins"]["equipment_missing_requirement_ids"], [2])
         self.assertEqual(result["cross_domain_joins"]["quest_missing_relationship_ids"], [10])
+        self.assertEqual(result["cross_domain_joins"]["profile_orphan_item_ids"], [])
+        self.assertEqual(result["cross_domain_joins"]["requirement_orphan_item_ids"], [])
         self.assertIn("Missing values are unknown, not zero.", result["guardrails"])
         gaps = {gap["key"]: gap for gap in result["gaps"]}
         self.assertEqual(gaps["weapon_mechanics"]["affected_records"], 1)
@@ -58,6 +60,29 @@ class HubReadinessMatrixTests(unittest.TestCase):
         self.assertGreaterEqual(result["integrity_issue_count"], 2)
         self.assertEqual(result["dataset_summaries"]["items"]["duplicate_ids"], [1])
         self.assertEqual(result["dataset_summaries"]["items"]["invalid_id_count"], 1)
+
+    def test_reports_orphan_child_records_separately_from_missing_joins(self):
+        data = self.fixture()
+        data["item-combat-profiles.json"].append(
+            {"id": 98, "name": "Orphan profile", "bonuses": {}, "source_urls": []}
+        )
+        data["item-requirements.json"].append(
+            {"item_id": 97, "requirements": [], "requirements_status": "unknown", "source_url": None}
+        )
+        result = matrix.build_readiness_report(lambda filename: data[filename])
+        joins = result["cross_domain_joins"]
+        self.assertEqual(joins["profile_orphan_item_ids"], [98])
+        self.assertEqual(joins["requirement_orphan_item_ids"], [97])
+
+    def test_duplicate_detection_scales_with_record_count(self):
+        data = self.fixture()
+        data["items.json"] = [
+            {"id": index, "name": "Item " + str(index), "wiki_url": None}
+            for index in range(12000)
+        ]
+        result = matrix.build_readiness_report(lambda filename: data[filename])
+        self.assertEqual(result["dataset_summaries"]["items"]["duplicate_id_count"], 0)
+        self.assertEqual(result["dataset_summaries"]["items"]["record_count"], 12000)
 
     def test_missing_dataset_is_a_failure_not_an_empty_dataset(self):
         data = self.fixture()

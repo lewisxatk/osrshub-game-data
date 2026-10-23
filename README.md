@@ -89,6 +89,12 @@ Run the source download and import with:
 
 The importer preserves upstream record fields and nested payloads, retains source keys, and attaches the upstream snapshot URL to each generated record. It deliberately does not guess joins between NPCs, items, drops, shops, or objects. These extra domains expand the data available to the website, but do not yet mean every OSRS domain or every field is complete. Source availability and structural validation are not proof of game-fact accuracy. The snapshots are kept separately so source changes and field-level disagreements can be audited instead of silently blended.
 
+## Unified OSRS Hub readiness matrix
+
+Run `python scripts/report_hub_readiness_matrix.py --output reports/hub-readiness-matrix.json` to produce a cross-domain structural readiness report. It summarizes field presence and invalid/duplicate IDs, reports missing joins and orphan records separately, and ranks actionable data gaps. Duplicate detection uses a linear-time frequency count so the report remains practical as item datasets grow.
+
+This report is a structural diagnostic, not a factual accuracy score. Missing records remain distinct from known-empty records, and the report does not infer OSRS requirements, combat values, or relationships.
+
 ## Search the generated data
 
 ```bash
