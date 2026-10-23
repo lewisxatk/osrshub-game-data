@@ -33,6 +33,8 @@ jobs:
         run: python scripts/build_dataset.py
       - name: Import extended source domains (prayers, drops, shops, slayer, NPCs, objects, models)
         run: python scripts/import_extended_sources.py
+      - name: Inventory extended-domain field coverage and provenance
+        run: python scripts/report_extended_domain_readiness.py
       - name: Report field-level provenance
         run: python scripts/report_field_provenance.py
       - name: Audit item IDs and name collisions

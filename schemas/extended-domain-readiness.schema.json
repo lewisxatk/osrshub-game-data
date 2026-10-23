@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Extended OSRS source-domain readiness report",
+  "type": "object",
+  "required": ["generated_at", "status", "domain_count", "domains", "errors", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "minLength": 1},
+    "status": {"enum": ["passed", "failed"]},
+    "domain_count": {"type": "integer", "minimum": 0},
+    "domains": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["dataset", "record_count", "unique_source_key_count", "duplicate_source_keys", "duplicate_source_key_count", "invalid_source_key_count", "missing_source_url_count", "field_path_count", "field_coverage"],
+        "properties": {
+          "dataset": {"type": "string"},
+          "record_count": {"type": "integer", "minimum": 0},
+          "unique_source_key_count": {"type": "integer", "minimum": 0},
+          "duplicate_source_keys": {"type": "array", "items": {"type": "string"}},
+          "duplicate_source_key_count": {"type": "integer", "minimum": 0},
+          "invalid_source_key_count": {"type": "integer", "minimum": 0},
+          "missing_source_url_count": {"type": "integer", "minimum": 0},
+          "field_path_count": {"type": "integer", "minimum": 0},
+          "field_coverage": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": ["records_with_value", "coverage_percent"],
+              "properties": {
+                "records_with_value": {"type": "integer", "minimum": 0},
+                "coverage_percent": {"type": "number", "minimum": 0, "maximum": 100}
+              }
+            }
+          }
+        }
+      }
+    },
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

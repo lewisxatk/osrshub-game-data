@@ -50,6 +50,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [x] Prevent the budgeted multi-slot stat shortlist from equipping the same item ID in multiple slots.\n- [ ] Add quest/unlock relationships once verified quest facts are supplied by a maintained source.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
+- [x] Inventory nested field-path coverage and source-key/provenance integrity across all 11 extended source domains without inventing cross-domain joins.
 - [ ] Track provenance and conflicts for every imported category.
 
 ### Stage 4 — Build the OSRS encyclopaedia

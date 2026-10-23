@@ -66,6 +66,7 @@ REPORT_TARGETS = (
     ("game-fact-card-example.json", "game-fact-card.schema.json"),
     ("item-knowledge-explorer-example.json", "item-knowledge-explorer.schema.json"),
     ("quest-reward-item-evidence.json", "quest-reward-item-evidence.schema.json"),
+    ("extended-domain-readiness.json", "extended-domain-readiness.schema.json"),
 )
 
 
