@@ -100,7 +100,7 @@ def analyze_frontier(plan: dict) -> dict:
     dominated.sort(key=lambda row: (row["upgrade_cost_gp"], -row["dps_gain"], str(row["rank"])))
     by_gain = sorted(candidates, key=lambda row: (-row["dps_gain"], row["upgrade_cost_gp"], str(row["rank"])))
     by_efficiency = sorted(candidates, key=lambda row: (
-        -(row["dps_gain_per_million_gp"] if row["dps_gain_per_million_gp"] is not None else math.inf),
+        -(row["dps_gain_per_million_gp"] if row["dps_gain_per_million_gp"] is not None else -math.inf),
         row["upgrade_cost_gp"], -row["dps_gain"], str(row["rank"])
     ))
     zero_cost = [row for row in candidates if row["upgrade_cost_gp"] == 0]
