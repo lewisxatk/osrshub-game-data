@@ -206,7 +206,10 @@ def build_decision_packet(plan: dict, readiness: dict, mechanics: dict, sensitiv
     if not top_candidate:
         add("P1", "inspect_no_candidate_result", "Inspect why no positive upgrade was found",
             "No candidate in this bounded run improved the baseline; review candidate coverage and constraints before concluding none exists.")
-    if len(profiles) and _count(sensitivity.get("winner_change_count")) > 1:
+    if not profiles:
+        add("P1", "review_risk_tradeoffs", "Generate or inspect risk-preference sensitivity results",
+            "No risk sensitivity profiles are available, so preference-dependent recommendation changes cannot be assessed.")
+    elif _count(sensitivity.get("winner_change_count")) > 1:
         add("P2", "review_risk_tradeoffs", "Review loadout changes across risk preferences",
             "The winning loadout varies across sampled preference settings; the best choice depends on the selected risk preference.")
     if not actions:
