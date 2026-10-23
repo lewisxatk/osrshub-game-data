@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat mechanics verification registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_status",
+    "description",
+    "mechanics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "registry_status": {
+      "enum": [
+        "research_scaffold",
+        "partially_verified",
+        "verified_subset"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mechanics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mechanic_id",
+          "label",
+          "domain",
+          "implementation_status",
+          "verification_status",
+          "scope",
+          "source_references",
+          "regression_fixtures",
+          "limitations"
+        ],
+        "properties": {
+          "mechanic_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "domain": {
+            "enum": [
+              "accuracy",
+              "damage",
+              "timing",
+              "boosts",
+              "target",
+              "equipment",
+              "other"
+            ]
+          },
+          "implementation_status": {
+            "enum": [
+              "not_implemented",
+              "data_dependent",
+              "implemented_scoped"
+            ]
+          },
+          "verification_status": {
+            "enum": [
+              "unsupported",
+              "unverified",
+              "in_review",
+              "verified"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "url",
+                "title",
+                "accessed_at",
+                "claim"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "accessed_at": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "claim": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "regression_fixtures": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

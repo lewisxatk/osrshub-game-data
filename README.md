@@ -382,3 +382,15 @@ The matrix is a prioritization tool, not a release certificate: `review_required
 The account-aware upgrade planner now includes a `combat_comparison` for each recommended candidate. It shows baseline and candidate attack roll, target defence roll, hit chance, max hit, expected damage per attack, weapon attack speed in ticks, and the difference for each metric. This makes it easier to inspect why the scoped baseline DPS changed instead of relying on a single score.
 
 These metrics are recomputed with the same existing combat evaluator and caller-supplied inputs used by the planner. The comparison is an arithmetic explanation, not a claim of boss-specific accuracy: effective levels, target defence and prices still need independent verification, and prayers, potions, special attacks, phases, immunities, set effects, damage caps and supplies remain outside the model. The output schema and regression tests check the comparison structure and consistency between DPS delta and the recommendation’s reported gain.
+
+
+## Combat mechanics verification registry
+
+`data/combat-mechanics-registry.json` is a schema-backed inventory of what the scoped Combat Studio model does and does not implement. It separates implementation status from verification status and requires source references plus regression-fixture identifiers before a mechanic can be marked `verified`. The current registry is deliberately a `research_scaffold`: core roll/max-hit arithmetic is marked unverified here, and prayers, potions, and special attacks remain explicitly unsupported. This is a guardrail and planning contract, not evidence that the formulas are already game-accurate.
+
+Validate it locally with:
+
+```bash
+python scripts/validate_combat_mechanics_registry.py
+python -m unittest tests.test_combat_mechanics_registry -v
+```

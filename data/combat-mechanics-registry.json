@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0.0",
+  "registry_status": "research_scaffold",
+  "description": "Mechanics are intentionally marked unsupported until a trusted source, exact rule scope, and regression fixture have been reviewed. This registry is not an executable combat model.",
+  "mechanics": [
+    {
+      "mechanic_id": "attack_roll",
+      "label": "Attack roll",
+      "domain": "accuracy",
+      "implementation_status": "implemented_scoped",
+      "verification_status": "unverified",
+      "scope": "Core baseline arithmetic only; caller supplies effective attack and attack bonus.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Formula implementation exists, but this registry has not yet been verified against a trusted, versioned OSRS reference."
+      ]
+    },
+    {
+      "mechanic_id": "defence_roll",
+      "label": "Defence roll",
+      "domain": "accuracy",
+      "implementation_status": "implemented_scoped",
+      "verification_status": "unverified",
+      "scope": "Core baseline arithmetic only; caller supplies effective defence and defence bonus.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Formula implementation exists, but this registry has not yet been verified against a trusted, versioned OSRS reference."
+      ]
+    },
+    {
+      "mechanic_id": "max_hit",
+      "label": "Maximum hit",
+      "domain": "damage",
+      "implementation_status": "implemented_scoped",
+      "verification_status": "unverified",
+      "scope": "Core baseline arithmetic only; caller supplies effective strength and strength bonus.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Boosts, prayers, equipment effects, style bonuses, special attacks, and rounding exceptions are outside the current registry scope."
+      ]
+    },
+    {
+      "mechanic_id": "attack_speed",
+      "label": "Attack speed",
+      "domain": "timing",
+      "implementation_status": "data_dependent",
+      "verification_status": "unverified",
+      "scope": "Ticks supplied by a weapon profile or caller; no inferred missing speeds.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Source coverage and weapon-specific exceptions have not yet been verified in this registry."
+      ]
+    },
+    {
+      "mechanic_id": "prayers",
+      "label": "Prayer modifiers",
+      "domain": "boosts",
+      "implementation_status": "not_implemented",
+      "verification_status": "unsupported",
+      "scope": "No prayer modifier is applied by the current scoped baseline calculator.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Do not apply prayer multipliers until the rule, rounding order, and relevant styles are source-verified."
+      ]
+    },
+    {
+      "mechanic_id": "potions",
+      "label": "Potion modifiers",
+      "domain": "boosts",
+      "implementation_status": "not_implemented",
+      "verification_status": "unsupported",
+      "scope": "No potion or temporary boost is applied by the current scoped baseline calculator.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Boost formulas and rounding order are not modelled."
+      ]
+    },
+    {
+      "mechanic_id": "special_attacks",
+      "label": "Special attacks",
+      "domain": "damage",
+      "implementation_status": "not_implemented",
+      "verification_status": "unsupported",
+      "scope": "No special-attack accuracy, damage, energy, or sequence modelling.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Weapon-specific effects, energy costs, and attack sequences are not modelled."
+      ]
+    },
+    {
+      "mechanic_id": "target_defence",
+      "label": "Target defence",
+      "domain": "target",
+      "implementation_status": "data_dependent",
+      "verification_status": "unverified",
+      "scope": "Caller-supplied target defence input only; no target-specific phases or immunities.",
+      "source_references": [],
+      "regression_fixtures": [],
+      "limitations": [
+        "Target stats, defence style, phase changes, immunities, and damage caps require independently sourced evidence."
+      ]
+    }
+  ]
+}
