@@ -73,8 +73,12 @@ jobs:
         run: python scripts/analyze_combat_ranking_sensitivity.py --input reports/combat-studio-scenario-comparison.json --step-percent 10 --top-n 5 --output reports/combat-studio-risk-sensitivity.json
       - name: Plan account-aware Combat Studio upgrades fixture
         run: python scripts/plan_combat_studio_upgrades.py --equipment examples/combat-studio-dps-equipment.example.json --requirements examples/combat-studio-dps-requirements.example.json --quest-unlocks examples/combat-studio-dps-unlocks.example.json --profiles examples/combat-studio-dps-profiles.example.json --profile examples/player-profile.json --baseline examples/combat-studio-upgrade-baseline.example.json --costs examples/combat-studio-dps-costs.example.json --combat-inputs examples/combat-studio-dps-inputs.example.json --budget 5000 --style slash --output reports/combat-studio-upgrade-plan.json
+      - name: Analyze cost-versus-DPS upgrade frontier
+        run: python scripts/analyze_combat_upgrade_frontier.py --input reports/combat-studio-upgrade-plan.json --output reports/combat-studio-upgrade-frontier.json
       - name: Audit Combat Studio upgrade recommendation readiness
         run: python scripts/audit_combat_upgrade_readiness.py --plan reports/combat-studio-upgrade-plan.json --registry data/combat-mechanics-registry.json --output reports/combat-upgrade-readiness.json
+      - name: Build integrated Combat Studio decision packet
+        run: python scripts/build_combat_studio_decision_packet.py --plan reports/combat-studio-upgrade-plan.json --readiness reports/combat-upgrade-readiness.json --mechanics reports/combat-mechanics-readiness.json --sensitivity reports/combat-studio-risk-sensitivity.json --output reports/combat-studio-decision-packet.json
       - name: Audit item-to-quest unlock evidence fixture
         run: python scripts/audit_item_quest_unlocks.py --input examples/combat-studio-dps-unlocks.example.json --output reports/item-quest-unlock-audit.json
       - name: Optimize multi-slot equipment candidate under budget
