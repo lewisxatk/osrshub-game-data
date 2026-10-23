@@ -66,6 +66,26 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
         if gain <= 0:
             non_improving_candidates_excluded += 1
             continue
+        candidate_eval = evaluate_loadout(
+            profiles, [item["item_id"] for item in selected],
+            effective_costs, budget, inputs, attack_style
+        )
+        before = baseline["combat_result"]
+        after = candidate_eval["combat_result"]
+        metric_keys = ("attack_roll", "defence_roll", "hit_chance", "max_hit", "expected_damage_per_attack", "attack_speed_ticks", "dps")
+        combat_comparison = {
+            "baseline": {key: before[key] for key in metric_keys},
+            "candidate": {key: after[key] for key in metric_keys},
+            "delta": {
+                "attack_roll": after["attack_roll"] - before["attack_roll"],
+                "defence_roll": after["defence_roll"] - before["defence_roll"],
+                "hit_chance": round(after["hit_chance"] - before["hit_chance"], 8),
+                "max_hit": after["max_hit"] - before["max_hit"],
+                "expected_damage_per_attack": round(after["expected_damage_per_attack"] - before["expected_damage_per_attack"], 8),
+                "attack_speed_ticks": after["attack_speed_ticks"] - before["attack_speed_ticks"],
+                "dps": round(after["dps"] - before["dps"], 8)
+            }
+        }
         recommendations.append({
             "rank": 0, "upgrade_cost_gp": cost, "remaining_budget_gp": budget - cost,
             "baseline_dps": baseline_dps, "candidate_dps": candidate_dps,
@@ -73,7 +93,7 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
             "dps_gain_percent": round(gain / baseline_dps * 100, 4) if baseline_dps else None,
             "dps_gain_per_million_gp": round(gain * 1000000 / cost, 8) if cost else None,
             "weapon": row.get("weapon"), "slot_changes": changes,
-            "selected_items": selected, "warnings": row.get("warnings", [])
+            "selected_items": selected, "combat_comparison": combat_comparison, "warnings": row.get("warnings", [])
         })
     recommendations.sort(key=lambda x: (-x["dps_gain"], x["upgrade_cost_gp"],
                                         -(x["dps_gain_per_million_gp"] or 0)))
@@ -98,6 +118,7 @@ def plan_upgrades(equipment, requirements, quest_unlocks, profiles, profile,
         "guardrails": [
             "Baseline items are treated as owned at zero cost; budget applies to replacement items.",
             "Only candidates with strictly positive estimated DPS gain are recommended; equal-or-worse results are excluded.",
+            "Combat comparison decomposes the same scoped formula into rolls, hit chance, max hit, expected damage per attack, attack speed and DPS; deltas are not boss-specific.",
             "Prices and effective combat/target inputs are caller-supplied, not live GE data.",
             "Uses scoped baseline melee arithmetic, not boss-verified DPS; prayers, potions, specials, phases, immunities, set effects, damage caps and supplies are not modelled.",
             "Unknown skill or quest requirements are withheld by the existing eligibility gate.",
