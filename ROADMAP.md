@@ -131,3 +131,15 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Expand reviewed, source-cited reference cases for effective-level derivation, prayers, potions, special attacks, and target-specific rules before implementing those mechanics.
 
 **Acceptance boundary:** these tests catch arithmetic regressions and contract violations; they are not source verification of the full OSRS combat model and do not expand the calculator's supported mechanics.
+
+
+## Multi-scenario Combat Studio intelligence (this update)
+
+- [x] Compare bounded account-eligible melee candidate sets across 2–10 explicitly sourced scenarios.
+- [x] Re-evaluate every retained candidate against every scenario with the same existing scoped baseline evaluator.
+- [x] Rank using normalized scenario weights, with worst-case DPS and DPS spread visible as trade-off metrics.
+- [x] Report per-scenario rolls, hit chance, max hit, provenance URL, search limits and truncation.
+- [x] Add schema validation, illustrative CI fixture, workflow integration and fail-closed tests for duplicate IDs, missing inputs, invalid weights and unsupported source URLs.
+- [ ] Expand candidate coverage and add reviewed, source-verified combat mechanics before describing scenario output as boss-accurate DPS.
+
+**Acceptance boundary:** scenario comparison makes the current baseline more useful across multiple caller-supplied contexts. It does not establish source accuracy, complete mechanics, or a globally optimal loadout; each scenario's candidate discovery is bounded.
