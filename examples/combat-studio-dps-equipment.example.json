@@ -1,0 +1,4 @@
+[
+ {"id":2001,"name":"Illustrative sword","slot":"weapon","bonuses":{"attack_stab":50,"attack_slash":50,"attack_crush":50,"melee_strength":40},"attack_speed":4,"source_urls":["https://example.test/sword"]},
+ {"id":2002,"name":"Illustrative helm","slot":"head","bonuses":{"attack_stab":10,"attack_slash":10,"attack_crush":10,"melee_strength":5},"source_urls":["https://example.test/helm"]}
+]

@@ -1,0 +1,5 @@
+{
+ "effective_attack":100,"effective_strength":100,"effective_defence":80,"defence_bonus":80,
+ "source_url":"https://oldschool.runescape.wiki/w/Combat_level",
+ "note":"Illustrative CI fixture only. Verify combat inputs for the actual account and target before using any estimate."
+}

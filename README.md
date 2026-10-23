@@ -312,6 +312,27 @@ The planner creates a bounded multi-slot combination under the GP budget, report
 
 **Important V1 boundary:** the selected objective is currently the sum of one numeric bonus per slot. This is not yet a full combat DPS optimiser, does not prove all quest facts are complete, and does not model every item variant, set effect, boss mechanic, prayer, potion, special attack or supply cost. Prices and the `item-quest-unlocks` input are caller-supplied; this repository does not fetch live GE prices or invent missing unlocks. The CI fixture uses illustrative records only. See the output's guardrails and audit for limitations.
 
+## Account-aware Combat Studio DPS loadout search (V1 expansion)
+
+The next step after a stat-based shortlist is to search combinations using the repository's existing scoped melee DPS calculation. Example invocation:
+
+```bash
+python scripts/search_combat_studio_loadouts.py \
+  --equipment dist/equipment-stats.json \
+  --requirements dist/item-requirements.json \
+  --quest-unlocks sources/normalized/item-quest-unlocks.json \
+  --profiles dist/item-combat-profiles.json \
+  --profile examples/player-profile.json \
+  --costs examples/item-costs.example.json \
+  --combat-inputs examples/combat-loadout-inputs.example.json \
+  --budget 5000000 --style slash \
+  --output reports/combat-studio-dps-search.json
+```
+
+The search reuses the strict account eligibility audit, withholds items with unknown or incomplete skill/quest requirements, respects the supplied GP budget, and ranks complete combinations by the existing baseline melee DPS estimate. Candidate count and visited nodes are bounded; the output includes the top loadouts, eligibility audit, unmatched candidates, warnings and explicit guardrails.
+
+**This is not boss-accurate DPS.** It uses the existing scoped formula and caller-supplied effective levels and target defence. Prayers, potions, special attacks, boss phases, immunities, set effects, damage caps, supplies and all item compatibility rules are not modelled. Prices and item-to-quest unlock facts must be supplied; CI examples are illustrative only. Missing data is not silently replaced with zero or treated as eligibility.
+
 ## Cross-domain Combat Lab readiness audit
 
 Run `python scripts/report_combat_lab_readiness.py` after generating the normalized datasets. The report `reports/combat-lab-readiness.json` measures item/equipment/weapon/monster/quest coverage, cross-domain joins, requirement-record gaps, missing weapon mechanics, unresolved quest facts, and source provenance. It emits prioritized follow-up work for an account-aware, budget-constrained, boss-aware Combat Lab.
