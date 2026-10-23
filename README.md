@@ -408,3 +408,14 @@ python scripts/audit_combat_upgrade_readiness.py \
 ```
 
 This report adds an evidence-aware review layer to each recommendation. It flags non-positive DPS deltas, invalid or unreconciled budget arithmetic, truncated searches, missing item source URLs, unknown requirement-status metadata, planner warnings, and mechanics that remain unverified or unsupported. It produces deterministic states (`blocked`, `review_required`, or `candidate_only`), not a statistical confidence score. It does not alter the original plan, independently verify caller-supplied prices/inputs, or certify boss-accurate DPS. CI runs regression tests and validates the report against its schema.
+
+
+## Combat Studio verified quest-unlock gate
+
+The account-aware planner only treats an item-to-quest record as usable evidence when exactly one record exists for that item, its status is explicitly `known` or `known_empty`, the quest list agrees with that state, and the record has a non-placeholder HTTPS source URL. Missing, duplicate, contradictory, and fixture-only records remain `unknown` and are excluded from recommendation candidates by default. A real source URL is a provenance pointer, not proof that the claim has been independently verified.
+
+Run the focused regression tests with:
+
+```bash
+python -m unittest tests.test_combat_studio_quest_unlock_gate -v
+```

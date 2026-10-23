@@ -7,6 +7,7 @@ Unknown requirements never become confirmed eligible. Costs are caller supplied.
 """
 from __future__ import annotations
 import argparse, json, math
+from urllib.parse import urlparse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -38,6 +39,37 @@ def index_by_id(rows, key):
 
 def valid_cost(cost):
     return isinstance(cost, int) and not isinstance(cost, bool) and cost >= 0
+
+
+def valid_unlock_evidence_record(row):
+    """Return whether one item unlock record is safe to use for eligibility.
+
+    A source pointer must be HTTPS and non-placeholder. The record must use
+    an explicit, internally consistent knowledge state. This is a provenance
+    gate, not independent verification of the source claim.
+    """
+    if not isinstance(row, dict):
+        return False
+    state = row.get("requirements_status")
+    quests = row.get("required_quests")
+    if state not in ("known", "known_empty") or not isinstance(quests, list):
+        return False
+    if any(not isinstance(name, str) or not name.strip() for name in quests):
+        return False
+    if state == "known" and not quests:
+        return False
+    if state == "known_empty" and quests:
+        return False
+    source = row.get("source_url")
+    if not isinstance(source, str):
+        return False
+    parsed = urlparse(source)
+    host = (parsed.hostname or "").casefold()
+    if parsed.scheme != "https" or not host:
+        return False
+    if host == "example.test" or host.endswith(".example.test") or host in ("localhost", "127.0.0.1"):
+        return False
+    return True
 
 def build_plan(equipment, requirements, quest_unlocks, profile, costs, budget,
                objective="melee_strength", top_per_slot=12, node_limit=150000):
@@ -115,9 +147,11 @@ def build_plan(equipment, requirements, quest_unlocks, profile, costs, budget,
                     reasons.append("Account is missing levels for: " + ", ".join(sorted(set(missing), key=str.casefold)))
 
             qrecords = quest_rows.get(item_id, [])
-            if not qrecords or any(r.get("requirements_status") not in ("known", "known_empty") for r in qrecords):
+            # Duplicate rows, contradictory states, and placeholder/missing source
+            # URLs are not evidence. They must never make an item eligible by default.
+            if len(qrecords) != 1 or not valid_unlock_evidence_record(qrecords[0]):
                 if status == "eligible": status = "unknown"
-                reasons.append("Quest/unlock requirement data is missing or incomplete")
+                reasons.append("Quest/unlock evidence is missing, duplicated, contradictory, or lacks a usable non-placeholder HTTPS source")
             else:
                 unmet_quests = []
                 for record in qrecords:
