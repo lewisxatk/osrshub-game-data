@@ -441,3 +441,8 @@ python -m unittest tests.test_combat_studio_quest_unlock_gate -v
 Run `python scripts/report_quest_evidence_worklist.py` after the quest import and raw requirement evidence extraction. It writes `reports/quest-evidence-worklist.json`, an actionable, field-level queue for unknown quest requirements, skills, rewards, membership restrictions, difficulty and quest type; missing field-level provenance; known-empty claims needing support; ambiguous evidence joins; and raw prerequisite links needing manual review.
 
 The worklist attaches the relevant raw requirement text and source pointers where available, prioritizes fields that affect account eligibility, and caps output at 5,000 tasks while reporting whether it was truncated. Raw text and links remain unverified candidates; nothing is promoted into the normalized quest graph. A successful run means the worklist was generated, not that the quest database is complete or factually verified. CI schema-validates the output and runs focused regression tests.
+
+
+## Combat arithmetic regression coverage
+
+The standard unit-test command also runs `tests/test_combat_math_invariants.py`. It checks bounded and monotonic hit chance, linear roll scaling, monotonic max-hit behavior, the current uniform damage-roll assumption, DPS scaling, and rejection of malformed inputs. These are mathematical contract tests for the scoped baseline only; they do not establish that upstream effective levels, boosts, or boss-specific mechanics are accurate.
