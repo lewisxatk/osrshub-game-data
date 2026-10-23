@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Item-to-quest unlock evidence audit",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "schema_version",
+    "status",
+    "record_count",
+    "knowledge_counts",
+    "source_url_coverage_percent",
+    "duplicate_item_ids",
+    "errors",
+    "warnings",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "enum": [
+        "failed",
+        "review_required",
+        "passed"
+      ]
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "knowledge_counts": {
+      "type": "object",
+      "required": [
+        "known",
+        "known_empty",
+        "unknown"
+      ],
+      "properties": {
+        "known": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "known_empty": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_url_coverage_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "duplicate_item_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false
+}
