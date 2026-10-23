@@ -293,6 +293,25 @@ The report writes `reports/account-quest-progression.json` and labels each struc
 
 
 
+## Account-aware Combat Studio planner (V1 foundation)
+
+Run the account-aware planner against explicit equipment, normalized skill requirements, verified item-to-quest unlock records, an account profile, caller-supplied prices, and an upgrade budget:
+
+```bash
+python scripts/build_combat_studio_plan.py \
+  --equipment dist/equipment-stats.json \
+  --requirements dist/item-requirements.json \
+  --quest-unlocks sources/normalized/item-quest-unlocks.json \
+  --profile examples/player-profile.json \
+  --costs examples/item-costs.example.json \
+  --budget 5000000 --objective melee_strength \
+  --output reports/combat-studio-plan.json
+```
+
+The planner creates a bounded multi-slot combination under the GP budget, reports a per-item eligibility audit, respects manual exclusions, marks manually added item IDs as requested candidates without bypassing restrictions, treats currently equipped items as zero upgrade cost, and creates a slot-by-slot upgrade path against the supplied current equipment. Missing or partial skill/quest requirement data blocks an item from the confirmed candidate set. A quest lock is only actionable when a maintained item-to-quest unlock dataset supplies the requirement and the account's completed quest list is trustworthy.
+
+**Important V1 boundary:** the selected objective is currently the sum of one numeric bonus per slot. This is not yet a full combat DPS optimiser, does not prove all quest facts are complete, and does not model every item variant, set effect, boss mechanic, prayer, potion, special attack or supply cost. Prices and the `item-quest-unlocks` input are caller-supplied; this repository does not fetch live GE prices or invent missing unlocks. The CI fixture uses illustrative records only. See the output's guardrails and audit for limitations.
+
 ## Cross-domain Combat Lab readiness audit
 
 Run `python scripts/report_combat_lab_readiness.py` after generating the normalized datasets. The report `reports/combat-lab-readiness.json` measures item/equipment/weapon/monster/quest coverage, cross-domain joins, requirement-record gaps, missing weapon mechanics, unresolved quest facts, and source provenance. It emits prioritized follow-up work for an account-aware, budget-constrained, boss-aware Combat Lab.

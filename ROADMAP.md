@@ -11,6 +11,10 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - Generate reproducible datasets and reports in GitHub Actions artifacts; avoid committing bulky generated JSON.
 - Use focused tests and report what has actually passed. A green structural validation is not proof of complete or game-accurate coverage.
 
+## V1 delivery focus: Combat Studio
+
+V1 is the complete account-aware combat planning experience: imported account stats and quest progress, GP budget, combat style/target, best valid loadout, reasoned exclusions, manual candidate/exclusion controls, and a staged upgrade path. The broader encyclopaedia domains already collected are retained for later V2 work, but new work should prioritize combat V1 exit criteria.
+
 ## Roadmap
 
 ### Stage 1 — Stabilise the pipeline
@@ -67,6 +71,7 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 Each category must have a source adapter, a documented schema, validation, coverage reporting, and a small regression test set before it is considered usable.
 
 - [x] Add schema-backed eligibility report and regression tests for missing stats, unknown requirements, and manual exclusions.\n\n### Stage 5 — Verified combat reference layer
+- [x] Add a first account-aware, budget-constrained multi-slot Combat Studio planner with an item eligibility audit, quest-unlock evidence input, manual exclusions, candidate-add flags, current-gear zero-cost handling, upgrade path, schema validation, and regression tests. It ranks a summed stat objective only; it is not a full DPS optimizer.
 - [ ] Define a documented schema for combat mechanics and target-specific behaviour.
 - [ ] Separate raw source facts from formulas and derived results.
 - [ ] Add sourced test cases for attack rolls, max hits, attack speed, prayers, potions, special attacks, and monster defence.
@@ -86,11 +91,12 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Review generated field-provenance and combat-reference reports.\n2. Extract quest prerequisites, skill levels, and rewards from individual Wiki pages with explicit per-field provenance; the current title catalogue is deliberately not treated as quest facts.
-2. Verify each regression fixture against its cited reference and source mapping.
-3. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
-4. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
-5. Use measured gaps to choose the next source adapter or data category; item identity diagnostics, item relationships, normalized skill requirements, combat-category coverage, and schema-backed quest relationships are now in the pipeline.
+1. Prioritize V1 Combat Studio: establish a maintained, source-backed item-to-quest unlock dataset and connect its completeness to account eligibility decisions.
+2. Expand the optimiser from summed-stat scoring to verified attack-roll, max-hit, accuracy, attack-speed and target-specific DPS scoring, with sourced regression fixtures.
+3. Verify each regression fixture against its cited reference and source mapping.
+4. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
+5. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
+6. Keep V2 encyclopaedia additions secondary until V1 account eligibility, combat scoring, budgeted loadout search, and upgrade-path acceptance tests are met.
 
 ## Current output families
 

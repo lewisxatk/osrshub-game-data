@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub account-aware Combat Studio stat plan",
+  "type": "object",
+  "required": ["generated_at", "status", "objective", "objective_field", "budget_gp", "upgrade_cost_gp", "remaining_budget_gp", "objective_total", "selected_items", "upgrade_path", "candidate_counts", "audit", "search", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["account_aware_stat_plan", "search_truncated"]},
+    "objective": {"type": "string"},
+    "objective_field": {"type": "string"},
+    "budget_gp": {"type": "integer", "minimum": 0},
+    "upgrade_cost_gp": {"type": "integer", "minimum": 0},
+    "remaining_budget_gp": {"type": "integer", "minimum": 0},
+    "objective_total": {"type": "number"},
+    "selected_items": {"type": "array", "items": {"type": "object"}},
+    "upgrade_path": {"type": "array", "items": {"type": "object"}},
+    "candidate_counts": {"type": "object"},
+    "audit": {"type": "array", "items": {"type": "object"}},
+    "search": {"type": "object"},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

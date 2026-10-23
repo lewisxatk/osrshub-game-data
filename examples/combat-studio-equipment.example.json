@@ -1,0 +1,5 @@
+[
+  {"id": 1001, "name": "Starter helm", "slot": "head", "bonuses": {"melee_strength": 1}, "source_urls": ["https://example.test/starter-helm"]},
+  {"id": 1002, "name": "Quest helm", "slot": "head", "bonuses": {"melee_strength": 8}, "source_urls": ["https://example.test/quest-helm"]},
+  {"id": 1003, "name": "Upgrade body", "slot": "body", "bonuses": {"melee_strength": 4}, "source_urls": ["https://example.test/upgrade-body"]}
+]
