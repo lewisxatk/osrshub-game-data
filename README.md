@@ -496,3 +496,14 @@ python scripts/analyze_combat_ranking_sensitivity.py \
 ```
 
 The default evaluates risk aversion from 0.0 to 1.0 in 0.1 steps and records the winner and top candidates at each setting. The winner-stability summary reports how often each candidate ranked first across the sampled settings. This share is not a probability of success: it only describes ranking stability under the chosen preference grid. The analysis validates candidate IDs and DPS ranges, and it never adds candidates or re-runs combat calculations. The report is generated and schema-validated in CI.
+
+
+## Combat mechanics verification readiness
+
+Generate an explicit audit of the current mechanics registry:
+
+```bash
+python scripts/report_combat_mechanics_readiness.py --output reports/combat-mechanics-readiness.json
+```
+
+The report summarizes implementation and verification status by mechanic and domain, calculates scoped-implementation and verified percentages, and lists each mechanic's blockers (such as missing source references, regression fixtures, or an unimplemented rule). CI generates the report and validates its schema. A `review_required` status is expected while mechanics remain unverified; the report does not upgrade any registry status or treat a citation as proof of correctness. A passing schema check measures structure, not game accuracy.

@@ -167,3 +167,14 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Increase source-verified mechanics coverage and candidate search breadth before interpreting results as boss-accurate or globally optimal.
 
 **Acceptance boundary:** this batch shows whether recommendations depend heavily on a chosen risk preference. It does not model fight failure probabilities, improve the baseline combat formulas, or recover candidates omitted by the source search.
+
+
+## Combat mechanics verification readiness (this update)
+
+- [x] Produce a domain-by-domain view of registered mechanics, implementation state, verification state, source counts, and regression-fixture counts.
+- [x] Calculate separate scoped-implementation and verified coverage percentages; empty registries report zero rather than divide-by-zero errors.
+- [x] Emit an actionable blocker list for unverified/unsupported mechanics and missing evidence without changing their statuses.
+- [x] Add regression tests, a dedicated JSON Schema, CI report generation, schema validation, and usage documentation.
+- [ ] Review and source-verify each combat mechanic independently; the readiness report is a gap queue, not evidence of correctness.
+
+**Acceptance boundary:** a complete-looking registry and a green CI run do not establish accurate OSRS combat results. Only reviewed source references and regression fixtures can support a verified status.

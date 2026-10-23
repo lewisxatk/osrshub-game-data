@@ -21,6 +21,8 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate combat mechanics provenance and verification status
         run: python scripts/validate_combat_mechanics_registry.py
+      - name: Report combat mechanics implementation and verification gaps
+        run: python scripts/report_combat_mechanics_readiness.py --output reports/combat-mechanics-readiness.json
       - name: Smoke-test query interface
         run: python scripts/query_game_data.py --dataset weapons --search whip
       - name: Smoke-test scoped combat arithmetic
