@@ -38,6 +38,7 @@ REPORT_TARGETS = (
     ("combat-studio-plan.json", "combat-studio-plan.schema.json"),
     ("combat-studio-dps-search.json", "combat-studio-dps-search.schema.json"),
     ("combat-studio-upgrade-plan.json", "combat-studio-upgrade-plan.schema.json"),
+    ("combat-upgrade-readiness.json", "combat-upgrade-readiness.schema.json"),
     ("weapon-baseline-comparison.json", "weapon-baseline-comparison.schema.json"),
     ("equipment-loadout-candidate.json", "equipment-loadout-candidate.schema.json"),
     ("combat-input-audit.json", "combat-input-audit.schema.json"),
