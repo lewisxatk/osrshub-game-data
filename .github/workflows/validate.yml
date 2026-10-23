@@ -57,6 +57,8 @@ jobs:
         run: python scripts/report_item_eligibility_coverage.py --input reports/item-eligibility.json --output reports/item-eligibility-coverage.json
       - name: Build budget-aware equipment shortlist
         run: python scripts/plan_equipment_upgrades.py --profile examples/player-profile.json --costs examples/item-costs.example.json --budget 100000000 --objective melee_strength --output reports/equipment-shortlist.json
+      - name: Build account-aware Combat Studio plan fixture
+        run: python scripts/build_combat_studio_plan.py --equipment examples/combat-studio-equipment.example.json --requirements examples/combat-studio-requirements.example.json --quest-unlocks examples/combat-studio-quest-unlocks.example.json --profile examples/player-profile.json --costs examples/combat-studio-costs.example.json --budget 1000 --objective melee_strength --output reports/combat-studio-plan.json
       - name: Optimize multi-slot equipment candidate under budget
         run: python scripts/optimize_equipment_loadout.py --shortlist reports/equipment-shortlist.json --budget 100000000 --output reports/equipment-loadout-candidate.json
       - name: Audit equipment recommendation consistency
