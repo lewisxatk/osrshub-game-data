@@ -507,3 +507,31 @@ python scripts/report_combat_mechanics_readiness.py --output reports/combat-mech
 ```
 
 The report summarizes implementation and verification status by mechanic and domain, calculates scoped-implementation and verified percentages, and lists each mechanic's blockers (such as missing source references, regression fixtures, or an unimplemented rule). CI generates the report and validates its schema. A `review_required` status is expected while mechanics remain unverified; the report does not upgrade any registry status or treat a citation as proof of correctness. A passing schema check measures structure, not game accuracy.
+
+
+## Combat Studio cost-versus-DPS upgrade frontier
+
+Analyze the non-dominated cost/DPS trade-offs in an existing bounded upgrade plan:
+
+```bash
+python scripts/analyze_combat_upgrade_frontier.py \\
+  --input reports/combat-studio-upgrade-plan.json \\
+  --output reports/combat-studio-upgrade-frontier.json
+```
+
+The frontier retains recommendations where no other supplied candidate offers at least as much estimated DPS gain for no greater GP spend. It also identifies the highest absolute gain, the best defined gain-per-million-GP candidate, dominated alternatives, zero-cost cases, and excluded candidates. A zero-cost option is reported separately because gain-per-cost is undefined. This is a Pareto comparison of the plan's existing outputs: it does not calculate combat again, add missing candidates, or prove global optimality.
+
+## Integrated Combat Studio decision packet
+
+Build one review-ready report from the existing upgrade plan, candidate-readiness audit, mechanics-readiness report, and risk-preference sensitivity report:
+
+```bash
+python scripts/build_combat_studio_decision_packet.py \\
+  --plan reports/combat-studio-upgrade-plan.json \\
+  --readiness reports/combat-upgrade-readiness.json \\
+  --mechanics reports/combat-mechanics-readiness.json \\
+  --sensitivity reports/combat-studio-risk-sensitivity.json \\
+  --output reports/combat-studio-decision-packet.json
+```
+
+The packet combines the baseline and ranked upgrades with per-candidate review blockers, mechanics coverage, search-truncation state, risk-preference stability, release gates, and a prioritized action queue. It is a decision-support artifact, not a new combat calculator. The gate status remains `review_required` while mechanics are unverified or unsupported, and a green schema check is not proof of game accuracy. Both reports are generated and validated in CI.
