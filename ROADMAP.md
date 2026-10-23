@@ -61,7 +61,8 @@ V1 is the complete account-aware combat planning experience: imported account st
 ### Stage 4 — Build the OSRS encyclopaedia
 - [x] Add a schema-backed quest import scaffold with requirement/reward fields, skill-level normalization, source hash reporting, and tests; source snapshot and factual coverage still need to be supplied/verified.
 - [x] Build schema-validated quest prerequisite/reverse-dependent links, with unresolved/ambiguous requirement reporting, cycle detection, and separate started-versus-completed prerequisite stages; actual coverage depends on a real quest source snapshot.
-- [x] Quests: maintained OSRS Wiki category catalogue with page IDs, URLs, pagination, hash reporting, and tests (catalogue only).\n- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained fact-extraction adapter.\n- [x] Add a conservative quest-readiness report measuring source, prerequisite, skill, and reward coverage; keep empty/incomplete datasets explicitly unsafe for assuming account unlocks.
+- [x] Quests: maintained OSRS Wiki category catalogue with page IDs, URLs, pagination, hash reporting, and tests (catalogue only).\n- [ ] Quests: verified requirements, prerequisites, rewards, unlocks, and a maintained fact-extraction adapter.
+- [x] Generate a field-level quest evidence worklist that prioritizes unknown facts, missing field-level sources, ambiguous evidence joins, known-empty claims and raw prerequisite candidates without promoting them automatically.\n- [x] Add a conservative quest-readiness report measuring source, prerequisite, skill, and reward coverage; keep empty/incomplete datasets explicitly unsafe for assuming account unlocks.
 - [ ] NPCs and monsters: names, IDs, locations, stats, and variants.
 - [ ] Drop tables: item IDs, quantities, rates, and source references, preserving unknown rates.
 - [ ] Skills and activities: requirements, methods, rewards, and dependencies.
@@ -95,7 +96,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Build on the item-to-quest unlock evidence audit and fail-closed planner gate: maintain a source-backed unlock dataset and connect verified coverage to account eligibility decisions.
+1. Maintain a source-backed item-to-quest unlock dataset and connect verified coverage to account eligibility decisions; use the new field-level quest worklist to guide manual verification.
 2. Expand the optimiser from summed-stat scoring to verified attack-roll, max-hit, accuracy, attack-speed and target-specific DPS scoring, with sourced regression fixtures.
 3. Verify each regression fixture against its cited reference and source mapping.
 4. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
