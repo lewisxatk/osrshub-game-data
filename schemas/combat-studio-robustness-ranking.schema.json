@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub Combat Studio risk-aware scenario ranking",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "source_report_schema_version", "attack_style", "budget_gp", "scenario_count", "candidate_count", "risk_aversion", "ranking_method", "ranked_candidates", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"type": "string"},
+    "source_report_schema_version": {"type": ["string", "null"]},
+    "attack_style": {"type": ["string", "null"]},
+    "budget_gp": {"type": ["integer", "null"], "minimum": 0},
+    "scenario_count": {"type": ["integer", "null"], "minimum": 0},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "risk_aversion": {"type": "number", "minimum": 0, "maximum": 1},
+    "ranking_method": {
+      "type": "object",
+      "required": ["primary", "formula", "tie_breakers", "interpretation"],
+      "properties": {
+        "primary": {"const": "risk_adjusted_dps_descending"},
+        "formula": {"type": "string"},
+        "tie_breakers": {"type": "array", "items": {"type": "string"}},
+        "interpretation": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "ranked_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["selected_item_ids", "weighted_average_dps", "worst_case_dps", "best_case_dps", "dps_spread", "total_cost_gp", "risk_adjusted_dps", "risk_aversion"],
+        "properties": {
+          "selected_item_ids": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+          "weighted_average_dps": {"type": "number", "minimum": 0},
+          "worst_case_dps": {"type": "number", "minimum": 0},
+          "best_case_dps": {"type": "number", "minimum": 0},
+          "dps_spread": {"type": "number", "minimum": 0},
+          "total_cost_gp": {"type": "integer", "minimum": 0},
+          "risk_adjusted_dps": {"type": "number", "minimum": 0},
+          "risk_aversion": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "additionalProperties": true
+      }
+    },
+    "guardrails": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
