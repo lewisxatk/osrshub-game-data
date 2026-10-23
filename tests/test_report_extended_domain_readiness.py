@@ -16,6 +16,17 @@ class ExtendedDomainReadinessTests(unittest.TestCase):
         self.assertEqual(counts["drops[].item_id"], 2)
         self.assertEqual(counts["drops[].quantity"], 1)
 
+    def test_repeated_nested_fields_do_not_exceed_record_coverage(self):
+        rows = [{
+            "source_key": "a",
+            "source_snapshot_url": "https://example.test/a",
+            "drops": [{"item_id": 42}, {"item_id": 99}, {"item_id": 101}],
+        }]
+        result = summarize_domain(rows, "fixture.json")
+        field = result["field_coverage"]["drops[].item_id"]
+        self.assertEqual(field["records_with_value"], 1)
+        self.assertEqual(field["coverage_percent"], 100.0)
+
     def test_field_coverage_distinguishes_absent_and_empty(self):
         rows = [
             {"source_key": "a", "source_snapshot_url": "https://example.test/a", "value": 0, "empty": []},

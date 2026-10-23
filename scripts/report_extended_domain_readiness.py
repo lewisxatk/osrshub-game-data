@@ -57,9 +57,11 @@ def summarize_domain(rows: Any, filename: str) -> dict[str, Any]:
     key_counts = Counter(key for key in keys if isinstance(key, str) and key.strip())
     duplicate_keys = sorted(key for key, count in key_counts.items() if count > 1)
     missing_urls = sum(not isinstance(row.get("source_snapshot_url"), str) or not row["source_snapshot_url"].strip() for row in rows)
+    # Coverage is record-based: a field repeated across many array entries in
+    # one record still counts as one record containing that field path.
     paths = Counter()
     for row in rows:
-        paths.update(collect_paths(row))
+        paths.update(set(collect_paths(row)))
     field_coverage = {
         path: {"records_with_value": count, "coverage_percent": round(100 * count / len(rows), 2) if rows else 0.0}
         for path, count in sorted(paths.items())
