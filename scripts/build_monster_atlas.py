@@ -44,7 +44,8 @@ def present(value: Any) -> bool:
 def build_atlas(rows: list[dict[str, Any]], seed: int | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     ids = [row.get("id") for row in rows]
     valid_ids = [x for x in ids if isinstance(x, int) and not isinstance(x, bool)]
-    duplicate_ids = sorted({x for x in valid_ids if valid_ids.count(x) > 1})
+    id_counts = Counter(valid_ids)
+    duplicate_ids = sorted(x for x, count in id_counts.items() if count > 1)
     field_coverage = {}
     for field in ("name", "sources", *NUMERIC_FIELDS):
         count = sum(1 for row in rows if present(row.get(field)))
