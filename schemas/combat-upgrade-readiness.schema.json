@@ -32,7 +32,7 @@
       "review_items": {"type": "array", "items": {"type": "string"}},
       "selected_items": {"type": "array", "items": {"type": "object", "required": ["item_id", "item_name", "source_url_present", "requirements_status"], "properties": {
         "item_id": {}, "item_name": {}, "source_url_present": {"type": "boolean"}, "requirements_status": {"type": "string"}
-      }, "additionalProperties": false}
+      }, "additionalProperties": false}}
     }, "additionalProperties": false}},
     "errors": {"type": "array", "items": {"type": "string"}},
     "warnings": {"type": "array", "items": {"type": "string"}},
