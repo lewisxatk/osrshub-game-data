@@ -315,3 +315,12 @@ python scripts/audit_combat_join_contract.py
 The audit checks exact numeric-ID joins, duplicate or invalid identifiers, profile join flags, weapon stance names, numeric combat-field validity, and coverage gaps across the core Combat Studio datasets. Structural contradictions fail validation; missing facts are reported as gaps and are never converted into zeroes or treated as proof that an item has no requirements. The audit validates structural readiness only, not source accuracy, formula correctness, or boss-specific DPS.
 
 Weapon stance names are retained when supplied by the source, along with combat-style, attack-style, and attack-type fields; the audit accepts meaningful source stance metadata without inventing a label when the source has none.
+
+
+## Unified OSRS Hub readiness matrix
+
+Run `python scripts/report_hub_readiness_matrix.py` after the source import, normalization, joined-profile and relationship steps. It writes `reports/hub-readiness-matrix.json`, a single operational view of nine core datasets: item identity, equipment, weapons, normalized requirements, joined combat profiles, monster combat facts, quests, quest relationships and item relationships.
+
+The matrix reports record counts, field-presence percentages, malformed/duplicate IDs, exact-ID join gaps, and a severity-ranked work queue. It makes gaps actionable without pretending that missing data is a game fact. In particular, missing requirements are not interpreted as no requirements; unknown quest facts are not interpreted as no prerequisites; and coverage percentages do not measure factual accuracy. The report is generated during CI, schema-validated, and included with the workflow's JSON artifacts.
+
+The matrix is a prioritization tool, not a release certificate: `review_required` means structural gaps remain visible, while `failed` means a required dataset could not be read. A zero-gap structural report still does not independently prove that the source facts or combat formulas are correct.
