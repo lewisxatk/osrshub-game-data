@@ -71,6 +71,12 @@ class QuestSkillCandidateAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "failed")
         self.assertIn("missing_or_invalid_key_name_skill_level", {x["reason"] for x in report["errors"]})
 
+    def test_duplicate_candidate_records_fail(self):
+        row = candidate()
+        report = build_audit([row, dict(row)], evidence())
+        self.assertEqual(report["status"], "failed")
+        self.assertIn("duplicate_candidate_record", {x["reason"] for x in report["errors"]})
+
     def test_input_shapes_are_required(self):
         with self.assertRaisesRegex(ValueError, "candidate input"):
             build_audit({}, [])
