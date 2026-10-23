@@ -13,6 +13,7 @@ import json
 import math
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from evaluate_combat_loadout import evaluate_loadout
 from search_combat_studio_loadouts import search_loadouts
@@ -52,7 +53,13 @@ def _validate_scenarios(scenarios):
             value = inputs[key]
             if isinstance(value, bool) or not isinstance(value, int) or value < 0:
                 raise ValueError(f"scenario {sid} {key} must be a non-negative integer")
-        if not isinstance(source_url, str) or not source_url.startswith("https://oldschool.runescape.wiki/"):
+        parsed_source = urlsplit(source_url) if isinstance(source_url, str) else None
+        if (
+            parsed_source is None
+            or parsed_source.scheme != "https"
+            or parsed_source.hostname != "oldschool.runescape.wiki"
+            or not parsed_source.path.startswith("/")
+        ):
             raise ValueError(f"scenario {sid} requires an HTTPS OSRS Wiki source_url")
         if isinstance(weight, bool) or not isinstance(weight, (int, float)) or not math.isfinite(weight) or weight <= 0:
             raise ValueError(f"scenario {sid} weight must be a finite positive number")
