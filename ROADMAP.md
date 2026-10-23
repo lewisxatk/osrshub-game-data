@@ -103,6 +103,16 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 5. Improve combat-field mapping and coverage based on actual audit gaps; regression fixtures now reject duplicate normalized IDs and invalid source review metadata.
 6. Keep V2 encyclopaedia additions secondary until V1 account eligibility, combat scoring, budgeted loadout search, and upgrade-path acceptance tests are met.
 
+## Quest requirement evidence hardening (this update)
+
+- [x] Validate extracted skill candidates against a unique raw quest-evidence record and its exact source URL.
+- [x] Require explicit review-only candidate status; never auto-promote raw text matches into planner facts.
+- [x] Fail validation for malformed provenance, invalid candidate shapes, mismatched matched quest names, and duplicate evidence/candidate records.
+- [x] Keep unmatched catalogue titles and repeated skill matches visible as review queues rather than inventing conclusions.
+- [x] Add regression tests for provenance mismatches, duplicate rows, malformed input, and review-only boundaries.
+
+**Acceptance boundary:** this improves the trustworthiness of the candidate pipeline; it does not claim that quest prerequisites or skill requirements are complete or independently verified.
+
 ## Current output families
 
 - Items and broad equipment candidates.
