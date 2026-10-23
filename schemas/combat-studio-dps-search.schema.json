@@ -1,0 +1,14 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"OSRS Hub Combat Studio DPS loadout search","type":"object",
+ "required":["generated_at","status","attack_style","budget_gp","best_loadout","top_loadouts","search","candidate_counts","eligibility_audit","unmatched_candidates","guardrails"],
+ "properties":{
+  "generated_at":{"type":"string","format":"date-time"},
+  "status":{"enum":["search_truncated","dps_ranked_candidates","no_valid_loadout","no_eligible_weapon"]},
+  "attack_style":{"enum":["stab","slash","crush"]},"budget_gp":{"type":"integer","minimum":0},
+  "best_loadout":{"type":["object","null"]},"top_loadouts":{"type":"array","items":{"type":"object"}},
+  "search":{"type":"object"},"candidate_counts":{"type":"object"},
+  "eligibility_audit":{"type":"array","items":{"type":"object"}},"unmatched_candidates":{"type":"array","items":{"type":"object"}},
+  "guardrails":{"type":"array","items":{"type":"string"}}
+ },"additionalProperties":false
+}

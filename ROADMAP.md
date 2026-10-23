@@ -72,6 +72,7 @@ Each category must have a source adapter, a documented schema, validation, cover
 
 - [x] Add schema-backed eligibility report and regression tests for missing stats, unknown requirements, and manual exclusions.\n\n### Stage 5 — Verified combat reference layer
 - [x] Add a first account-aware, budget-constrained multi-slot Combat Studio planner with an item eligibility audit, quest-unlock evidence input, manual exclusions, candidate-add flags, current-gear zero-cost handling, upgrade path, schema validation, and regression tests. It ranks a summed stat objective only; it is not a full DPS optimizer.
+- [x] Add a bounded account-aware melee loadout search using the existing scoped baseline DPS calculation, explicit eligibility audit, budget cap, candidate/node limits, top-loadout output, schema validation, and regression fixtures. This is not boss-verified DPS.
 - [ ] Define a documented schema for combat mechanics and target-specific behaviour.
 - [ ] Separate raw source facts from formulas and derived results.
 - [ ] Add sourced test cases for attack rolls, max hits, attack speed, prayers, potions, special attacks, and monster defence.

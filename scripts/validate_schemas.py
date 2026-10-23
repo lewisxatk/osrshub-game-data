@@ -36,6 +36,7 @@ REPORT_TARGETS = (
     ("item-eligibility-coverage.json", "item-eligibility-coverage.schema.json"),
     ("equipment-shortlist.json", "equipment-shortlist.schema.json"),
     ("combat-studio-plan.json", "combat-studio-plan.schema.json"),
+    ("combat-studio-dps-search.json", "combat-studio-dps-search.schema.json"),
     ("weapon-baseline-comparison.json", "weapon-baseline-comparison.schema.json"),
     ("equipment-loadout-candidate.json", "equipment-loadout-candidate.schema.json"),
     ("combat-input-audit.json", "combat-input-audit.schema.json"),

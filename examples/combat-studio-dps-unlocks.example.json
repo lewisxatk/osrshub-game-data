@@ -1,0 +1,4 @@
+[
+ {"item_id":2001,"requirements_status":"known_empty","required_quests":[],"source_url":"https://example.test/sword"},
+ {"item_id":2002,"requirements_status":"known_empty","required_quests":[],"source_url":"https://example.test/helm"}
+]
