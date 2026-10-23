@@ -53,7 +53,7 @@ class QuestEvidenceWorklistTests(unittest.TestCase):
         result = build_worklist([quest()], [row])
         task = next(task for task in result["tasks"] if task["task_type"] == "review_unverified_prerequisite_candidates")
         self.assertEqual(task["candidate_links"][0]["title"], "Another Quest")
-        self.assertIn("unverified candidates", task["reason"])
+        self.assertIn("candidates only", task["reason"])
         self.assertEqual(task["priority"], "critical")
 
     def test_known_empty_without_field_source_is_flagged(self):
