@@ -178,3 +178,16 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Review and source-verify each combat mechanic independently; the readiness report is a gap queue, not evidence of correctness.
 
 **Acceptance boundary:** a complete-looking registry and a green CI run do not establish accurate OSRS combat results. Only reviewed source references and regression fixtures can support a verified status.
+
+
+## Combat Studio decision packet and cost/DPS frontier (this update)
+
+- [x] Compute a cost-versus-estimated-DPS Pareto frontier from the existing bounded upgrade plan.
+- [x] Identify dominated candidates with an explicit comparison candidate, while preserving non-dominated high-gain and lower-cost trade-offs.
+- [x] Separate absolute DPS gain from defined gain-per-million-GP efficiency and handle zero-cost candidates without division by zero.
+- [x] Build a consolidated decision packet joining the baseline, upgrade recommendations, recommendation-readiness audit, combat-mechanics readiness, and risk-preference sensitivity.
+- [x] Surface search truncation, unverified/unsupported mechanics, blocked candidates, risk-preference winner changes, and a priority-sorted follow-up queue.
+- [x] Add unit tests, dedicated schemas, CI report generation, schema validation, and README instructions for both reports.
+- [ ] Source-verify combat-critical formulas and widen the candidate search before promoting outputs beyond review-only guidance.
+
+**Acceptance boundary:** the frontier and decision packet reorganize existing bounded results; neither recalculates DPS, invents OSRS facts, changes candidate eligibility, or proves global optimality. The packet intentionally remains review-required while source verification is incomplete.
