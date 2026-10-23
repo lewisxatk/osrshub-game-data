@@ -2,21 +2,107 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OSRS Hub Combat Studio multi-scenario comparison",
   "type": "object",
-  "required": ["generated_at", "schema_version", "status", "attack_style", "budget_gp", "scenario_count", "candidate_union_count", "evaluated_candidate_count", "scenarios", "scenario_searches", "ranked_candidates", "ranking_method", "guardrails"],
+  "required": [
+    "generated_at", "schema_version", "status", "attack_style", "budget_gp",
+    "scenario_count", "candidate_union_count", "evaluated_candidate_count",
+    "scenarios", "scenario_searches", "ranked_candidates", "ranking_method", "guardrails"
+  ],
   "properties": {
-    "generated_at": {"type": "string", "format": "date-time"},
-    "schema_version": {"const": "1.0.0"},
-    "status": {"enum": ["search_truncated", "scenario_ranked_candidates", "no_valid_candidates"]},
-    "attack_style": {"enum": ["stab", "slash", "crush"]},
-    "budget_gp": {"type": "integer", "minimum": 0},
-    "scenario_count": {"type": "integer", "minimum": 2, "maximum": 10},
-    "candidate_union_count": {"type": "integer", "minimum": 0},
-    "evaluated_candidate_count": {"type": "integer", "minimum": 0},
-    "scenarios": {"type": "array", "minItems": 2, "maxItems": 10, "items": {"type": "object", "required": ["scenario_id", "name", "weight", "normalized_weight", "source_url"], "properties": {"scenario_id": {"type": "string"}, "name": {"type": "string"}, "weight": {"type": "number", "exclusiveMinimum": 0}, "normalized_weight": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}, "source_url": {"type": "string", "format": "uri"}}, "additionalProperties": false}},
-    "scenario_searches": {"type": "array", "items": {"type": "object", "required": ["scenario_id", "name", "status", "search", "candidate_counts"], "properties": {"scenario_id": {"type": "string"}, "name": {"type": "string"}, "status": {"type": "string"}, "search": {"type": "object"}, "candidate_counts": {"type": "object"}}, "additionalProperties": false}},
-    "ranked_candidates": {"type": "array", "items": {"type": "object", "required": ["selected_items", "selected_item_ids", "total_cost_gp", "remaining_budget_gp", "weighted_average_dps", "worst_case_dps", "best_case_dps", "dps_spread", "scenario_results"], "properties": {"selected_items": {"type": "array", "items": {"type": "object"}}, "selected_item_ids": {"type": "array", "items": {"type": "integer"}}, "total_cost_gp": {"type": "integer", "minimum": 0}, "remaining_budget_gp": {"type": "integer", "minimum": 0}, "weighted_average_dps": {"type": "number", "minimum": 0}, "worst_case_dps": {"type": "number", "minimum": 0}, "best_case_dps": {"type": "number", "minimum": 0}, "dps_spread": {"type": "number", "minimum": 0}, "scenario_results": {"type": "array", "minItems": 2, "items": {"type": "object", "required": ["scenario_id", "name", "weight", "source_url", "dps", "hit_chance", "max_hit", "attack_roll", "defence_roll"], "properties": {"scenario_id": {"type": "string"}, "name": {"type": "string"}, "weight": {"type": "number"}, "source_url": {"type": "string", "format": "uri"}, "dps": {"type": "number", "minimum": 0}, "hit_chance": {"type": "number", "minimum": 0, "maximum": 1}, "max_hit": {"type": "integer", "minimum": 0}, "attack_roll": {"type": "integer", "minimum": 0}, "defence_roll": {"type": "integer", "minimum": 0}}, "additionalProperties": false}}, "additionalProperties": false}},
-    "ranking_method": {"type": "object", "required": ["primary", "tie_breakers", "weighting"], "properties": {"primary": {"type": "string"}, "tie_breakers": {"type": "array", "items": {"type": "string"}}, "weighting": {"type": "string"}}, "additionalProperties": false},
-    "guardrails": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+    "generated_at": { "type": "string", "format": "date-time" },
+    "schema_version": { "const": "1.0.0" },
+    "status": { "enum": ["search_truncated", "scenario_ranked_candidates", "no_valid_candidates"] },
+    "attack_style": { "enum": ["stab", "slash", "crush"] },
+    "budget_gp": { "type": "integer", "minimum": 0 },
+    "scenario_count": { "type": "integer", "minimum": 2, "maximum": 10 },
+    "candidate_union_count": { "type": "integer", "minimum": 0 },
+    "evaluated_candidate_count": { "type": "integer", "minimum": 0 },
+    "scenarios": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["scenario_id", "name", "weight", "normalized_weight", "source_url"],
+        "properties": {
+          "scenario_id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "weight": { "type": "number", "exclusiveMinimum": 0 },
+          "normalized_weight": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+          "source_url": { "type": "string", "format": "uri" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "scenario_searches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario_id", "name", "status", "search", "candidate_counts"],
+        "properties": {
+          "scenario_id": { "type": "string" },
+          "name": { "type": "string" },
+          "status": { "type": "string" },
+          "search": { "type": "object" },
+          "candidate_counts": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ranked_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "selected_items", "selected_item_ids", "total_cost_gp", "remaining_budget_gp",
+          "weighted_average_dps", "worst_case_dps", "best_case_dps", "dps_spread", "scenario_results"
+        ],
+        "properties": {
+          "selected_items": { "type": "array", "items": { "type": "object" } },
+          "selected_item_ids": { "type": "array", "items": { "type": "integer" } },
+          "total_cost_gp": { "type": "integer", "minimum": 0 },
+          "remaining_budget_gp": { "type": "integer", "minimum": 0 },
+          "weighted_average_dps": { "type": "number", "minimum": 0 },
+          "worst_case_dps": { "type": "number", "minimum": 0 },
+          "best_case_dps": { "type": "number", "minimum": 0 },
+          "dps_spread": { "type": "number", "minimum": 0 },
+          "scenario_results": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "scenario_id", "name", "weight", "source_url", "dps",
+                "hit_chance", "max_hit", "attack_roll", "defence_roll"
+              ],
+              "properties": {
+                "scenario_id": { "type": "string" },
+                "name": { "type": "string" },
+                "weight": { "type": "number" },
+                "source_url": { "type": "string", "format": "uri" },
+                "dps": { "type": "number", "minimum": 0 },
+                "hit_chance": { "type": "number", "minimum": 0, "maximum": 1 },
+                "max_hit": { "type": "integer", "minimum": 0 },
+                "attack_roll": { "type": "integer", "minimum": 0 },
+                "defence_roll": { "type": "integer", "minimum": 0 }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ranking_method": {
+      "type": "object",
+      "required": ["primary", "tie_breakers", "weighting"],
+      "properties": {
+        "primary": { "type": "string" },
+        "tie_breakers": { "type": "array", "items": { "type": "string" } },
+        "weighting": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "guardrails": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
   },
   "additionalProperties": false
 }
