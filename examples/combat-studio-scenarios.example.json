@@ -1,0 +1,29 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": "illustrative-high-defence",
+      "name": "Illustrative high-defence target",
+      "combat_inputs": {
+        "effective_attack": 100,
+        "effective_strength": 100,
+        "effective_defence": 120,
+        "defence_bonus": 120
+      },
+      "weight": 2,
+      "source_url": "https://oldschool.runescape.wiki/w/Combat"
+    },
+    {
+      "scenario_id": "illustrative-low-defence",
+      "name": "Illustrative low-defence target",
+      "combat_inputs": {
+        "effective_attack": 100,
+        "effective_strength": 100,
+        "effective_defence": 40,
+        "defence_bonus": 20
+      },
+      "weight": 1,
+      "source_url": "https://oldschool.runescape.wiki/w/Combat"
+    }
+  ],
+  "note": "Illustrative CI inputs only. The labels and numbers are not claims about real named bosses; verify scenario inputs before real use."
+}
