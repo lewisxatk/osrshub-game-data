@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub unified readiness matrix",
+  "type": "object",
+  "required": ["generated_at", "status", "purpose", "dataset_summaries", "cross_domain_joins", "integrity_issue_count", "gap_count", "gaps", "errors", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["failed", "review_required", "passed"]},
+    "purpose": {"type": "string"},
+    "dataset_summaries": {"type": "object", "additionalProperties": {"type": "object", "required": ["file", "record_count", "valid_id_count", "invalid_id_count", "duplicate_ids", "duplicate_id_count", "fields"], "properties": {"file": {"type": "string"}, "record_count": {"type": "integer", "minimum": 0}, "valid_id_count": {"type": "integer", "minimum": 0}, "invalid_id_count": {"type": "integer", "minimum": 0}, "duplicate_ids": {"type": "array"}, "duplicate_id_count": {"type": "integer", "minimum": 0}, "fields": {"type": "object"}}}},
+    "cross_domain_joins": {"type": "object"},
+    "integrity_issue_count": {"type": "integer", "minimum": 0},
+    "gap_count": {"type": "integer", "minimum": 0},
+    "gaps": {"type": "array", "items": {"type": "object", "required": ["key", "severity", "domain", "affected_records", "denominator", "coverage_percent", "impact", "recommended_action"], "properties": {"key": {"type": "string"}, "severity": {"enum": ["critical", "high", "medium", "low"]}, "domain": {"type": "string"}, "affected_records": {"type": "integer", "minimum": 0}, "denominator": {"type": "integer", "minimum": 0}, "coverage_percent": {"type": "number", "minimum": 0, "maximum": 100}, "impact": {"type": "string"}, "recommended_action": {"type": "string"}}}},
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
