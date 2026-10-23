@@ -72,6 +72,7 @@ REPORT_TARGETS = (
     ("quest-reward-item-evidence.json", "quest-reward-item-evidence.schema.json"),
     ("extended-domain-readiness.json", "extended-domain-readiness.schema.json"),
     ("item-quest-unlock-audit.json", "item-quest-unlock-audit.schema.json"),
+    ("quest-evidence-worklist.json", "quest-evidence-worklist.schema.json"),
 )
 
 

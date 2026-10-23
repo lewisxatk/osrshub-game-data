@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quest evidence review worklist",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "schema_version",
+    "status",
+    "quest_count",
+    "raw_evidence_count",
+    "task_count",
+    "priority_counts",
+    "tasks",
+    "truncated",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "quest_count": {"type": "integer", "minimum": 0},
+    "raw_evidence_count": {"type": "integer", "minimum": 0},
+    "task_count": {"type": "integer", "minimum": 0},
+    "priority_counts": {
+      "type": "object",
+      "required": ["critical", "high", "medium", "low"],
+      "properties": {
+        "critical": {"type": "integer", "minimum": 0},
+        "high": {"type": "integer", "minimum": 0},
+        "medium": {"type": "integer", "minimum": 0},
+        "low": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["task_id", "quest_key", "quest_name", "field", "task_type", "priority_score", "priority", "reason", "source_urls", "raw_requirement_text", "candidate_links"],
+        "properties": {
+          "task_id": {"type": "string", "minLength": 1},
+          "quest_key": {"type": ["string", "null"]},
+          "quest_name": {"type": ["string", "null"]},
+          "field": {"type": "string", "minLength": 1},
+          "task_type": {"type": "string", "minLength": 1},
+          "priority_score": {"type": "integer", "minimum": 0},
+          "priority": {"enum": ["critical", "high", "medium", "low"]},
+          "reason": {"type": "string", "minLength": 1},
+          "source_urls": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri"}},
+          "raw_requirement_text": {"type": ["string", "null"]},
+          "candidate_links": {"type": "array", "items": {"type": "object"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "truncated": {"type": "boolean"},
+    "guardrails": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "errors": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
