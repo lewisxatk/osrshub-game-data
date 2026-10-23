@@ -11,7 +11,7 @@ class DPSSearchTests(unittest.TestCase):
  def setUp(self):
   self.eq=[eq(1,"Slow sword","weapon",50,40,6),eq(2,"Fast sword","weapon",40,35,4),eq(3,"Good helm","head",10,5),eq(4,"Quest helm","head",100,50)]
   self.req=[{"item_id":i,"requirements_status":"known_empty","requirements":[]} for i in (1,2,3,4)]
-  self.unlock=[{"item_id":i,"requirements_status":"known_empty","required_quests":[]} for i in (1,2,3)]+[{"item_id":4,"requirements_status":"known","required_quests":["Locked Quest"]}]
+  self.unlock=[{"item_id":i,"requirements_status":"known_empty","required_quests":[],"source_url":"https://oldschool.runescape.wiki/w/Test_fixture_source"} for i in (1,2,3)]+[{"item_id":4,"requirements_status":"known","required_quests":["Locked Quest"],"source_url":"https://oldschool.runescape.wiki/w/Test_fixture_source"}]
   self.profiles=[prof(1,"Slow sword","weapon",50,40,6),prof(2,"Fast sword","weapon",40,35,4),prof(3,"Good helm","head",10,5),prof(4,"Quest helm","head",100,50)]
   self.account={"skills":{"Attack":99,"Strength":99,"Defence":99},"completed_quests":[],"current_equipment":{"weapon":1}}
   self.cost={"1":1000,"2":2000,"3":500,"4":1}; self.inputs={"effective_attack":120,"effective_strength":120,"effective_defence":80,"defence_bonus":80}
