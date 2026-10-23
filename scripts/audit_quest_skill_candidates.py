@@ -97,6 +97,7 @@ def build_audit(candidates, evidence):
         identity = (key, skill.casefold(), level, row.get("matched_text"))
         if identity in seen:
             duplicate_candidates.append({"index": index, "quest_key": key, "skill": skill, "level": level})
+            errors.append({"source": "candidate", "index": index, "quest_key": key, "reason": "duplicate_candidate_record"})
         seen.add(identity)
         if row.get("catalogue_match_status") != "matched":
             unmatched.append({
