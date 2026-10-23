@@ -121,7 +121,7 @@ class CombatStudioDecisionPacketTests(unittest.TestCase):
         self.inputs[3]["winner_stability"] = []
         packet = build_decision_packet(*self.inputs)
         self.assertEqual(next(g for g in packet["gates"] if g["gate"] == "risk_preference_sensitivity")["status"], "review_required")
-        self.assertIn("review_risk_tradeoffs", {row["action_id"] for row in packet["action_queue"]} if packet["risk_sensitivity"]["winner_change_count"] > 1 else {row["action_id"] for row in packet["action_queue"]} | {"review_risk_tradeoffs"})
+        self.assertIn("review_risk_tradeoffs", {row["action_id"] for row in packet["action_queue"]})
 
     def test_action_queue_is_priority_ordered(self):
         packet = build_decision_packet(*self.inputs)
