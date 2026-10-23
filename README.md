@@ -102,10 +102,10 @@ This report is a structural diagnostic, not a factual accuracy score. Missing re
 python scripts/query_game_data.py --dataset weapons --search whip
 python scripts/query_game_data.py --dataset equipment-stats --id 4151
 python scripts/query_game_data.py --dataset item-combat-profiles --id 4151
-python scripts/query_game_data.py --dataset quest-relationships --search dragon
+python scripts/query_game_data.py --dataset quest-relationships --search dragon\npython scripts/query_game_data.py --dataset npc-drops --id 123\npython scripts/query_game_data.py --dataset shops-by-shop --key 'Grand Tree Groceries'
 ```
 
-The query interface searches only records present in generated datasets. Missing records and fields are unknown, not proof that an item is usable or a quest is unnecessary.
+The query interface now searches the core normalized datasets and all 11 extended source domains. Use `--search` for text across nested payloads, `--id` for supported numeric identity fields, or `--key` for an exact source key/name. It searches only generated records; missing records and fields are unknown, not proof that an item is usable, a drop is absent, a shop does not stock an item, or a quest is unnecessary. Extended records retain their source URLs but are not independently verified.
 
 ## Budget-aware equipment shortlist
 
