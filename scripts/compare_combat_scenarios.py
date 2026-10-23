@@ -206,10 +206,12 @@ def main():
     args = parser.parse_args()
     try:
         load = lambda path: json.loads(Path(path).read_text(encoding="utf-8"))
+        scenario_document = load(args.scenarios)
+        scenarios = scenario_document.get("scenarios") if isinstance(scenario_document, dict) else scenario_document
         result = compare_scenarios(
             load(args.equipment), load(args.requirements), load(args.quest_unlocks),
             load(args.profiles), load(args.profile), load(args.costs), args.budget,
-            load(args.scenarios), args.style, args.candidates_per_slot, args.node_limit, args.top_n,
+            scenarios, args.style, args.candidates_per_slot, args.node_limit, args.top_n,
         )
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
