@@ -94,7 +94,7 @@ No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, 
 
 ## Immediate next actions
 
-1. Prioritize V1 Combat Studio: establish a maintained, source-backed item-to-quest unlock dataset and connect its completeness to account eligibility decisions.
+1. Build on the item-to-quest unlock evidence audit: maintain a source-backed unlock dataset and connect its completeness to account eligibility decisions.
 2. Expand the optimiser from summed-stat scoring to verified attack-roll, max-hit, accuracy, attack-speed and target-specific DPS scoring, with sourced regression fixtures.
 3. Verify each regression fixture against its cited reference and source mapping.
 4. Review equipment/weapon normalized provenance discrepancies, then add verified references where trustworthy sources are available.
