@@ -46,9 +46,9 @@ def optimize_loadout(shortlist,budget,top_per_slot=8,node_limit=100000):
     for i in range(len(slots)-1,-1,-1):
         suffix_max[i]=suffix_max[i+1]+max([0.0]+[x["objective_value"] for x in slots[i][1]])
     best={"value":0.0,"cost":0,"items":[]}
-    nodes=0; truncated=False
+    nodes=0; truncated=False; duplicate_item_conflicts=0
     def visit(index,cost,value,chosen):
-        nonlocal best,nodes,truncated
+        nonlocal best,nodes,truncated,duplicate_item_conflicts
         nodes+=1
         if nodes>node_limit:
             truncated=True; return
@@ -60,7 +60,12 @@ def optimize_loadout(shortlist,budget,top_per_slot=8,node_limit=100000):
         slot,candidates=slots[index]
         visit(index+1,cost,value,chosen)
         if truncated: return
+        chosen_ids = {item["item_id"] for item in chosen}
         for candidate in candidates:
+            # One physical item cannot occupy two equipment slots at once.
+            if candidate["item_id"] in chosen_ids:
+                duplicate_item_conflicts += 1
+                continue
             next_cost=cost+candidate["cost"]
             if next_cost<=budget:
                 visit(index+1,next_cost,value+candidate["objective_value"],chosen+[candidate])
@@ -74,11 +79,13 @@ def optimize_loadout(shortlist,budget,top_per_slot=8,node_limit=100000):
       "objective_total":round(best["value"],6),
       "selected_items":[{"item_id":x["item_id"],"item_name":x["item_name"],"slot":x["slot"],"cost":x["cost"],"objective_value":x["objective_value"],"eligibility_status":x["status"],"reasons":x.get("reasons",[])} for x in best["items"]],
       "selected_slot_count":len(best["items"]),"slots_considered":len(slots),"skipped_slots":skipped,
+      "duplicate_item_conflict_branches_skipped":duplicate_item_conflicts,
       "search_nodes":min(nodes,node_limit),"search_node_limit":node_limit,
       "guardrails":[
         "Optimises the sum of one selected stat per slot; it does not calculate complete-loadout DPS.",
         "Only candidates with known supplied costs are considered; no live GE prices are fetched.",
         "Candidates may still have unknown quest, unlock, item-variant or requirement restrictions.",
+        "The same item ID cannot be selected for multiple equipment slots in one loadout.",
         "This is a shortlist for review, not a confirmed usable or best-in-slot setup."
       ]
     }
