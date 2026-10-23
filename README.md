@@ -482,3 +482,17 @@ python scripts/rank_combat_scenario_robustness.py \
 ```
 
 The transparent score is `(1 - risk_aversion) * weighted_average_dps + risk_aversion * worst_case_dps`. Use 0 to prefer weighted-average DPS, 1 to prefer worst-case DPS, or a value between them to trade average output for consistency. This does not infer a probability of failure, add new candidates, or improve the underlying combat model. It re-ranks only the already bounded candidate list and carries forward the source report's limitations. CI runs focused tests and validates the resulting report against `schemas/combat-studio-robustness-ranking.schema.json`.
+
+
+## Combat Studio risk-preference sensitivity
+
+Inspect how the best-ranked candidate changes across multiple risk preferences using the existing scenario-comparison report:
+
+```bash
+python scripts/analyze_combat_ranking_sensitivity.py \
+  --input reports/combat-studio-scenario-comparison.json \
+  --step-percent 10 --top-n 5 \
+  --output reports/combat-studio-risk-sensitivity.json
+```
+
+The default evaluates risk aversion from 0.0 to 1.0 in 0.1 steps and records the winner and top candidates at each setting. The winner-stability summary reports how often each candidate ranked first across the sampled settings. This share is not a probability of success: it only describes ranking stability under the chosen preference grid. The analysis validates candidate IDs and DPS ranges, and it never adds candidates or re-runs combat calculations. The report is generated and schema-validated in CI.
