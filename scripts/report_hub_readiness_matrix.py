@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 from datetime import datetime, timezone
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,7 +69,7 @@ def build_readiness_report(loader=load_array):
         contract = CONTRACTS[key]
         ids = [row.get(contract["id"]) for row in rows]
         valid_ids = [value for value in ids if isinstance(value, int) and not isinstance(value, bool) and value >= 0]
-        duplicates = sorted({value for value in valid_ids if valid_ids.count(value) > 1})
+        duplicates = sorted(value for value, count in Counter(valid_ids).items() if count > 1)
         summaries[key] = {
             "file": contract["file"],
             "record_count": len(rows),
@@ -91,12 +92,19 @@ def build_readiness_report(loader=load_array):
     quest_link_ids = ids("quest_relationships", "quest_id")
     relationship_ids = ids("item_relationships", "item_id")
 
+    # Missing child records and orphan child records are different failures.
     joins = {
         "equipment_missing_profile_ids": sorted(equipment_ids - profile_ids)[:100],
         "equipment_missing_requirement_ids": sorted(equipment_ids - requirement_ids)[:100],
         "weapon_missing_profile_ids": sorted(weapon_ids - profile_ids)[:100],
         "item_missing_relationship_ids": sorted(item_ids - relationship_ids)[:100],
         "quest_missing_relationship_ids": sorted(quest_ids - quest_link_ids)[:100],
+        "equipment_orphan_item_ids": sorted(equipment_ids - item_ids)[:100],
+        "weapon_orphan_equipment_ids": sorted(weapon_ids - equipment_ids)[:100],
+        "profile_orphan_item_ids": sorted(profile_ids - item_ids)[:100],
+        "requirement_orphan_item_ids": sorted(requirement_ids - item_ids)[:100],
+        "item_relationship_orphan_item_ids": sorted(relationship_ids - item_ids)[:100],
+        "quest_relationship_orphan_quest_ids": sorted(quest_link_ids - quest_ids)[:100],
         "equipment_count": len(equipment_ids),
         "weapon_count": len(weapon_ids),
         "item_count": len(item_ids),
