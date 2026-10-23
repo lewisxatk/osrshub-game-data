@@ -46,7 +46,8 @@ This roadmap covers only the standalone `osrshub-game-data` repository. It does 
 - [ ] Identify item IDs and aliases consistently across sources and reconcile alias collisions.
 - [x] Add explicit item-ID links to normalized equipment-stat and weapon records, with orphan counts and schema validation.
 - [x] Normalize source-backed item skill requirements into an item-ID keyed dataset with schema validation and malformed-value warnings.
-- [x] Add a conservative profile-to-item eligibility evaluator that applies manual exclusions and known skill requirements while keeping quest/unlock eligibility unknown.\n- [ ] Add quest/unlock relationships once verified quest facts are supplied by a maintained source.
+- [x] Add a conservative profile-to-item eligibility evaluator that applies manual exclusions and known skill requirements while keeping quest/unlock eligibility unknown.
+- [x] Prevent the budgeted multi-slot stat shortlist from equipping the same item ID in multiple slots.\n- [ ] Add quest/unlock relationships once verified quest facts are supplied by a maintained source.
 - [ ] Add recipe/ingredient relationships and item transformation records.
 - [ ] Add shops and item sources where data is available and traceable.
 - [ ] Track provenance and conflicts for every imported category.

@@ -18,6 +18,21 @@ class LoadoutOptimizerTests(unittest.TestCase):
     def test_does_not_select_ineligible_or_unknown_cost_items(self):
         result=optimize_loadout(self.shortlist,100); ids={x["item_id"] for x in result["selected_items"]}
         self.assertNotIn(4,ids); self.assertNotIn(5,ids)
+    def test_same_item_cannot_be_selected_for_multiple_slots(self):
+        shortlist = {"objective": "test", "objective_field": "test", "results_by_slot": {
+            "head": [{"item_id": 77, "item_name": "Shared item", "status": "candidate_with_unknown_restrictions", "cost": 10, "objective_value": 4, "reasons": []}],
+            "body": [{"item_id": 77, "item_name": "Shared item", "status": "candidate_with_unknown_restrictions", "cost": 10, "objective_value": 9, "reasons": []}],
+        }}
+        result = optimize_loadout(shortlist, 100)
+        self.assertEqual(len(result["selected_items"]), 1)
+        self.assertEqual(result["selected_items"][0]["slot"], "body")
+        self.assertGreater(result["duplicate_item_conflict_branches_skipped"], 0)
+
+    def test_different_item_ids_can_fill_different_slots(self):
+        result = optimize_loadout(self.shortlist, 100)
+        ids = [item["item_id"] for item in result["selected_items"]]
+        self.assertEqual(len(ids), len(set(ids)))
+
     def test_budget_can_leave_slots_empty(self):
         result=optimize_loadout(self.shortlist,10); self.assertEqual(result["selected_items"],[]); self.assertEqual(result["total_cost_gp"],0)
     def test_search_limit_is_explicit(self):
