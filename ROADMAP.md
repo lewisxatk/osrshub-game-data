@@ -90,6 +90,8 @@ Each category must have a source adapter, a documented schema, validation, cover
 
 No automatic deployment, Worker changes, D1 migrations/writes, Discord changes, or live-site modifications are included in this roadmap.
 
+- [x] Add an explainable combat-metric comparison to each account-aware upgrade recommendation (rolls, accuracy, max hit, expected damage, attack speed and DPS deltas), with schema and regression tests. This remains scoped baseline arithmetic, not boss-verified DPS.
+
 ## Immediate next actions
 
 1. Prioritize V1 Combat Studio: establish a maintained, source-backed item-to-quest unlock dataset and connect its completeness to account eligibility decisions.

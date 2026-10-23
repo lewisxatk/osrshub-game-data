@@ -375,3 +375,10 @@ Run `python scripts/report_hub_readiness_matrix.py` after the source import, nor
 The matrix reports record counts, field-presence percentages, malformed/duplicate IDs, exact-ID join gaps, and a severity-ranked work queue. It makes gaps actionable without pretending that missing data is a game fact. In particular, missing requirements are not interpreted as no requirements; unknown quest facts are not interpreted as no prerequisites; and coverage percentages do not measure factual accuracy. The report is generated during CI, schema-validated, and included with the workflow's JSON artifacts.
 
 The matrix is a prioritization tool, not a release certificate: `review_required` means structural gaps remain visible, while `failed` means a required dataset could not be read. A zero-gap structural report still does not independently prove that the source facts or combat formulas are correct.
+
+
+## Explainable Combat Studio upgrade reports
+
+The account-aware upgrade planner now includes a `combat_comparison` for each recommended candidate. It shows baseline and candidate attack roll, target defence roll, hit chance, max hit, expected damage per attack, weapon attack speed in ticks, and the difference for each metric. This makes it easier to inspect why the scoped baseline DPS changed instead of relying on a single score.
+
+These metrics are recomputed with the same existing combat evaluator and caller-supplied inputs used by the planner. The comparison is an arithmetic explanation, not a claim of boss-specific accuracy: effective levels, target defence and prices still need independent verification, and prayers, potions, special attacks, phases, immunities, set effects, damage caps and supplies remain outside the model. The output schema and regression tests check the comparison structure and consistency between DPS delta and the recommendation’s reported gain.

@@ -34,6 +34,11 @@ class CombatStudioUpgradePlanTests(unittest.TestCase):
         self.assertGreater(result["recommendations"][0]["dps_gain"], 0)
         self.assertTrue(all(row["dps_gain"] > 0 for row in result["recommendations"]))
         self.assertEqual(result["recommendations"][0]["upgrade_cost_gp"], 500)
+        comparison = result["recommendations"][0]["combat_comparison"]
+        self.assertAlmostEqual(comparison["delta"]["dps"], result["recommendations"][0]["dps_gain"], places=7)
+        self.assertGreater(comparison["candidate"]["attack_roll"], comparison["baseline"]["attack_roll"])
+        self.assertGreater(comparison["delta"]["max_hit"], 0)
+        self.assertEqual(comparison["candidate"]["attack_speed_ticks"], 4)
 
     def test_no_improving_change_is_not_called_an_upgrade(self):
         # With the stronger candidate removed, every changed combination is

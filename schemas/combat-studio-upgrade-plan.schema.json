@@ -26,7 +26,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["rank", "upgrade_cost_gp", "remaining_budget_gp", "baseline_dps", "candidate_dps", "dps_gain", "dps_gain_percent", "dps_gain_per_million_gp", "weapon", "slot_changes", "selected_items", "warnings"],
+        "required": ["rank", "upgrade_cost_gp", "remaining_budget_gp", "baseline_dps", "candidate_dps", "dps_gain", "dps_gain_percent", "dps_gain_per_million_gp", "weapon", "slot_changes", "selected_items", "combat_comparison", "warnings"],
         "properties": {
           "rank": {"type": "integer", "minimum": 1},
           "upgrade_cost_gp": {"type": "integer", "minimum": 0},
@@ -39,6 +39,7 @@
           "weapon": {"type": ["object", "null"]},
           "slot_changes": {"type": "array", "items": {"type": "object"}},
           "selected_items": {"type": "array", "items": {"type": "object"}},
+          "combat_comparison": {"type": "object", "required": ["baseline", "candidate", "delta"], "properties": {"baseline": {"$ref": "#/$defs/combat_metrics"}, "candidate": {"$ref": "#/$defs/combat_metrics"}, "delta": {"type": "object", "required": ["attack_roll", "defence_roll", "hit_chance", "max_hit", "expected_damage_per_attack", "attack_speed_ticks", "dps"], "properties": {"attack_roll": {"type": "integer"}, "defence_roll": {"type": "integer"}, "hit_chance": {"type": "number"}, "max_hit": {"type": "integer"}, "expected_damage_per_attack": {"type": "number"}, "attack_speed_ticks": {"type": "integer"}, "dps": {"type": "number"}}}}},
           "warnings": {"type": "array", "items": {"type": "string"}}
         },
         "additionalProperties": true
@@ -51,5 +52,6 @@
     "warnings": {"type": "array", "items": {"type": "string"}},
     "guardrails": {"type": "array", "items": {"type": "string"}}
   },
+  "$defs": {"combat_metrics": {"type": "object", "required": ["attack_roll", "defence_roll", "hit_chance", "max_hit", "expected_damage_per_attack", "attack_speed_ticks", "dps"], "properties": {"attack_roll": {"type": "integer", "minimum": 0}, "defence_roll": {"type": "integer", "minimum": 0}, "hit_chance": {"type": "number", "minimum": 0, "maximum": 1}, "max_hit": {"type": "integer", "minimum": 0}, "expected_damage_per_attack": {"type": "number", "minimum": 0}, "attack_speed_ticks": {"type": "integer", "minimum": 1}, "dps": {"type": "number", "minimum": 0}}, "additionalProperties": true}},
   "additionalProperties": true
 }
