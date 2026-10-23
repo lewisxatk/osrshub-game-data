@@ -78,6 +78,10 @@ python scripts/compare_loadout_upgrade_delta.py \
 This is the first comparison layer toward account-specific upgrade advice: it shows what changed and how the repository's current scoped arithmetic responds, without pretending that the model already covers a particular boss. Both sides must fit the supplied budget. The same effective levels and target-defence inputs are used for both sides. Unknown restrictions remain warnings; caller-provided prices are not live GE prices. Prayers, potions, special attacks, boss phases, immunities, and other unimplemented mechanics are not inferred. CI generates and schema-validates an illustrative report and tests budget, duplicate-slot, and upgrade-delta behavior.
 
 
+## Account-aware Combat Studio upgrade planner
+
+Run `python scripts/plan_combat_studio_upgrades.py` with the DPS-search inputs and `--baseline` (a JSON array of currently equipped item IDs), `--budget`, and `--style`. Current gear is treated as owned at zero cost. The report compares bounded, account-eligible alternatives against baseline DPS and shows changed slots, upgrade spend, remaining budget, DPS gain and gain per million GP. Prices and combat inputs are caller-supplied. This is limited baseline melee arithmetic, not boss-verified DPS; check the search truncation flag.
+
 ## Expanded OSRS source domains
 
 The pipeline now downloads and retains separate source snapshots for more than just items and monsters. It imports additional generated datasets for prayers, NPC drop tables and shared drop subtables, shop stock and shopkeepers, Slayer-master task lists, NPC interactions and dialogue, NPC summaries, object summaries, and model summaries.

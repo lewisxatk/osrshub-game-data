@@ -1,4 +1,4 @@
-# OSRS Hub Game Data Roadmap
+- [x] Add an account-aware upgrade planner that treats current gear as owned, compares bounded candidates to baseline DPS, and reports changed slots, upgrade cost, DPS gain and gain per GP with schema-backed tests. This remains a limited baseline melee estimate.\n# OSRS Hub Game Data Roadmap
 
 This roadmap covers only the standalone `osrshub-game-data` repository. It does not authorize changes to the OSRS Hub website, Discord integration, Cloudflare Worker, D1 database, or live Grand Exchange feed.
 
