@@ -147,6 +147,21 @@ The current formula primitives calculate attack and defence rolls, roll-comparis
 
 **This is not a complete Combat Lab calculator.** Effective levels and bonuses must be supplied; this code does not derive them from player settings or equipment. Prayers, potions, special attacks, weapon-specific effects, damage caps, NPC phases, immunities and other exceptions must be added as separately sourced, tested rules before boss-specific DPS recommendations are reliable.
 
+## Quest skill-candidate provenance gate
+
+The quest requirement text pipeline produces **review candidates**, not verified quest facts. After extracting candidates, `scripts/audit_quest_skill_candidates.py` checks that every candidate maps to a unique raw evidence record, uses the same HTTPS OSRS Wiki source URL as that record, carries the explicit review-only status, has a valid skill/level shape, and agrees with the matched catalogue quest name. It rejects duplicate evidence keys and duplicate candidate rows.
+
+The audit keeps unmatched catalogue titles and multiple text matches visible as review work rather than silently converting them into facts. It does not decide whether a skill level is required to start or finish a quest, whether boosts apply, or whether an unmatched text pattern means there is no requirement. CI regression tests cover provenance mismatches, malformed records, duplicate rows, and the review-only boundary.
+
+Run it after extracting candidates:
+
+```bash
+python scripts/extract_quest_skill_requirement_candidates.py
+python scripts/audit_quest_skill_candidates.py
+```
+
+The audit's `failed` status means a structural/provenance contract was broken; `review_required` means valid evidence still needs human review; `passed_with_review_limits` means the structural checks passed, not that the candidate facts are verified.
+
 ## Data sources
 
 - OSRSBox database: https://github.com/osrsbox/osrsbox-db
