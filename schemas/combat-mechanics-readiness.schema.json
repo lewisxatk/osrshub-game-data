@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat mechanics verification readiness report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "schema_version",
+    "status",
+    "registry_status",
+    "mechanic_count",
+    "implementation_counts",
+    "verification_counts",
+    "implemented_scoped_percent",
+    "verified_percent",
+    "domain_summaries",
+    "verification_gaps",
+    "error_count",
+    "errors",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required",
+        "failed"
+      ]
+    },
+    "registry_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mechanic_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "implementation_counts": {
+      "type": "object",
+      "required": [
+        "implemented_scoped",
+        "data_dependent",
+        "not_implemented"
+      ],
+      "properties": {
+        "implemented_scoped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "data_dependent": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "not_implemented": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification_counts": {
+      "type": "object",
+      "required": [
+        "verified",
+        "in_review",
+        "unverified",
+        "unsupported"
+      ],
+      "properties": {
+        "verified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "in_review": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unverified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "implemented_scoped_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "verified_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "domain_summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "domain",
+          "mechanic_count",
+          "verified_count",
+          "implemented_scoped_count",
+          "source_reference_count",
+          "regression_fixture_count",
+          "mechanics"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string"
+          },
+          "mechanic_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "verified_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "implemented_scoped_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_reference_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "regression_fixture_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mechanics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "mechanic_id",
+                "implementation_status",
+                "verification_status",
+                "source_reference_count",
+                "regression_fixture_count"
+              ],
+              "properties": {
+                "mechanic_id": {
+                  "type": "string"
+                },
+                "implementation_status": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "verification_status": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "source_reference_count": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "regression_fixture_count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "verification_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mechanic_id",
+          "label",
+          "domain",
+          "implementation_status",
+          "verification_status",
+          "source_reference_count",
+          "regression_fixture_count",
+          "blockers"
+        ],
+        "properties": {
+          "mechanic_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "implementation_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "verification_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_reference_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "regression_fixture_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "error_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false
+}
