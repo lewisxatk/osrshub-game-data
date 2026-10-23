@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit monster ID/name identity and numeric combat-field integrity."""
 from __future__ import annotations
-import argparse, json
+import argparse, json, math
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,7 +30,7 @@ def audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
             missing_names.append({"index": index, "id": rid})
         for field in NUMERIC_FIELDS:
             value = row.get(field)
-            if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0):
+            if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0):
                 invalid_numeric.append({"index": index, "id": rid, "name": name or "", "field": field, "value": value})
     duplicate_ids = [{"id": key, "row_indexes": indexes} for key, indexes in sorted(ids.items()) if len(indexes) > 1]
     duplicate_names = [{"normalized_name": key, "records": value} for key, value in sorted(names.items()) if len(value) > 1]
