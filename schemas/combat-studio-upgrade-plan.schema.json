@@ -9,9 +9,46 @@
     "status": {"enum": ["upgrade_recommendations_with_limitations", "no_improving_upgrade_found"]},
     "attack_style": {"enum": ["stab", "slash", "crush"]},
     "upgrade_budget_gp": {"type": "integer", "minimum": 0},
-    "baseline": {"type": "object", "required": ["item_ids", "total_cost_gp", "dps", "hit_chance", "max_hit", "weapon"], "properties": {"item_ids": {"type": "array", "items": {"type": "integer", "minimum": 0}}, "total_cost_gp": {"const": 0}, "dps": {"type": "number"}, "hit_chance": {"type": "number"}, "max_hit": {"type": "integer"}, "weapon": {"type": "object"}}},
-    "recommendations": {"type": "array", "items": {"type": "object", "required": ["rank", "upgrade_cost_gp", "remaining_budget_gp", "baseline_dps", "candidate_dps", "dps_gain", "dps_gain_percent", "dps_gain_per_million_gp", "weapon", "slot_changes", "selected_items", "warnings"], "properties": {"rank": {"type": "integer", "minimum": 1}, "upgrade_cost_gp": {"type": "integer", "minimum": 0}, "remaining_budget_gp": {"type": "integer", "minimum": 0}, "baseline_dps": {"type": "number"}, "candidate_dps": {"type": "number"}, "dps_gain": {"type": "number"}, "dps_gain_percent": {"type": ["number", "null"]}, "dps_gain_per_million_gp": {"type": ["number", "null"]}, "slot_changes": {"type": "array"}, "selected_items": {"type": "array"}, "warnings": {"type": "array", "items": {"type": "string"}}}},
-    "search": {"type": "object"}, "candidate_counts": {"type": "object"}, "eligibility_audit": {"type": "array"}, "warnings": {"type": "array", "items": {"type": "string"}}, "guardrails": {"type": "array", "items": {"type": "string"}}
+    "baseline": {
+      "type": "object",
+      "required": ["item_ids", "total_cost_gp", "dps", "hit_chance", "max_hit", "weapon"],
+      "properties": {
+        "item_ids": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "total_cost_gp": {"const": 0},
+        "dps": {"type": "number"},
+        "hit_chance": {"type": "number"},
+        "max_hit": {"type": "integer"},
+        "weapon": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rank", "upgrade_cost_gp", "remaining_budget_gp", "baseline_dps", "candidate_dps", "dps_gain", "dps_gain_percent", "dps_gain_per_million_gp", "weapon", "slot_changes", "selected_items", "warnings"],
+        "properties": {
+          "rank": {"type": "integer", "minimum": 1},
+          "upgrade_cost_gp": {"type": "integer", "minimum": 0},
+          "remaining_budget_gp": {"type": "integer", "minimum": 0},
+          "baseline_dps": {"type": "number"},
+          "candidate_dps": {"type": "number"},
+          "dps_gain": {"type": "number"},
+          "dps_gain_percent": {"type": ["number", "null"]},
+          "dps_gain_per_million_gp": {"type": ["number", "null"]},
+          "weapon": {"type": ["object", "null"]},
+          "slot_changes": {"type": "array", "items": {"type": "object"}},
+          "selected_items": {"type": "array", "items": {"type": "object"}},
+          "warnings": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "search": {"type": "object"},
+    "candidate_counts": {"type": "object"},
+    "eligibility_audit": {"type": "array", "items": {"type": "object"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
   },
   "additionalProperties": true
 }
