@@ -143,3 +143,15 @@ Field presence is not the same as correctness, and imported records are not cons
 - [ ] Expand candidate coverage and add reviewed, source-verified combat mechanics before describing scenario output as boss-accurate DPS.
 
 **Acceptance boundary:** scenario comparison makes the current baseline more useful across multiple caller-supplied contexts. It does not establish source accuracy, complete mechanics, or a globally optimal loadout; each scenario's candidate discovery is bounded.
+
+
+## Risk-aware scenario ranking (this update)
+
+- [x] Add a deterministic second-pass ranking over the existing scenario comparison report.
+- [x] Expose a risk-aversion parameter from 0 (weighted-average DPS) to 1 (worst-case DPS), with an explicit linear formula.
+- [x] Validate finite non-negative metrics, internally consistent best/average/worst values and DPS spread, non-negative integer item IDs/costs, and ranking bounds.
+- [x] Add regression tests for average-first and worst-case-first rankings, intermediate trade-offs, invalid inputs, and top-N behaviour.
+- [x] Add a dedicated output schema and wire generation plus schema validation into CI.
+- [ ] Improve source-verified combat mechanics and candidate coverage before treating any ranking as boss-accurate or globally optimal.
+
+**Acceptance boundary:** this update improves decision control and transparency only. It does not alter the combat formula, claim probabilities, discover new candidates, or remove the upstream bounded-search and source-verification limitations.
