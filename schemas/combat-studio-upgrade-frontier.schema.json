@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combat Studio upgrade cost versus DPS frontier",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "attack_style", "budget_gp", "source_plan_status", "source_candidate_count", "eligible_candidate_count", "frontier_count", "frontier", "dominated_candidates", "best_dps_gain_candidate", "best_efficiency_candidate", "zero_cost_positive_gain_candidates", "excluded_counts", "interpretation", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["frontier_available", "no_positive_candidate"]},
+    "attack_style": {"type": ["string", "null"]},
+    "budget_gp": {"type": ["number", "null"], "minimum": 0},
+    "source_plan_status": {"type": "string"},
+    "source_candidate_count": {"type": "integer", "minimum": 0},
+    "eligible_candidate_count": {"type": "integer", "minimum": 0},
+    "frontier_count": {"type": "integer", "minimum": 0},
+    "frontier": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "dominated_candidates": {"type": "array", "items": {"allOf": [{"$ref": "#/$defs/candidate"}, {"type": "object", "required": ["dominated_by_rank", "dominated_by_cost_gp", "dominated_by_dps_gain"], "properties": {"dominated_by_rank": {}, "dominated_by_cost_gp": {"type": "integer", "minimum": 0}, "dominated_by_dps_gain": {"type": "number", "exclusiveMinimum": 0}}}]}},
+    "best_dps_gain_candidate": {"anyOf": [{"$ref": "#/$defs/candidate"}, {"type": "null"}]},
+    "best_efficiency_candidate": {"anyOf": [{"$ref": "#/$defs/candidate"}, {"type": "null"}]},
+    "zero_cost_positive_gain_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "excluded_counts": {"type": "object", "required": ["malformed", "non_positive_gain", "over_budget"], "properties": {"malformed": {"type": "integer", "minimum": 0}, "non_positive_gain": {"type": "integer", "minimum": 0}, "over_budget": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+    "interpretation": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "required": ["rank", "item_ids", "weapon", "dps_gain", "dps_gain_percent", "upgrade_cost_gp", "remaining_budget_gp", "dps_gain_per_million_gp", "slot_changes", "warnings"],
+      "properties": {
+        "rank": {},
+        "item_ids": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "weapon": {},
+        "dps_gain": {"type": "number", "exclusiveMinimum": 0},
+        "dps_gain_percent": {"type": ["number", "null"]},
+        "upgrade_cost_gp": {"type": "integer", "minimum": 0},
+        "remaining_budget_gp": {"type": ["integer", "null"], "minimum": 0},
+        "dps_gain_per_million_gp": {"type": ["number", "null"]},
+        "slot_changes": {"type": "array", "items": {"type": "object"}},
+        "warnings": {"type": "array", "items": {"type": "string"}},
+        "dominated_by_rank": {},
+        "dominated_by_cost_gp": {"type": "integer", "minimum": 0},
+        "dominated_by_dps_gain": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
