@@ -84,7 +84,6 @@ REPORT_TARGETS = (
     ("monster-readiness.json", "monster-readiness.schema.json"),
     ("monster-dps-sensitivity.json", "monster-dps-sensitivity.schema.json"),
     ("monster-source-provenance-audit.json", "monster-source-provenance-audit.schema.json"),
-    ("monster-drop-link-audit.json", "monster-drop-link-audit.schema.json"),
     ("monster-dps-envelope.json", "monster-dps-envelope.schema.json"),
     ("quest-reward-item-evidence.json", "quest-reward-item-evidence.schema.json"),
     ("extended-domain-readiness.json", "extended-domain-readiness.schema.json"),
