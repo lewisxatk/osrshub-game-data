@@ -1,0 +1,14 @@
+[
+  {
+    "scenario_id": "synthetic-100hp-at-10dps",
+    "target_name": "Synthetic test target (not an OSRS monster)",
+    "target_hitpoints": 100,
+    "player_dps": 10
+  },
+  {
+    "scenario_id": "synthetic-250hp-at-7.5dps",
+    "target_name": "Synthetic test target (not an OSRS monster)",
+    "target_hitpoints": 250,
+    "player_dps": 7.5
+  }
+]

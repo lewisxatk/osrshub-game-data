@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster drop link audit",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "monster_record_count",
+    "monster_numeric_id_count",
+    "drop_record_count",
+    "explicit_link_count",
+    "unresolved_drop_record_count",
+    "orphan_explicit_link_count",
+    "explicit_link_coverage_percent",
+    "linked_examples",
+    "unresolved_examples",
+    "orphan_examples",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required"
+      ]
+    },
+    "monster_record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "monster_numeric_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "drop_record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "explicit_link_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unresolved_drop_record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "orphan_explicit_link_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "explicit_link_coverage_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "linked_examples": {
+      "type": "array"
+    },
+    "unresolved_examples": {
+      "type": "array"
+    },
+    "orphan_examples": {
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

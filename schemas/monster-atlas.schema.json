@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster atlas report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "dataset",
+    "record_count",
+    "unique_numeric_id_count",
+    "records_without_numeric_id",
+    "duplicate_numeric_ids",
+    "duplicate_numeric_id_count",
+    "combat_level_bands",
+    "field_coverage",
+    "highest_hitpoint_records",
+    "random_fact",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unique_numeric_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "records_without_numeric_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_numeric_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "duplicate_numeric_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "combat_level_bands": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "field_coverage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "present_records",
+          "missing_records",
+          "coverage_percent"
+        ],
+        "properties": {
+          "present_records": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "missing_records": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage_percent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    },
+    "highest_hitpoint_records": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "random_fact": {
+      "type": "object"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

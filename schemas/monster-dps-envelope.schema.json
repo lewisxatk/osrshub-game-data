@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster DPS envelope",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "scenario_count",
+    "estimated_count",
+    "unresolved_count",
+    "tick_seconds_assumption",
+    "results",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "partial",
+        "empty"
+      ]
+    },
+    "scenario_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "estimated_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unresolved_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tick_seconds_assumption": {
+      "const": 0.6
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "status",
+          "player_dps",
+          "time_to_kill_seconds_estimate",
+          "time_to_kill_ticks_estimate",
+          "theoretical_kills_per_hour",
+          "hitpoints_source",
+          "limitations"
+        ],
+        "properties": {
+          "scenario_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "estimated",
+              "unknown_monster_id",
+              "missing_monster_hitpoints"
+            ]
+          },
+          "player_dps": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "time_to_kill_seconds_estimate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "time_to_kill_ticks_estimate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "theoretical_kills_per_hour": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "hitpoints_source": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

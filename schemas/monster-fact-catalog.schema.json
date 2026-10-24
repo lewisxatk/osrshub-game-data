@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster fact catalog",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "source_dataset",
+    "record_count",
+    "fact_cards",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "source_dataset": {
+      "type": "string"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fact_cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "known_field_count",
+          "known_fields",
+          "unknown_fields",
+          "sources",
+          "record",
+          "verification_status"
+        ]
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
