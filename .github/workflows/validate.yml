@@ -97,6 +97,16 @@ jobs:
         run: python scripts/audit_monster_identity.py --output reports/monster-identity-audit.json
       - name: Audit explicit monster-to-drop links
         run: python scripts/audit_monster_drop_links.py --output reports/monster-drop-link-audit.json
+      - name: Build full monster fact-card catalogue
+        run: python scripts/build_monster_fact_catalog.py --output reports/monster-fact-catalog.json
+      - name: Report monster field-presence readiness
+        run: python scripts/report_monster_readiness.py --output reports/monster-readiness.json
+      - name: Analyze monster DPS sensitivity envelope
+        run: python scripts/analyze_monster_dps_sensitivity.py --input examples/monster-dps-scenarios.example.json --output reports/monster-dps-sensitivity.json
+      - name: Audit raw monster source provenance and conflicts
+        run: python scripts/audit_monster_source_provenance.py --output reports/monster-source-provenance-audit.json
+      - name: Smoke-test generated monster database search
+        run: python scripts/search_monster_database.py --query goblin --limit 10
       - name: Analyze explicit DPS envelope fixtures against known monster data
         run: python scripts/analyze_monster_dps_envelope.py --input examples/monster-dps-scenarios.example.json --output reports/monster-dps-envelope.json
       - name: Download source-backed raw quest requirement evidence

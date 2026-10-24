@@ -202,3 +202,8 @@ Field presence is not the same as correctness, and imported records are not cons
 - [x] Add schema validation and regression coverage for empty/malformed datasets, unknown IDs, missing HP, and numeric edge cases.
 - [ ] Independently verify source-specific monster stats and authoritative combat formulas.
 - [ ] Add target-specific defence, phases, immunities, and damage caps only when source evidence and regression fixtures are available.
+
+- [x] Generate per-monster fact cards and a source-preserving catalogue.
+- [x] Add numeric-filter search and field-presence readiness triage.
+- [x] Compare overlapping raw monster fields and report disagreements without auto-resolving them.
+- [x] Add DPS sensitivity curves around explicit supplied DPS values.

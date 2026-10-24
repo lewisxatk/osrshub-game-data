@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster DPS sensitivity report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "scenario_count",
+    "multipliers",
+    "results",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "partial",
+        "empty"
+      ]
+    },
+    "scenario_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "multipliers": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "status",
+          "base_player_dps",
+          "sensitivity"
+        ],
+        "properties": {
+          "scenario_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "estimated",
+              "unknown_monster_id",
+              "missing_positive_hitpoints"
+            ]
+          },
+          "base_player_dps": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "sensitivity": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

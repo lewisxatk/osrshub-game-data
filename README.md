@@ -552,3 +552,8 @@ The DPS envelope uses caller-supplied positive DPS and either known database mon
 hitpoints or an explicit synthetic target. It estimates constant-DPS time-to-kill and
 theoretical kills/hour only. It is not a complete combat simulator and does not infer
 DPS from monster stats. See [Monster Atlas and DPS Envelope](docs/monster-atlas-and-dps.md).
+
+
+Additional monster tools include a full fact-card catalogue, a presence-only record
+readiness queue, a constant-DPS sensitivity curve, database-only name/level/HP search,
+and raw-source conflict reporting. See [Monster Atlas and DPS Envelope](docs/monster-atlas-and-dps.md).
