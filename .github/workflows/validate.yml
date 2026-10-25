@@ -205,6 +205,8 @@ jobs:
         run: python scripts/build_domain_coverage_matrix.py --output reports/domain-coverage-matrix.json
       - name: Evaluate structural database release gates
         run: python scripts/report_database_release_gates.py --output reports/database-release-gates.json
+      - name: Build integrated database release gate summary
+        run: python scripts/build_integrated_release_gate.py --output reports/database-integrated-release-gate.json
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness
