@@ -572,3 +572,8 @@ The quest evidence importer now recognizes indexed and non-indexed source table 
 ## Integrated database release gate
 
 The pipeline now consolidates its census, integrity, source freshness, domain coverage, quest evidence, monster link audits, and Combat Studio readiness into `reports/database-integrated-release-gate.json`. The summary distinguishes blocking failures from review-required evidence and missing reports. A passing gate is a structural signal only; it does not certify OSRS factual accuracy or global completeness. See [Integrated Database Release Gate](docs/integrated-database-release-gate.md).
+
+
+## Cross-domain graph health milestone
+
+The CI pipeline now emits `reports/domain-graph-health.json`, an explicit-ID join audit spanning items, equipment, weapons, item requirements, combat profiles, relationship summaries, monsters, and quests. It reports linked coverage, missing targets, orphan targets, duplicate IDs, and unavailable datasets. It does not infer links by name or certify factual correctness. See [Cross-domain graph health](docs/domain-graph-health.md).
