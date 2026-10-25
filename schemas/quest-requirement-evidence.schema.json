@@ -2,10 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Raw quest requirement evidence",
   "type": "object",
-  "required": ["quest_key", "quest_name", "requirements_text", "requirement_links", "source_url", "evidence_status"],
+  "required": ["quest_key", "quest_name", "source_title", "requirements_text", "requirement_links", "source_url", "evidence_status", "source_row_shape"],
   "properties": {
     "quest_key": {"type": "string", "minLength": 1},
     "quest_name": {"type": "string", "minLength": 1},
+    "source_title": {"type": "string", "minLength": 1},
+    "source_row_shape": {"enum": ["title_requirements", "ordinal_title_requirements", "unmatched_two_column"]},
     "requirements_text": {"type": "string"},
     "requirement_links": {"type": "array", "items": {"type": "object", "required": ["title", "url"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"}}, "additionalProperties": false}},
     "source_url": {"type": "string", "pattern": "^https://oldschool\\.runescape\\.wiki/"},
