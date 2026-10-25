@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osrshub.local/schemas/database-integrated-release-gate.schema.json",
+  "title": "Integrated Database Release Gate",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "interpretation", "component_count", "blocking_component_count", "review_required_component_count", "error_count", "warning_count", "components", "errors", "warnings", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "interpretation": {"type": "string", "minLength": 1},
+    "component_count": {"type": "integer", "minimum": 0},
+    "blocking_component_count": {"type": "integer", "minimum": 0},
+    "review_required_component_count": {"type": "integer", "minimum": 0},
+    "error_count": {"type": "integer", "minimum": 0},
+    "warning_count": {"type": "integer", "minimum": 0},
+    "components": {"type": "object", "additionalProperties": {"type": "object", "required": ["file", "state"], "properties": {"file": {"type": "string"}, "state": {"enum": ["missing_or_invalid", "blocking", "review_required", "acceptable"]}, "reported_status": {}, "message": {"type": "string"}}, "additionalProperties": true}},
+    "errors": {"type": "array", "items": {"type": "object", "required": ["component", "message"], "properties": {"component": {"type": "string"}, "message": {"type": "string"}}}},
+    "warnings": {"type": "array", "items": {"type": "object", "required": ["component", "message"], "properties": {"component": {"type": "string"}, "message": {"type": "string"}}}},
+    "guardrails": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
