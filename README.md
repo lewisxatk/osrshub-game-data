@@ -562,3 +562,8 @@ and raw-source conflict reporting. See [Monster Atlas and DPS Envelope](docs/mon
 ## Database census and release readiness
 
 The database pipeline now produces a file-by-file census, record-quality audit, raw-source snapshot freshness report, domain coverage matrix, and structural release-gate checklist. These reports make counts and missing evidence visible without confusing summed rows across overlapping datasets for a global unique-entity count. See [Database Census and Release Readiness](docs/database-census-mega-milestone.md).
+
+
+## Quest evidence recovery and reconciliation
+
+The quest evidence importer now recognizes indexed and non-indexed source table layouts, normalizes conservative title variants, records duplicate-row diagnostics, and runs a source-provenance reconciliation audit. Extracted requirements remain review-only; dashes and blanks are not treated as verified absence. See [Quest Evidence Recovery and Reconciliation](docs/quest-evidence-recovery.md).

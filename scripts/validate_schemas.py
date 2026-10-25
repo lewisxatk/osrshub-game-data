@@ -55,6 +55,7 @@ REPORT_TARGETS = (
     ("combat-loadout-evaluation.json", "combat-loadout-evaluation.schema.json"),
     ("ranged-loadout-evaluation.json", "ranged-loadout-evaluation.schema.json"),
     ("loadout-comparison.json", "loadout-comparison.schema.json"),
+    ("quest-evidence-reconciliation.json", "quest-evidence-reconciliation.schema.json"),
     ("normalized-player-profile.json", "normalized-player-profile.schema.json"),
     ("database-scorecard.json", "database-scorecard.schema.json"),
     ("database-census.json", "database-census.schema.json"),
