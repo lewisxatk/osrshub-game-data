@@ -567,3 +567,8 @@ The database pipeline now produces a file-by-file census, record-quality audit, 
 ## Quest evidence recovery and reconciliation
 
 The quest evidence importer now recognizes indexed and non-indexed source table layouts, normalizes conservative title variants, records duplicate-row diagnostics, and runs a source-provenance reconciliation audit. Extracted requirements remain review-only; dashes and blanks are not treated as verified absence. See [Quest Evidence Recovery and Reconciliation](docs/quest-evidence-recovery.md).
+
+
+## Integrated database release gate
+
+The pipeline now consolidates its census, integrity, source freshness, domain coverage, quest evidence, monster link audits, and Combat Studio readiness into `reports/database-integrated-release-gate.json`. The summary distinguishes blocking failures from review-required evidence and missing reports. A passing gate is a structural signal only; it does not certify OSRS factual accuracy or global completeness. See [Integrated Database Release Gate](docs/integrated-database-release-gate.md).
