@@ -193,6 +193,16 @@ jobs:
         run: python scripts/report_combat_lab_readiness.py
       - name: Build unified OSRS Hub readiness matrix
         run: python scripts/report_hub_readiness_matrix.py --output reports/hub-readiness-matrix.json
+      - name: Build full generated database census
+        run: python scripts/build_database_census.py --output reports/database-census.json
+      - name: Audit structural quality across generated datasets
+        run: python scripts/audit_database_record_quality.py --output reports/database-record-quality.json
+      - name: Audit raw source snapshot freshness and hashes
+        run: python scripts/report_source_snapshot_freshness.py --output reports/source-snapshot-freshness.json
+      - name: Build cross-domain coverage matrix
+        run: python scripts/build_domain_coverage_matrix.py --output reports/domain-coverage-matrix.json
+      - name: Evaluate structural database release gates
+        run: python scripts/report_database_release_gates.py --output reports/database-release-gates.json
       - name: Validate generated datasets against JSON Schemas
         run: python scripts/validate_schemas.py
       - name: Report combat data readiness

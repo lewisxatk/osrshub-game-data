@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub raw source snapshot freshness report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "raw_snapshot_file_count",
+    "raw_snapshot_record_rows",
+    "raw_snapshot_bytes",
+    "manifest_metadata_entry_count",
+    "metadata_entries_without_parseable_timestamp",
+    "metadata_entries",
+    "snapshots",
+    "errors",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required",
+        "failed"
+      ]
+    },
+    "raw_snapshot_file_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "raw_snapshot_record_rows": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "raw_snapshot_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "manifest_metadata_entry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "metadata_entries_without_parseable_timestamp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "metadata_entries": {
+      "type": "array"
+    },
+    "snapshots": {
+      "type": "array"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

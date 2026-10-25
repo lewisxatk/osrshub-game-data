@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub domain coverage matrix",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "dataset_count",
+    "record_rows_across_files",
+    "unique_identity_keys_within_files",
+    "domain_count",
+    "domains",
+    "datasets",
+    "source_snapshot_status",
+    "interpretation",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required"
+      ]
+    },
+    "dataset_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "record_rows_across_files": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unique_identity_keys_within_files": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "domain_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "domains": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "dataset_count",
+          "record_rows_across_files",
+          "duplicate_identity_count",
+          "missing_identity_count",
+          "quality_issue_count",
+          "bytes",
+          "recommended_next_action"
+        ]
+      }
+    },
+    "datasets": {
+      "type": "array"
+    },
+    "source_snapshot_status": {
+      "type": "string"
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
