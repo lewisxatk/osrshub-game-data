@@ -557,3 +557,8 @@ DPS from monster stats. See [Monster Atlas and DPS Envelope](docs/monster-atlas-
 Additional monster tools include a full fact-card catalogue, a presence-only record
 readiness queue, a constant-DPS sensitivity curve, database-only name/level/HP search,
 and raw-source conflict reporting. See [Monster Atlas and DPS Envelope](docs/monster-atlas-and-dps.md).
+
+
+## Database census and release readiness
+
+The database pipeline now produces a file-by-file census, record-quality audit, raw-source snapshot freshness report, domain coverage matrix, and structural release-gate checklist. These reports make counts and missing evidence visible without confusing summed rows across overlapping datasets for a global unique-entity count. See [Database Census and Release Readiness](docs/database-census-mega-milestone.md).

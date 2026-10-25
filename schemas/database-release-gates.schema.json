@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSRS Hub database structural release gates",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "release_decision",
+    "gate_count",
+    "passed_gate_count",
+    "review_gate_count",
+    "blocking_gate_count",
+    "gates",
+    "next_actions",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "blocked",
+        "review_required",
+        "passed"
+      ]
+    },
+    "release_decision": {
+      "enum": [
+        "do_not_promote",
+        "review_before_claiming_complete",
+        "structural_checks_passed"
+      ]
+    },
+    "gate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "passed_gate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "review_gate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blocking_gate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "gate",
+          "status",
+          "detail",
+          "blocking"
+        ],
+        "properties": {
+          "gate": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "blocked",
+              "review_required",
+              "passed"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          },
+          "blocking": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

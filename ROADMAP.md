@@ -207,3 +207,14 @@ Field presence is not the same as correctness, and imported records are not cons
 - [x] Add numeric-filter search and field-presence readiness triage.
 - [x] Compare overlapping raw monster fields and report disagreements without auto-resolving them.
 - [x] Add DPS sensitivity curves around explicit supplied DPS values.
+
+
+## Database census and release-readiness milestone
+- [x] Inventory every generated JSON dataset with record counts, bytes, hashes, field presence and identity-key diagnostics.
+- [x] Audit duplicate/missing identities, invalid numeric values and blank names without mutating source records.
+- [x] Summarize raw snapshot hashes and available retrieval metadata.
+- [x] Group coverage and quality gaps by data domain.
+- [x] Add explicit structural release gates that distinguish blocking failures from review-required gaps.
+- [x] Add schemas, regression tests, CI generation and documentation.
+- [ ] Establish a stable historical baseline so future runs can report record growth and regressions over time.
+- [ ] Independently verify source-critical combat facts and quest unlocks before treating the database as complete.
