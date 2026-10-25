@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://osrshub.local/schemas/domain-graph-health.schema.json",
+  "title": "Cross-Domain Graph Health Report",
+  "type": "object",
+  "required": ["generated_at", "schema_version", "status", "interpretation", "dataset_count", "datasets", "edge_count", "edges", "gap_count", "gaps", "input_error_count", "integrity_issue_count", "integrity_issues", "guardrails"],
+  "properties": {
+    "generated_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0.0"},
+    "status": {"enum": ["passed", "review_required", "failed"]},
+    "interpretation": {"type": "string"},
+    "dataset_count": {"type": "integer", "minimum": 0},
+    "datasets": {"type": "object", "additionalProperties": {"type": "object", "required": ["file", "identity_field", "record_count", "unique_valid_id_count", "missing_id_count", "invalid_id_count", "duplicate_id_count", "duplicate_id_samples"], "properties": {"file": {"type": "string"}, "identity_field": {"type": "string"}, "record_count": {"type": "integer", "minimum": 0}, "unique_valid_id_count": {"type": "integer", "minimum": 0}, "missing_id_count": {"type": "integer", "minimum": 0}, "invalid_id_count": {"type": "integer", "minimum": 0}, "duplicate_id_count": {"type": "integer", "minimum": 0}, "duplicate_id_samples": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}},
+    "edge_count": {"type": "integer", "minimum": 0},
+    "edges": {"type": "array", "items": {"type": "object", "required": ["edge_type", "source_domain", "target_domain", "source_count", "target_count", "linked_source_count", "source_without_target_count", "orphan_target_count", "source_coverage_percent", "missing_source_id_samples", "orphan_target_id_samples"], "properties": {"edge_type": {"type": "string"}, "source_domain": {"type": "string"}, "target_domain": {"type": "string"}, "source_count": {"type": "integer", "minimum": 0}, "target_count": {"type": "integer", "minimum": 0}, "linked_source_count": {"type": "integer", "minimum": 0}, "source_without_target_count": {"type": "integer", "minimum": 0}, "orphan_target_count": {"type": "integer", "minimum": 0}, "source_coverage_percent": {"type": "number", "minimum": 0, "maximum": 100}, "missing_source_id_samples": {"type": "array"}, "orphan_target_id_samples": {"type": "array"}}, "additionalProperties": false}},
+    "gap_count": {"type": "integer", "minimum": 0},
+    "gaps": {"type": "array", "items": {"type": "object", "required": ["edge_type", "source_domain", "target_domain", "state"], "properties": {"edge_type": {"type": "string"}, "source_domain": {"type": "string"}, "target_domain": {"type": "string"}, "state": {"type": "string"}, "affected_records": {"type": "integer", "minimum": 0}, "priority": {"type": "string"}, "sample_ids": {"type": "array"}, "source_count": {"type": "integer"}, "target_count": {"type": "integer"}, "message": {"type": "string"}}, "additionalProperties": true}},
+    "input_error_count": {"type": "integer", "minimum": 0},
+    "integrity_issue_count": {"type": "integer", "minimum": 0},
+    "integrity_issues": {"type": "array", "items": {"type": "string"}},
+    "guardrails": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
