@@ -18,6 +18,6 @@ class IndexedQuestEvidenceTests(unittest.TestCase):
   rows,diag=extract_rows(html,[{"id":1,"name":"Cook's Assistant"}])
   self.assertEqual(len(rows),1);self.assertEqual(rows[0]["requirements_text"],"Cooking 10");self.assertEqual(diag["duplicate_source_row_count"],1)
  def test_unicode_apostrophe_normalizes(self):
-  rows,_=extract_rows('<table class="wikitable"><tr><td>Cook’s   Assistant</td><td>-</td></tr></table>',[{"id":1,"name":"Cook\\'s Assistant"}])
+  rows,_=extract_rows('<table class="wikitable"><tr><td>Cook’s   Assistant</td><td>-</td></tr></table>',[{"id":1,"name":"Cook's Assistant"}])
   self.assertEqual(rows[0]["catalogue_match_status"],"matched")
 if __name__=="__main__":unittest.main()
