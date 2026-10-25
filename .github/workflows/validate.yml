@@ -111,6 +111,8 @@ jobs:
         run: python scripts/analyze_monster_dps_envelope.py --input examples/monster-dps-scenarios.example.json --output reports/monster-dps-envelope.json
       - name: Download source-backed raw quest requirement evidence
         run: python scripts/download_quest_requirement_evidence.py
+      - name: Reconcile quest evidence against catalogue and source provenance
+        run: python scripts/audit_quest_evidence_consistency.py --output reports/quest-evidence-reconciliation.json
       - name: Extract conservative quest skill-level text candidates
         run: python scripts/extract_quest_skill_requirement_candidates.py
       - name: Audit quest skill candidate quality and coverage
