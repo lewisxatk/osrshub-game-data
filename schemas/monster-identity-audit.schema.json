@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster identity audit",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "record_count",
+    "unique_valid_id_count",
+    "duplicate_id_count",
+    "duplicate_name_group_count",
+    "missing_id_count",
+    "missing_name_count",
+    "invalid_numeric_value_count",
+    "duplicate_ids",
+    "duplicate_names",
+    "missing_ids",
+    "missing_names",
+    "invalid_numeric_values",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "review_required"
+      ]
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unique_valid_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_name_group_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "missing_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "missing_name_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "invalid_numeric_value_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_ids": {
+      "type": "array"
+    },
+    "duplicate_names": {
+      "type": "array"
+    },
+    "missing_ids": {
+      "type": "array"
+    },
+    "missing_names": {
+      "type": "array"
+    },
+    "invalid_numeric_values": {
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

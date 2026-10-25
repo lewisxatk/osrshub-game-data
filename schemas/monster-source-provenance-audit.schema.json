@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster source provenance comparison",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "source_record_counts",
+    "source_names",
+    "overlapping_numeric_id_count",
+    "field_summary",
+    "conflict_count",
+    "conflicts",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "source_record_counts": {
+      "type": "object"
+    },
+    "source_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overlapping_numeric_id_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "field_summary": {
+      "type": "object"
+    },
+    "conflict_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "conflicts": {
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

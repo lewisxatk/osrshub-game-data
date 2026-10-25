@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Monster record readiness report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "record_count",
+    "critical_fields",
+    "field_missing_counts",
+    "readiness_band_counts",
+    "lowest_presence_records",
+    "highest_presence_records",
+    "definition",
+    "guardrails"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "critical_fields": {
+      "type": "array"
+    },
+    "field_missing_counts": {
+      "type": "object"
+    },
+    "readiness_band_counts": {
+      "type": "object"
+    },
+    "lowest_presence_records": {
+      "type": "array"
+    },
+    "highest_presence_records": {
+      "type": "array"
+    },
+    "definition": {
+      "type": "string"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
