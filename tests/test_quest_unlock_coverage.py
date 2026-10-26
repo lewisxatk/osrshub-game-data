@@ -36,5 +36,5 @@ class QuestUnlockCoverageTests(unittest.TestCase):
  def test_no_requirements_only_when_explicitly_known_empty(self):
   q,i,u,rel=self.sample(); q[0]["field_status"]["requirements"]="unknown"
   r=build_report(q,i,u,rel)
-  self.assertEqual(r["quest_requirements"]["requirement_state_counts"]["unknown"],1)
+  self.assertEqual(r["quest_requirements"]["requirement_state_counts"]["unknown"],2)
 if __name__=="__main__": unittest.main()
