@@ -1,0 +1,5 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema","title":"Combat Studio Consumer Bundle Smoke Report","type":"object",
+ "required":["schema_version","status","checks_run","checks_passed","checks_failed","checks","failures","interpretation","guardrails"],
+ "properties":{"schema_version":{"const":"1.0.0"},"status":{"enum":["passed_structural_smoke","review_required"]},"checks_run":{"type":"integer","minimum":0},"checks_passed":{"type":"integer","minimum":0},"checks_failed":{"type":"integer","minimum":0},"checks":{"type":"array","items":{"type":"object","required":["check","passed"],"properties":{"check":{"type":"string"},"passed":{"type":"boolean"}},"additionalProperties":true}},"failures":{"type":"array","items":{"type":"object"}},"interpretation":{"type":"string"},"guardrails":{"type":"array","items":{"type":"string"},"minItems":1}},"additionalProperties":false
+}
