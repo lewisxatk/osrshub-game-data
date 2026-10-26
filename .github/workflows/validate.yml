@@ -209,6 +209,8 @@ jobs:
         run: python scripts/report_quest_unlock_coverage.py --output reports/quest-unlock-coverage.json
       - name: Build cross-domain graph health and gap queue
         run: python scripts/build_domain_graph_health.py --output reports/domain-graph-health.json
+      - name: Build Combat Studio V1 bundle manifest
+        run: python scripts/build_combat_studio_v1_bundle_manifest.py --output reports/combat-studio-v1-bundle-manifest.json
       - name: Build Combat Studio V1 import contract report
         run: python scripts/build_combat_studio_v1_import_contract.py --output reports/combat-studio-v1-import-contract.json
       - name: Build Combat Studio readiness matrix
