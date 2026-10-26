@@ -577,3 +577,8 @@ The pipeline now consolidates its census, integrity, source freshness, domain co
 ## Cross-domain graph health milestone
 
 The CI pipeline now emits `reports/domain-graph-health.json`, an explicit-ID join audit spanning items, equipment, weapons, item requirements, combat profiles, relationship summaries, monsters, and quests. It reports linked coverage, missing targets, orphan targets, duplicate IDs, and unavailable datasets. It does not infer links by name or certify factual correctness. See [Cross-domain graph health](docs/domain-graph-health.md).
+
+
+## Quest and item unlock evidence coverage
+
+CI now produces `reports/quest-unlock-coverage.json`, summarizing quest requirement/reward knowledge states, item unlock evidence coverage, source URL presence, orphan records, duplicate identities, and unresolved prerequisite edges. Unknown data stays explicitly unknown; reward wording does not automatically establish an unlock. See [Quest and Unlock Evidence Coverage](docs/quest-unlock-evidence-coverage.md).
