@@ -23,6 +23,7 @@ DEFAULT_INPUTS = {
     "combat_readiness": "combat-mechanics-readiness.json",
     "combat_upgrade_readiness": "combat-upgrade-readiness.json",
     "combat_studio_readiness_matrix": "combat-studio-readiness-matrix.json",
+    "combat_studio_v1_import_contract": "combat-studio-v1-import-contract.json",
 }
 ACCEPTED = {"passed", "pass", "success", "review_required", "warning", "warnings", "passed_with_warnings"}
 BLOCKING = {"failed", "failure", "error", "invalid", "blocked"}
