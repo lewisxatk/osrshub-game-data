@@ -582,3 +582,8 @@ The CI pipeline now emits `reports/domain-graph-health.json`, an explicit-ID joi
 ## Quest and item unlock evidence coverage
 
 CI now produces `reports/quest-unlock-coverage.json`, summarizing quest requirement/reward knowledge states, item unlock evidence coverage, source URL presence, orphan records, duplicate identities, and unresolved prerequisite edges. Unknown data stays explicitly unknown; reward wording does not automatically establish an unlock. See [Quest and Unlock Evidence Coverage](docs/quest-unlock-evidence-coverage.md).
+
+
+## Combat Studio readiness matrix
+
+CI generates `reports/combat-studio-readiness-matrix.json` to report selected dataset availability, field presence, duplicate/missing IDs, explicit-ID join coverage, orphan targets, and a prioritised gap queue. This is structural coverage, not proof of factual accuracy, quest eligibility or verified combat formulas. See `docs/combat-studio-readiness-matrix.md`.

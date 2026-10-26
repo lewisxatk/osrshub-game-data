@@ -22,6 +22,7 @@ DEFAULT_INPUTS = {
     "monster_drops": "monster-drop-link-audit.json",
     "combat_readiness": "combat-mechanics-readiness.json",
     "combat_upgrade_readiness": "combat-upgrade-readiness.json",
+    "combat_studio_readiness_matrix": "combat-studio-readiness-matrix.json",
 }
 ACCEPTED = {"passed", "pass", "success", "review_required", "warning", "warnings", "passed_with_warnings"}
 BLOCKING = {"failed", "failure", "error", "invalid", "blocked"}

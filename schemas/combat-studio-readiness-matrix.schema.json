@@ -1,0 +1,13 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Combat Studio Readiness Matrix","type":"object",
+ "required":["generated_at","schema_version","status","interpretation","dataset_count","available_dataset_count","datasets","relationships","priority_gap_count","priority_gaps","input_errors","guardrails"],
+ "properties":{
+  "generated_at":{"type":"string","format":"date-time"},"schema_version":{"const":"1.0.0"},"status":{"enum":["passed","review_required"]},"interpretation":{"type":"string"},
+  "dataset_count":{"type":"integer","minimum":0},"available_dataset_count":{"type":"integer","minimum":0},
+  "datasets":{"type":"object","additionalProperties":{"type":"object","required":["file","state"],"properties":{"file":{"type":"string"},"state":{"enum":["available","missing_file","invalid_json","invalid_shape"]}},"additionalProperties":true}},
+  "relationships":{"type":"array","items":{"type":"object","required":["relationship","state","source","target","coverage_percent"],"properties":{"relationship":{"type":"string"},"state":{"enum":["assessed","not_assessed"]},"source":{"type":"string"},"target":{"type":"string"},"coverage_percent":{"type":["number","null"],"minimum":0,"maximum":100}},"additionalProperties":true}},
+  "priority_gap_count":{"type":"integer","minimum":0},"priority_gaps":{"type":"array","items":{"type":"object","required":["priority","dataset","gap"],"properties":{"priority":{"enum":["critical","high","medium","low"]},"dataset":{"type":"string"},"gap":{"type":"string"}},"additionalProperties":true}},
+  "input_errors":{"type":"array"},"guardrails":{"type":"array","minItems":1,"items":{"type":"string"}}
+ },"additionalProperties":false
+}
