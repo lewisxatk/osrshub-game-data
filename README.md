@@ -592,3 +592,8 @@ CI generates `reports/combat-studio-readiness-matrix.json` to report selected da
 ## Combat Studio V1 import contract
 
 CI emits `reports/combat-studio-v1-import-contract.json` to check the required generated JSON artifacts, shape, identity integrity, and SHA-256 fingerprints before consumer-side integration. `ready_for_consumer_smoke_test` is a structural gate only, not a production-readiness claim. See `docs/combat-studio-v1-import-contract.md` and `docs/combat-studio-v1-milestone-checklist.md`.
+
+
+## Combat Studio V1 bundle manifest
+
+CI now generates `reports/combat-studio-v1-bundle-manifest.json`, a hash-pinned inventory of the nine declared V1 data files. It records SHA-256 hashes, counts and identity integrity warnings and is uploaded alongside generated dataset artifacts. A clean manifest does not replace testing the real website consumer. See `docs/combat-studio-v1-bundle-manifest.md` and `docs/combat-studio-v1-import-acceptance.md`.
