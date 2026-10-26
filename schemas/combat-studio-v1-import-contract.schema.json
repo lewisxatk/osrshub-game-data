@@ -1,0 +1,15 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Combat Studio V1 Import Contract Report","type":"object",
+ "required":["generated_at","schema_version","contract_version","status","interpretation","required_dataset_count","ready_dataset_count","datasets","blocking_issues","review_warnings","consumer_contract","guardrails"],
+ "properties":{
+  "generated_at":{"type":"string","format":"date-time"},"schema_version":{"const":"1.0.0"},"contract_version":{"type":"string"},
+  "status":{"enum":["blocked","review_required","ready_for_consumer_smoke_test"]},"interpretation":{"type":"string"},
+  "required_dataset_count":{"type":"integer","minimum":0},"ready_dataset_count":{"type":"integer","minimum":0},
+  "datasets":{"type":"object","additionalProperties":{"type":"object","required":["file","state","identity_field","errors"],"properties":{"file":{"type":"string"},"state":{"enum":["missing","invalid_json","invalid_shape","review_required","ready"]},"record_count":{"type":["integer","null"],"minimum":0},"sha256":{"type":["string","null"]},"identity_field":{"type":"string"},"missing_identity_count":{"type":["integer","null"],"minimum":0},"duplicate_identity_count":{"type":["integer","null"],"minimum":0},"errors":{"type":"array","items":{"type":"string"}}},"additionalProperties":true}},
+  "blocking_issues":{"type":"array","items":{"type":"object","required":["dataset","reason"],"properties":{"dataset":{"type":"string"},"reason":{"type":"string"}}}},
+  "review_warnings":{"type":"array","items":{"type":"object","required":["dataset","reason"],"properties":{"dataset":{"type":"string"},"reason":{"type":"string"}},"additionalProperties":true}},
+  "consumer_contract":{"type":"object","required":["encoding","root_type","identity_fields","unknown_fields_policy","eligibility_policy"],"properties":{"encoding":{"type":"string"},"root_type":{"type":"string"},"identity_fields":{"type":"object","additionalProperties":{"type":"string"}},"unknown_fields_policy":{"type":"string"},"eligibility_policy":{"type":"string"}}},
+  "guardrails":{"type":"array","minItems":1,"items":{"type":"string"}}
+ },"additionalProperties":false
+}

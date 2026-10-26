@@ -587,3 +587,8 @@ CI now produces `reports/quest-unlock-coverage.json`, summarizing quest requirem
 ## Combat Studio readiness matrix
 
 CI generates `reports/combat-studio-readiness-matrix.json` to report selected dataset availability, field presence, duplicate/missing IDs, explicit-ID join coverage, orphan targets, and a prioritised gap queue. This is structural coverage, not proof of factual accuracy, quest eligibility or verified combat formulas. See `docs/combat-studio-readiness-matrix.md`.
+
+
+## Combat Studio V1 import contract
+
+CI emits `reports/combat-studio-v1-import-contract.json` to check the required generated JSON artifacts, shape, identity integrity, and SHA-256 fingerprints before consumer-side integration. `ready_for_consumer_smoke_test` is a structural gate only, not a production-readiness claim. See `docs/combat-studio-v1-import-contract.md` and `docs/combat-studio-v1-milestone-checklist.md`.
