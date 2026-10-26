@@ -66,6 +66,7 @@ REPORT_TARGETS = (
     ("database-integrated-release-gate.json", "database-integrated-release-gate.schema.json"),
     ("combat-studio-readiness-matrix.json", "combat-studio-readiness-matrix.schema.json"),
     ("combat-studio-v1-import-contract.json", "combat-studio-v1-import-contract.schema.json"),
+    ("combat-studio-v1-bundle-manifest.json", "combat-studio-v1-bundle-manifest.schema.json"),
     ("domain-graph-health.json", "domain-graph-health.schema.json"),
     ("quest-unlock-coverage.json", "quest-unlock-coverage.schema.json"),
     ("database-integrity.json", "database-integrity.schema.json"),
