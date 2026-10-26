@@ -65,6 +65,7 @@ REPORT_TARGETS = (
     ("database-release-gates.json", "database-release-gates.schema.json"),
     ("database-integrated-release-gate.json", "database-integrated-release-gate.schema.json"),
     ("domain-graph-health.json", "domain-graph-health.schema.json"),
+    ("quest-unlock-coverage.json", "quest-unlock-coverage.schema.json"),
     ("database-integrity.json", "database-integrity.schema.json"),
     ("database-gap-queue.json", "database-gap-queue.schema.json"),
     ("numeric-provenance-audit.json", "numeric-provenance-audit.schema.json"),
