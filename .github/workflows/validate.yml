@@ -247,3 +247,67 @@ jobs:
             reports/quest-reward-item-evidence.json
           if-no-files-found: warn
           retention-days: 30
+
+
+  publish-combat-studio-v1-release:
+    name: Publish immutable Combat Studio V1 bundle
+    needs: validate-code
+    if: needs.validate-code.result == 'success' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - name: Download the validated bundle artifact from this exact run
+        uses: actions/download-artifact@v5
+        with:
+          name: osrshub-game-data-${{ github.sha }}
+          path: bundle
+      - name: Verify bundle manifest and hashes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path("bundle")
+          manifest_path = root / "reports" / "combat-studio-v1-bundle-manifest.json"
+          if not manifest_path.is_file():
+              raise SystemExit("Combat Studio bundle manifest missing from validated artifact")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          if manifest.get("status") == "blocked":
+              raise SystemExit("Refusing to publish a blocked Combat Studio bundle")
+          datasets = manifest.get("datasets")
+          if not isinstance(datasets, dict) or not datasets:
+              raise SystemExit("Manifest has no dataset inventory")
+          for filename, entry in datasets.items():
+              path = root / "dist" / filename
+              if not path.is_file():
+                  raise SystemExit(f"Manifest dataset missing: {filename}")
+              actual = hashlib.sha256(path.read_bytes()).hexdigest()
+              if actual != entry.get("sha256"):
+                  raise SystemExit(f"SHA-256 mismatch: {filename}")
+          print(f"Verified {len(datasets)} manifest-pinned datasets; status={manifest.get('status')}")
+          PY
+          cp bundle/reports/combat-studio-v1-bundle-manifest.json bundle/dist/combat-studio-v1-bundle-manifest.json
+      - name: Create immutable versioned release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BUNDLE_TAG: combat-studio-v1-${{ github.sha }}
+        shell: bash
+        run: |
+          if gh release view "$BUNDLE_TAG" >/dev/null 2>&1; then
+            echo "Release $BUNDLE_TAG already exists; refusing to overwrite immutable bundle."
+            exit 1
+          fi
+          STATUS=$(python -c 'import json; print(json.load(open("bundle/dist/combat-studio-v1-bundle-manifest.json"))["status"])')
+          cat > bundle-release-notes.md <<EOF
+          Combat Studio V1 generated data bundle for source commit ${GITHUB_SHA}.
+
+          Manifest status: ${STATUS}
+
+          This release is immutable and hash-pinned. A status of review_required means one or more datasets need review; it is not a claim of full factual, quest, or combat-formula validation. Consumers must verify the manifest SHA-256 hashes before using files.
+          EOF
+          gh release create "$BUNDLE_TAG" bundle/dist/*.json \
+            --title "Combat Studio V1 data ${GITHUB_SHA:0:12}" \
+            --notes-file bundle-release-notes.md
